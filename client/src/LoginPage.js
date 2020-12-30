@@ -7,7 +7,7 @@ function LoginPage() {
     const [Password, setPassword] = useState('')
 
     const Login=async()=>{
-        const response=await fetch('',{
+        const response=await fetch('/hello',{
             method:'POST',
             headers:{
                 'Content-type':'application/Json'
@@ -18,7 +18,7 @@ function LoginPage() {
             }
             )
         })
-        alert('Hello there')
+        console.log(response)
     }
     return (
         <div className='LoginPage'>

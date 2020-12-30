@@ -13,6 +13,7 @@
     "react-spring": "^8.0.27",
     "web-vitals": "^0.2.4"
   },
+  "proxy": "localhost:9000",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

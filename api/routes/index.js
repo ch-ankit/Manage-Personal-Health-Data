@@ -22,33 +22,4 @@ router.get("/", function (req, res, next) {
   res.render("index", { title: "Express", huhu: "medical" });
 });
 
-router.post("/login", (req, res, next) => {
-  var session = driver.session();
-  // var result1 = [];
-  var label = "person";
-  var query = `MATCH (n:${label} {employeeId : $empId}) RETURN n AS results`;
-  session
-    .run(query, {
-      empId: `${req.body.id}`,
-    })
-    .then((result) => {
-      var result1 = [];
-      result.records.forEach((record) => {
-        // res.send(record);
-        result1.push(
-          record._fields[0].properties.name,
-          record._fields[0].properties.email,
-          record._fields[0].properties.contactNo,
-          record._fields[0].properties.address,
-          record._fields[0].labels.pop()
-        );
-      });
-      res.send({ data: result1 });
-      session.close();
-      // console.log(1);
-    })
-    .catch((err) => {
-      next(err);
-    });
-});
 module.exports = router;

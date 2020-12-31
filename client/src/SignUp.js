@@ -10,6 +10,22 @@ function SignUp() {
     const [Email, setEmail] = useState('')
     const [Password, setPassword] = useState('')
     const [Qual, setQual] = useState('')
+
+    const SignUp=async()=>{
+        const response=await fetch(
+            '/Sign',{
+                method:'POST',
+                headers:{
+                    "Content-type":'application/json'
+                },
+                body:JSON.stringify({
+                    profession:Job,
+                    
+                })
+
+            }
+        )
+    }
     return (
         <div className='SignUp'>
             <div className='SignUp__Box'>

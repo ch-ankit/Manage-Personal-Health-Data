@@ -24,7 +24,7 @@ function PersonalDetail() {
                         <h4>Contact</h4>
                         <div className="personalDetail__contact1">
                             <p>Address: GatthaGhar</p>          {/* display the address of the user */}
-                            <p>Country: Nepal</p>               {/* display the country name */}   
+                            <p>Country: Nepal</p>               {/* display the country name */}
                         </div>
                         <div className="personalDetail__contact2">
                             <p>Zip Code: 44600</p>              {/* display the zip code */}

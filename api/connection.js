@@ -1,8 +1,8 @@
 var neo4j = require("neo4j-driver");
 
 var driver = neo4j.driver(
-  "bolt://localhost",
-  neo4j.auth.basic("neo4j", "b@bin6139@")
+  "bolt://54.160.58.19:7687",
+  neo4j.auth.basic("neo4j", "aggravation-representative-bushes")
 );
 
 module.exports = driver;

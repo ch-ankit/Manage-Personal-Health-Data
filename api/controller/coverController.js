@@ -2,29 +2,34 @@ var driver = require("../connection");
 
 //signup for doctor/patient/co-ordinator/director
 
+
+// function next(e){
+//   console.log(e)
+// }
 exports.getHomPage =
-  ("/",
   (req, res, next) => {
     var session = driver.session();
     var data = [];
     var label = "hospital";
-    var query = `MATCH (n : ${label}) RETURN n`;
+    var query = `Match (m:department) RETURN m`;
     session
       .run(query)
       .then((result) => {
         result.records.forEach((record) => {
-          data.push(
-            record._fields[0].properties.address,
-            record._fields[0].properties.contactNo,
-            record._fields[0].properties.email,
-            record._fields[0].properties.name,
-            record._fields[0].properties.specialization
-          );
+          data.push(record._fields[0].properties);
         });
-        res.send({ data: data });
+        res.send(data);
+        session.close()
       })
       .catch((error) => {
         next(error);
       })
-      .then(() => session.close());
-  });
+  };
+
+//   var a={}
+//   var b={
+//      send(x){
+//       console.log(x)
+//     }
+//   }
+//  getHomPage(a,b,next)

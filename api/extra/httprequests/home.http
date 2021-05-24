@@ -1,2 +1,4 @@
 ###
-GET http://localhost:9000/home
+GET http://localhost:9000/
+###
+GET http://localhost:9000/cover

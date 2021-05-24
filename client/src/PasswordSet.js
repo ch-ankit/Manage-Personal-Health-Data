@@ -27,9 +27,14 @@ function PasswordSet(props) {
             history.push('/')
         }
     }
-    const isValidated = () => {
-        if (password !== confirmPassword) {
+    function isValidated() {
+        console.log(password, confirmPassword)
+        if (password.current.value !== confirmPassword.current.value) {
             setIsValid(false)
+            return false
+        }
+        else {
+            return true
         }
     }
     return (

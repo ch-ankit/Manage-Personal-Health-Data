@@ -1,70 +1,22 @@
 .homeNav{
-    height: 100vh;
-    width: max-content;
-    background-color: rgb(156, 224, 156);
+    width: 100%;
     display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    flex-direction: column;
-    position: relative;
-    //border-top-right-radius: 2em;
-    //border-bottom-right-radius: 2em;
-
-    &__icons{
-        height: 80%;
-        width: fit-content;
-        display: grid;
-        color: rgb(163, 45, 45);
-        justify-content: space-evenly;
-        flex-direction: column;
-        align-items: center;
-        list-style: none;
-        text-align: center;
-        grid-gap: 10px;
-        
-
+    justify-content:space-between;
+    box-shadow: 0px 0px 50px 5px rgb(77, 226, 77);;
+    h1{
+        margin-left: 0.5em;       
     }
-    &__visibleIcon{
-        grid-row: 1/2;
+
+    &__right{
         display: flex;
-        height: 100%;
-        flex-direction: column;
-        align-items: center;
+        width:6rem;
         justify-content: space-evenly;
-    }
-    &__labels{
-        grid-row: 1/2;
-        display: none;
-        height: 100%;
-        flex-direction: column;
         align-items: center;
-
-        justify-content: space-evenly;
+        border: 1px solid lightgreen;
+        border-radius: 100em;
     }
 
-    &__exit{
-        position:absolute;
-        bottom: 1%;
-        cursor: pointer;
-        &:hover{
-            color: red;
-        }
-    }
-
-        .check-label{
-            position: absolute;
-            top:4%;
-            left: 105%;
-            font-size: 1.4rem;
-            display: block;
-            transform: rotateZ(-90deg);
-            cursor: pointer;
-            
-        }
-        input[type="checkbox"]{
-            appearance: none;
-            &:checked ~ .homeNav__labels{
-                display: flex;
-            }
+    &__icon{
+        width: 1rem;
     }
 }

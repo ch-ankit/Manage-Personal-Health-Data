@@ -30,7 +30,7 @@ function LandingPage() {
         <div className="landingPage">
             <Nav />
             <div className="landingPage__content">
-                <h1>Medical History of Patient</h1>
+                <h1>Manage Personal Health Data</h1>
                 <p>Where you can access the history of patient</p>
             </div>
             <form className="landingPage__login" onSubmit={logIn}>

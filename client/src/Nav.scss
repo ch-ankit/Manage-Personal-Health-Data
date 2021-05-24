@@ -1,28 +1,83 @@
-.nav{
-    position: relative;
-    z-index: 100;
+$mobileScreen:600px;
+
+header{
+    position: fixed;
     width: 100%;
-    top: 1em;
+    margin-top: 1%;
+    z-index: 1000;
+    background-color: white;
     box-shadow: 0 0 10px rgba(144, 238, 144,0.55);
     h1{
         margin-left: 1em;
         font-size: 2.5rem;
     }
-    ul{
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        right: 1%;
-        list-style: none;
-        display: flex;
-        li{
-            font-size: 1.6rem;
-            margin-left: 2.5em;
-            color: rgb(43, 199, 43);
-            cursor: pointer;
-            &:hover{
-                color: green;
+    nav{
+        position: fixed;
+        width: 100%;
+        top: 3%;
+        ul{
+            position: absolute;
+            right: 1%;
+            list-style: none;
+            display: flex;
+            li{
+                font-size: 1.6rem;
+                margin-left: 2.5em;
+                color: rgb(43, 199, 43);
+                cursor: pointer;
+                &:hover{
+                    color: green;
+                }
             }
         }
     }
+
+    @media screen and (max-width:$mobileScreen){
+        nav{
+            display: none;
+        }
+    }
+    .mob__nav{
+        position: absolute;
+        width: 100%;
+        display: none;
+        background-color: white;
+        z-index: 100;
+        ul{
+            list-style: none;
+            cursor: pointer;
+            li{
+                font-size: 1.8rem;
+                background-color: white;
+                color: rgb(43, 199, 43) ;
+                &:hover{
+                    color:green;
+                }
+            }
+        }
+    }
+    label{
+        font-size: 1.5rem;
+        position: fixed;
+        display: none;
+        right: 5%;
+        top: 2.5%;
+        transform: rotateZ(-90deg);
+        cursor: pointer;
+    }
+
+    @media screen and (max-width:$mobileScreen) {
+        label{
+            display: block;
+        }
+    }
+    input[type="checkbox"]{
+        display: none;
+        &:checked ~ .mob__nav{
+            display: block;
+        }
+    }
+
+    
+
 }

@@ -1,0 +1,39 @@
+.homeDrawer{
+    height: 90vh;
+    position: relative;
+    width: fit-content;
+    border-right: 1px solid lightgreen;
+    ul{
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        display: none;
+        li{
+            list-style: none;
+        }
+    }
+    &__button{
+        position: absolute;
+        left: 100%;
+        top: 2%;
+        display: flex;
+        justify-content: center;
+        border-top-right-radius:100em ;
+        border-bottom-right-radius:100em ;
+        width: 2.4em;
+        height: 2.4em;
+        border: 1px solid lightgreen;
+        cursor: pointer;
+        h1{
+            font-size: 1rem;
+            transform: rotateZ(-90deg);
+            cursor: pointer;
+        }
+    }
+    &.active{
+        ul{
+            display: flex;
+        }
+    }
+}

@@ -25,9 +25,15 @@ function PersonalDetail() {
                         <div className="personalDetail__contact1">
                             <p>Address: GatthaGhar</p>          {/* display the address of the user */}
                             <p>Country: Nepal</p>               {/* display the country name */}
+                            <p>Emergency Contact: Nischal</p>   {/* dsplay emergency contact name */}
+                            <p>Home Phone:12343445</p>          {/* display home phone number of user */}
+                            <p>Mobile Phone: 9812345672</p>     {/* display mobile number of user */}
                         </div>
                         <div className="personalDetail__contact2">
                             <p>Zip Code: 44600</p>              {/* display the zip code */}
+                            <p>Mother's Name:Mother</p>         {/* display mother's name */}
+                            <p>Emergency Phone: 9861444780</p>  {/* display emergency phone number */}
+                            <p>Email: chAnkit12@gmail.com</p>   {/* display user email */}
                         </div>
                     </div>
                 </div>

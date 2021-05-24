@@ -1,16 +1,26 @@
+$green:lightgreen;
+
 .homeDrawer{
-    height: 90vh;
-    position: relative;
-    width: fit-content;
-    border-right: 1px solid lightgreen;
+    height: 95vh;
+    position: absolute;
+    background-color: white;
+    border-right: 1px solid $green;
     ul{
         height: 100%;
+        width: 12em;
         display: flex;
         flex-direction: column;
         justify-content: space-evenly;
         display: none;
+        align-items: center;
         li{
+            width: 100%;
+            cursor:pointer;
+            text-align: center;
             list-style: none;
+            &:hover{
+                box-shadow: 0px 0px 15px $green;
+            }
         }
     }
     &__button{
@@ -23,7 +33,7 @@
         border-bottom-right-radius:100em ;
         width: 2.4em;
         height: 2.4em;
-        border: 1px solid lightgreen;
+        border: 1px solid $green;
         cursor: pointer;
         h1{
             font-size: 1rem;

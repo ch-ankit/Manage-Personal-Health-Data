@@ -90,8 +90,8 @@ function SignUp() {
                 <div className="signUp__select">
                     <h4>Gender</h4>
                     <div className="signUp__customSelect">
-                        <select ref={gender} defaultChecked="Please Select Your Gender" id="gender" required>
-                            <option hidden disabled> Please Select Your Gender</option>
+                        <select ref={gender} defaultChecked="Select Gender" id="gender" required>
+                            <option value="Select Gender" hidden > Please Select Your Gender</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                             <option value="Other">Other</option>

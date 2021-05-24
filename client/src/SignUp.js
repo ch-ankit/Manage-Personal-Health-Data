@@ -15,7 +15,7 @@ function SignUp() {
                 <div className="signUp__select">
                     <h4>Gender</h4>
                     <div className="signUp__customSelect">
-                    <select id="gender" required>
+                    <select id="gender" defaultChecked="Select the gender" required>
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
                         <option value="Other">Other</option>

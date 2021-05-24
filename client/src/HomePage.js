@@ -3,6 +3,7 @@ import HomeDrawer from './HomeDrawer'
 import HomeNav from './HomeNav'
 import PersonalDetail from './PersonalDetail'
 import "./HomePage.scss"
+
 function HomePage() {
     return (
         <div className="homePage">

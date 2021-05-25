@@ -10,6 +10,16 @@ function HomeNav() {
     return (
         <div className="homeNav">
             <h1>MHPD</h1>  {/* title of the project */}
+                <div style={{display:'flex',alignItems:'center'}}>
+                    Light
+                <div className="toggleButton" onClick={()=>{
+                    document.querySelector('.circle').classList.toggle('active');
+                    document.querySelector('.darkMode').classList.toggle('active')
+                }}>
+                    <div className="circle"></div>
+                </div>
+                Dark
+                </div>
             <div className="homeNav__right" onClick={()=>{
                 document.querySelector('.homeNav__onClick').classList.toggle('active')
             }}>
@@ -17,7 +27,6 @@ function HomeNav() {
                 <p>Anbu</p>   {/* display the userName */}
                 <div className="downArrow">
                 </div>
-
                 <div className="homeNav__onClick">
                     <ul>
                         <li>Settings</li>
@@ -27,6 +36,9 @@ function HomeNav() {
                         }}>Log Out</li>
                     </ul>
                 </div>
+            </div>
+            <div className="darkMode">
+
             </div>
         </div>
     )

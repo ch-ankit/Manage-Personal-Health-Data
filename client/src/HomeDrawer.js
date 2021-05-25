@@ -1,12 +1,16 @@
 import React from 'react'
+import { useHistory } from 'react-router';
 import "./HomeDrawer.scss"
 function HomeDrawer() {
+    const history=useHistory();
     return (
         <div className="homeDrawer">
             <ul>
                 <li>Profile</li>
                 <li>Lists</li>
-                <li>Patient Documents</li>
+                <li onClick={()=>{
+                    history.push('home/documents')
+                }}>Patient Documents</li>
                 <li>Reports</li>
                 <li>Logout</li>
             </ul>

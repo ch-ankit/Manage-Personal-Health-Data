@@ -1,6 +1,7 @@
 var express = require('express');
 var app = express();
 const bodyParser = require("body-parser");
+var path = require('path');
 
 const database = require('./database');
 const signupRouter = require("./routes/signup")
@@ -9,6 +10,7 @@ const passwordRouter = require("./routes/password")
 require("dotenv").config({ path: "./config.env" });
 
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use("/signup",signupRouter);
 app.use("/login",loginRouter);

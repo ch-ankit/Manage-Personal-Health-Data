@@ -1,5 +1,9 @@
 .signUp {
     width: 100%;
+    background-image: url("./images/signUp.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: left -20em center;
     form {
         box-shadow: 0 0 15px lightgreen;
         margin-top: 2em;
@@ -8,6 +12,7 @@
         display: grid;
         width: 25em;
         place-items: center;
+        mix-blend-mode:hard-light;
         input {
             text-align: center;
             width: 80%;

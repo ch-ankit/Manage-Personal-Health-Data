@@ -6,7 +6,7 @@ import "./SignUp.scss"
 function SignUp() {
     const address = useRef(null)
     const contactInfo = useRef(null)
-    const dob = useRef(null)
+    const dob = useRef(null);
     const email = useRef(null)
     const emergencyContactName = useRef(null)
     const emergencyContactNo = useRef(null)

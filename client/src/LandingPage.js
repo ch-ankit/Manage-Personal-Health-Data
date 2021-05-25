@@ -36,7 +36,7 @@ function LandingPage() {
             </div>
             <form className="landingPage__login" onSubmit={logIn}>
                 <h1>Log In</h1>
-                <input ref={id} type="email" id="Email" placeholder="Email" aria-label="Email" />
+                <input ref={id} type="text" id="Email" placeholder="ID" aria-label="ID" />
                 <input ref={password} type="password" id="Password" placeholder="Password" aria-label="Password" />
                 <button type="submit" id="logIn">Log In</button>
             </form>

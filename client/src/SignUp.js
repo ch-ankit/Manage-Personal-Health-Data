@@ -1,11 +1,12 @@
 import React, { useRef, useState } from 'react'
+import storage from './firebaseConfig'
 import Nav from './Nav'
 import "./SignUp.scss"
 
 function SignUp() {
     const address = useRef(null)
     const contactInfo = useRef(null)
-    const dob = useRef(null)
+    const dob = useRef(null);
     const email = useRef(null)
     const emergencyContactName = useRef(null)
     const emergencyContactNo = useRef(null)
@@ -18,7 +19,6 @@ function SignUp() {
     const zipCode = useRef(null)
     //view File is to check photo upload and send photo to firebase
     const [photo, setPhoto] = useState('')
-    const [url, setUrl]=useState('')
     const [viewFile, setViewFile]= useState('')
 
     //Functions
@@ -36,30 +36,51 @@ function SignUp() {
     }
 
     const handleSubmit=async(e)=>{
-        e.preventDefault()
-        const response= await fetch('http://localhost:7000/signup/patient',{
-            method: 'POST',
-            headers:{
-                'Content-type':'application/json'
-            },
-            body:JSON.stringify({
-                address:address.current.value,
-                contactInfo:contactInfo.current.value,
-                dob:dob.current.value,
-                email:email.current.value,
-                emergencyContactName:emergencyContactName.current.value,
-                emergencyContactNo:emergencyContactNo.current.value,
-                emergencyContactRltn:emergencyContactRltn.current.value,
-                gender:gender.current.value,
-                occupation:occupation.current.value,
-                language:language.current.value,
-                maritalStatus:maritalStatus.current.value,
-                name:name.current.value,
-                zipCode:zipCode.current.value,
-                photo:viewFile
-            })
-        })
+        e.preventDefault();
+        const uploadTask = storage.ref(`images/${photo.name}`).put(photo);
+        uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+        },
+        (error) => {
+            console.log(error);
+            alert(error.message);
+        },
+        () => {
+            storage
+                .ref("images")
+                .child(photo.name)
+                .getDownloadURL()
+                .then(async(url) => {
+                    const response= await fetch('http://localhost:7000/signup/patient',{
+                        method: 'POST',
+                        headers:{
+                            'Content-type':'application/json'
+                        },
+                        body:JSON.stringify({
+                            address:address.current.value,
+                            contactInfo:contactInfo.current.value,
+                            dob:dob.current.value,
+                            email:email.current.value,
+                            emergencyContactName:emergencyContactName.current.value,
+                            emergencyContactNo:emergencyContactNo.current.value,
+                            emergencyContactRltn:emergencyContactRltn.current.value,
+                            gender:gender.current.value,
+                            occupation:occupation.current.value,
+                            language:language.current.value,
+                            maritalStatus:maritalStatus.current.value,
+                            name:name.current.value,
+                            zipCode:zipCode.current.value,
+                            photo:url
+                        })
+                    })
+                            
         console.log(response)
+                })
+                
+            }
+        )
+
     }
     return (
         <div className="signUp">

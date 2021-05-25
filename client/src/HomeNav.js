@@ -1,9 +1,12 @@
 import React from 'react'
 import {UserIcon} from "@heroicons/react/solid"
 import { useHistory } from 'react-router';
+import {useDispatch} from 'react-redux'
 import "./HomeNav.scss"
+import { logout } from './features/counterSlice';
 function HomeNav() {
     const history=useHistory();
+    const dispatch = useDispatch()
     return (
         <div className="homeNav">
             <h1>MHPD</h1>  {/* title of the project */}
@@ -19,6 +22,7 @@ function HomeNav() {
                     <ul>
                         <li>Settings</li>
                         <li onClick={()=>{
+                            dispatch(logout())
                             history.push('/')
                         }}>Log Out</li>
                     </ul>

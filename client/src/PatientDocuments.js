@@ -3,9 +3,11 @@ import HomeDrawer from './HomeDrawer'
 import HomeNav from './HomeNav'
 import "./PatientDocument.scss"
 import {SearchIcon} from '@heroicons/react/solid'
+import { useHistory } from 'react-router'
 function PatientDocuments() {
     const searchText = useRef(null);
     const category=useRef(null);
+    const history=useHistory()
     return (
         <div className="patientDocument">
             <HomeNav />
@@ -36,7 +38,7 @@ function PatientDocuments() {
                                 <td>Category</td>
                             </tr>
 
-                            <tr>
+                            <tr onClick={()=>history.push('documentviewer')} >
                                 <td>101345</td>
                                 <td>Check up for stomach ache</td>
                                 <td>2020-01-22</td>

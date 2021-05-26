@@ -13,9 +13,12 @@ function HomeDrawer() {
                 >Profile</li>
                 <li>Lists</li>
                 <li onClick={()=>{
-                    history.push('home/documents')
+                    history.push('/home/documents')
                 }}>Patient Documents</li>
-                <li>Reports</li>
+                <li onClick={()=>{
+                    history.push('/home/report')
+                }}
+                >Reports</li>
                 <li>Logout</li>
             </ul>
             <div className="homeDrawer__button"

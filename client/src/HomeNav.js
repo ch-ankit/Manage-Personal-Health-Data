@@ -35,7 +35,7 @@ function HomeNav() {
                         <li>Settings</li>
                         <li onClick={()=>{
                             dispatch(logout())
-                            dispatch(darkmode())
+                            darkMode && dispatch(darkmode())
                             history.push('/')
                         }}>Log Out</li>
                     </ul>

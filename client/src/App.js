@@ -5,6 +5,7 @@ import HomePage from './HomePage'
 import LandingPage from './LandingPage'
 import PageNotFound from './PageNotFound'
 import PasswordSet from './PasswordSet'
+import PatientDocuments from './PatientDocuments'
 import Report from './Report'
 import SignUp from './SignUp'
 function App() {
@@ -14,8 +15,9 @@ function App() {
         <Switch>
           <Route exact path="/" component={LandingPage} />
           <Route path="/about" component={About} />
-          <Route path="/home" component={HomePage} />
+          <Route exact path="/home" component={HomePage} />
           <Route path="/signUp" component={SignUp} />
+          <Route path="/home/documents" component={PatientDocuments} />
           <Route path="/report" render={(routeProps) => <Report {...routeProps} />} />
           <Route path="/passwordSet" render={(routeProps) => <PasswordSet {...routeProps} />} />
           <Route path="/*" component={PageNotFound} />

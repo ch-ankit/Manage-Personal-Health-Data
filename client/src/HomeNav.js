@@ -1,18 +1,21 @@
 import React from 'react'
 import {UserIcon} from "@heroicons/react/solid"
 import { useHistory } from 'react-router';
-import {useDispatch} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import "./HomeNav.scss"
-import { logout } from './features/counterSlice';
+import { darkmode, logout } from './features/counterSlice';
 function HomeNav() {
     const history=useHistory();
     const dispatch = useDispatch()
+    const userData = useSelector(state => state.user.value.data)
+    const darkMode=useSelector((state)=>state.user.darkMode)
     return (
         <div className="homeNav">
             <h1>MHPD</h1>  {/* title of the project */}
                 <div style={{display:'flex',alignItems:'center'}}>
                     Light
                 <div className="toggleButton" onClick={()=>{
+                    dispatch(darkmode())
                     document.querySelector('.circle').classList.toggle('active');
                     document.querySelector('.darkMode').classList.toggle('active')
                 }}>
@@ -23,8 +26,8 @@ function HomeNav() {
             <div className="homeNav__right" onClick={()=>{
                 document.querySelector('.homeNav__onClick').classList.toggle('active')
             }}>
-                <UserIcon className="homeNav__icon" />
-                <p>Anbu</p>   {/* display the userName */}
+                <img className={`homeNav__icon ${darkMode && "iconDark"}  `} src={userData.photo} alt={userData?.name.slice(0,1)} style={{display:'flex',alignItems:'center',justifyContent:'center'}} />
+                <p>{userData.name}</p>   {/* display the userName */}
                 <div className="downArrow">
                 </div>
                 <div className="homeNav__onClick">
@@ -32,6 +35,7 @@ function HomeNav() {
                         <li>Settings</li>
                         <li onClick={()=>{
                             dispatch(logout())
+                            dispatch(darkmode())
                             history.push('/')
                         }}>Log Out</li>
                     </ul>

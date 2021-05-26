@@ -6,7 +6,11 @@ function HomeDrawer() {
     return (
         <div className="homeDrawer">
             <ul>
-                <li>Profile</li>
+                <li
+                onClick={()=>{
+                    history.push("/home")
+                }}
+                >Profile</li>
                 <li>Lists</li>
                 <li onClick={()=>{
                     history.push('home/documents')

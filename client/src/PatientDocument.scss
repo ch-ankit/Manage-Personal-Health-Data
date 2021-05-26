@@ -1,0 +1,61 @@
+.patientDocument{
+    width: 100%;
+
+    &__documents{
+        width: 100%;
+        height: 100%;
+        padding: 3em 2em;
+    }
+
+    &__searchBar{
+        width: 80%;
+        margin: 0 auto 2em auto;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+
+        input[type="search"]{
+            height:2em;
+            border-right: none;
+            border-top-left-radius: 10em;
+            border-bottom-left-radius: 10em;
+            outline: none;
+            text-align: center;
+            flex: 1;
+        }
+        input::placeholder{
+            text-align: center;
+        }
+        input[type="text"]{
+            height: 2em;
+            text-align: center;
+            flex: 0.5;
+        }
+
+        .searchIcon{
+            width: 2em;
+            height: 1.7em;
+            border-top-right-radius: 10em;
+            border-bottom-right-radius: 10em;
+            border-right: 2px solid darkgreen;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+    }
+    table{
+        width: 100%;
+        background-color: black;
+        text-align: center;
+        tr:first-child{
+            text-align: center;
+            font-size: 2.3rem;
+            -webkit-text-stroke: 1px green;
+        }
+    }
+}
+
+@media screen and (max-width:600px) {
+    :root{
+        font-size: 13px;
+    }
+}

@@ -4,6 +4,7 @@ import "./PersonalDetail.scss"
 import {useHistory} from 'react-router-dom'
 function PersonalDetail() {
     const userData = useSelector((state)=>state.user.value.data);
+    const darkMode=useSelector((state)=>state.user.darkMode);
     const history=useHistory();
     const address = useRef(null)
     const contactInfo = useRef(null)
@@ -33,6 +34,7 @@ function PersonalDetail() {
     }
     return (
         <div className="personalDetail">
+            {console.log(darkMode)}
             <h2>Profile</h2>
 
             <div className="personalDetail__content">
@@ -116,7 +118,7 @@ function PersonalDetail() {
                 <input ref={contactInfo} type="text" defaultValue={userData?.contactInfo}  id="contactInfo" placeholder="Contact Number"  />
                 </label>
                 <input type="file" accept="image/*" alt="Profile photo" onChange={handleChange}  />
-                <img src={userData.photo} style={{height:'81px', width:'256px'}} alt="Uploaded"/>
+                <img src={userData.photo} style={{height:'81px', width:'256px'}} className={`image ${darkMode && "imageDark" }`} alt="Uploaded"/>
                 <label htmlFor="occupation">Occupation
                 <input ref={occupation} type="text" defaultValue={userData?.occupation}  placeholder="Occupation"  />
                 </label>

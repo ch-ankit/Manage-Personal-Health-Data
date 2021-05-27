@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {UserIcon} from "@heroicons/react/solid"
 import { useHistory } from 'react-router';
 import {useDispatch, useSelector} from 'react-redux'
@@ -8,16 +8,29 @@ function HomeNav() {
     const history=useHistory();
     const dispatch = useDispatch()
     const userData = useSelector(state => state.user.value.data)
-    const darkMode=useSelector((state)=>state.user.darkMode)
+    let darkMode=useSelector((state)=>state.user.darkMode)
+    const [dark,setDark]=useState(false)
+    useEffect(() => {
+        const changeBackGround=()=>{
+            darkMode && document?.querySelector('.circle').classList.toggle('active');
+            darkMode && document?.querySelector('.darkMode').classList.toggle('active');
+            darkMode ? setDark(true) : setDark(false);
+        }
+        return changeBackGround; }
+    , []);
     return (
         <div className="homeNav">
             <h1>MHPD</h1>  {/* title of the project */}
                 <div style={{display:'flex',alignItems:'center'}}>
                     Light
                 <div className="toggleButton" onClick={()=>{
-                    dispatch(darkmode())
-                    document.querySelector('.circle').classList.toggle('active');
-                    document.querySelector('.darkMode').classList.toggle('active')
+                    dispatch(darkmode());
+                    darkMode=!darkMode;
+                    darkMode && document.querySelector('.circle').classList.toggle('active');
+                    !darkMode && document.querySelector('.circle').classList.remove('active'); 
+                    darkMode && document.querySelector('.darkMode').classList.toggle('active')
+                    !darkMode && document.querySelector('.darkMode').classList.remove('active')
+                    console.log(darkMode)
                 }}>
                     <div className="circle"></div>
                 </div>

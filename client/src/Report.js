@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import storage from './firebaseConfig';
 import HomeDrawer from './HomeDrawer';
 import HomeNav from './HomeNav';
+import './Report.scss'
 
 function Report() {
     const [pdfFile,setpdfFile]=useState(null);

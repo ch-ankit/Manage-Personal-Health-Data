@@ -20,6 +20,8 @@ export const userSlice = createSlice({
     },
     darkmode:(state)=>{
       state.darkMode=!state.darkMode;
+      const data=JSON.stringify(state.darkMode);
+      window.localStorage.setItem('darkMode',data);
     }
 
   }

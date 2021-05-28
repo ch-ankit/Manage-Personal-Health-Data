@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var signupController = require("./../controller/signupController")
+var personalDataController = require("./../controller/personalDataController")
 
 
 router
@@ -9,6 +10,7 @@ router
 router
     .route('/doctor')
     .post(signupController.doctorSignup);
+router.route('/data').get(personalDataController.getData)
 
 
 module.exports = router;

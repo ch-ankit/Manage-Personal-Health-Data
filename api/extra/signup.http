@@ -75,4 +75,4 @@ content-type: application/json
 }
 
 ###
-GET http://localhost:7000/pdf?reportName=ac.pdf
+GET http://localhost:7000/report?reportName=ac.pdf

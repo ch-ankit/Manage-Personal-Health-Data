@@ -2,7 +2,6 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 var driver = require("./../database");
 var sendMail = require("./../nodemailer")
-var path = require('path');
 
 var checker = async (label, email, next) => {
   var session = driver.session();
@@ -246,10 +245,3 @@ exports.changePassword = async (req, res, next) => {
     })
 }
 
-exports.getFile = (req,res,next)=>{
-  try{
-    res.send({message:`${path.resolve()}\\public\\medicalReports\\${req.query.reportName}`});
-  }catch(err){
-    console.log(err)
-  }
-}

@@ -25,21 +25,24 @@ function PatientDocuments() {
                         </datalist>
                         <SearchIcon className="searchIcon" />
                     </div>
-                    <div className="patienDocuments__details">
+                    <div className="patientDocuments__details">
                         <table>
-                            <tr>
-                                <td>Id</td>
-                                <td>Document</td>
-                                <td>Created Date</td>
-                                <td>Category</td>
-                            </tr>
-
-                            <tr onClick={()=>history.push('documentviewer')} >
-                                <td>101345</td>
-                                <td>Check up for stomach ache</td>
-                                <td>2020-01-22</td>
-                                <td>Stomach</td>
-                            </tr>
+                            <thead>
+                                <tr>
+                                    <td>Id</td>
+                                    <td>Document</td>
+                                    <td>Created Date</td>
+                                    <td>Category</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr onClick={()=>history.push('documentviewer')} >
+                                    <td>101345</td>
+                                    <td>Check up for stomach ache</td>
+                                    <td>2020-01-22</td>
+                                    <td>Stomach</td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>

@@ -1,6 +1,4 @@
 import React, { useRef } from 'react'
-import HomeDrawer from './HomeDrawer'
-import HomeNav from './HomeNav'
 import "./PatientDocument.scss"
 import {SearchIcon} from '@heroicons/react/solid'
 import { useHistory } from 'react-router'
@@ -10,9 +8,7 @@ function PatientDocuments() {
     const history=useHistory()
     return (
         <div className="patientDocument">
-            <HomeNav />
             <div className="patientDocument__content">
-                <HomeDrawer />
                 <div className="patientDocument__documents">
                     <div className="patientDocument__searchBar">
                         <input ref={searchText} type="search" placeholder="Input the name of the documents" />

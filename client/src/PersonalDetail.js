@@ -1,11 +1,11 @@
-import React,{useState, useRef} from 'react'
+import React, { useRef } from 'react'
 import { useSelector } from 'react-redux'
 import "./PersonalDetail.scss"
-import {useHistory} from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 function PersonalDetail() {
-    const userData = useSelector((state)=>state.user.value.data);
-    const darkMode=useSelector((state)=>state.user.darkMode);
-    const history=useHistory();
+    const userData = useSelector((state) => state.user.value.data);
+    const darkMode = useSelector((state) => state.user.darkMode);
+    const history = useHistory();
     const address = useRef(null)
     const contactInfo = useRef(null)
     const dob = useRef(null);
@@ -19,17 +19,14 @@ function PersonalDetail() {
     const maritalStatus = useRef(null)
     const name = useRef(null)
     const zipCode = useRef(null)
-    //view File is to check photo upload and send photo to firebase
-    const [photo, setPhoto] = useState('')
-    const [viewFile, setViewFile]= useState('')
 
-    if(userData == null){
+    if (userData == null) {
         history.push('/')
     }
-    const handleChange=(e)=>{
+    const handleChange = (e) => {
         e.preventDefault();
     }
-    const handleSubmit=(e)=>{
+    const handleSubmit = (e) => {
         e.preventDefault();
     }
     return (
@@ -40,7 +37,7 @@ function PersonalDetail() {
             <div className="personalDetail__content">
                 <div className="personalDetail__button">
                     <h2>Profile Demographics</h2>
-                    <button onClick={()=>{
+                    <button onClick={() => {
                         document.querySelector('.personalDetail__popup').classList.toggle('active')
                     }}>Change</button>
                 </div>
@@ -75,80 +72,80 @@ function PersonalDetail() {
                 </div>
             </div>
             <div className="personalDetail__popup">
-            <form id="personalDetailForm" onSubmit={handleSubmit}>
-                <h1>
-                    <span>Change you personal Detail</span>
-                    <span onClick={()=>{
-                        document.querySelector(".personalDetail__popup.active").classList.remove('active')
-                    }} style={{cursor:"pointer"}}>X</span>
-                </h1>
-                <label htmlFor="name">Name
-                    <input ref={name} type="text" id="name" defaultValue={userData?.name} placeholder="Name"  />
-                </label>
-                
-                <label htmlFor="address">Address
-                    <input ref={address} type="text" defaultValue={userData?.address}  id="address" placeholder="Address"  />
-                </label>
-                
-                <label htmlFor="email">Email
-                    <input ref={email} type="email" defaultValue={userData?.email}  id="email" placeholder="Email"  />
-                </label>
-                
-                <label htmlFor="language">Language
-                <input ref={language} type="text" defaultValue={userData?.language}  id="language" placeholder="Language"  />
-                </label>
-                <div className="personalDetail__radio">
-                    <h5>Marital Status:</h5>
-                    <label htmlFor="Married">
-                        <input ref={maritalStatus} type="radio" defaultChecked={userData?.maritalStatus === "Married"}  id="Married"  value="Married" name="Marital Status" onClick={()=>{maritalStatus.current.value="Married"} }  />
+                <form id="personalDetailForm" onSubmit={handleSubmit}>
+                    <h1>
+                        <span>Change you personal Detail</span>
+                        <span onClick={() => {
+                            document.querySelector(".personalDetail__popup.active").classList.remove('active')
+                        }} style={{ cursor: "pointer" }}>X</span>
+                    </h1>
+                    <label htmlFor="name">Name
+                    <input ref={name} type="text" id="name" defaultValue={userData?.name} placeholder="Name" />
+                    </label>
+
+                    <label htmlFor="address">Address
+                    <input ref={address} type="text" defaultValue={userData?.address} id="address" placeholder="Address" />
+                    </label>
+
+                    <label htmlFor="email">Email
+                    <input ref={email} type="email" defaultValue={userData?.email} id="email" placeholder="Email" />
+                    </label>
+
+                    <label htmlFor="language">Language
+                <input ref={language} type="text" defaultValue={userData?.language} id="language" placeholder="Language" />
+                    </label>
+                    <div className="personalDetail__radio">
+                        <h5>Marital Status:</h5>
+                        <label htmlFor="Married">
+                            <input ref={maritalStatus} type="radio" defaultChecked={userData?.maritalStatus === "Married"} id="Married" value="Married" name="Marital Status" onClick={() => { maritalStatus.current.value = "Married" }} />
                         Married
                     </label>
-                    <label htmlFor="Single">
-                        <input ref={maritalStatus} type="radio" defaultChecked={userData?.maritalStatus === "Single"} id="Single"  value="Single" name="Marital Status" onClick={()=>{maritalStatus.current.value="Single"}}   />
+                        <label htmlFor="Single">
+                            <input ref={maritalStatus} type="radio" defaultChecked={userData?.maritalStatus === "Single"} id="Single" value="Single" name="Marital Status" onClick={() => { maritalStatus.current.value = "Single" }} />
                         Single
                     </label>
-                </div>
-                <label htmlFor="zipCode">Zip code
-                <input ref={zipCode} type="text" defaultValue={userData?.zipCode}  id="zipCode" placeholder="Zip-Code"  />
-                </label>
-                <label htmlFor="dob">DOB
-                <input ref={dob} type="date" defaultValue={userData?.dob}  id="dob" placeholder="Date of Birth"  />
-                </label>
-                <label htmlFor="contactInfo">ContactInfo
-                <input ref={contactInfo} type="text" defaultValue={userData?.contactInfo}  id="contactInfo" placeholder="Contact Number"  />
-                </label>
-                <input type="file" accept="image/*" alt="Profile photo" onChange={handleChange}  />
-                <img src={userData.photo} style={{height:'81px', width:'256px'}} className={`image ${darkMode && "imageDark" }`} alt="Uploaded"/>
-                <label htmlFor="occupation">Occupation
-                <input ref={occupation} type="text" defaultValue={userData?.occupation}  placeholder="Occupation"  />
-                </label>
-                <div className="personalDetail__select">
-                    <h4>Gender</h4>
-                    <div className="personalDetail__customSelect">
-                        <select ref={gender}  defaultValue={userData?.gender}  id="gender" >
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                            <option value="Other">Other</option>
-                        </select>
                     </div>
-                </div>
-                <div className="personalDetail__emergency">
-                    <h4>Emergency contact</h4>
-                    <hr />
-                    <div>
-                    <label htmlFor="emergencyContactName">Name
-                    <input ref={emergencyContactName} type="text" defaultValue={userData?.emergencyContactName}  placeholder="Name"  />
+                    <label htmlFor="zipCode">Zip code
+                <input ref={zipCode} type="text" defaultValue={userData?.zipCode} id="zipCode" placeholder="Zip-Code" />
                     </label>
-                    <label htmlFor="emergencyContactNo">Contact No
-                    <input ref={emergencyContactNo} type="text" id="contactInfo" defaultValue={userData?.emergencyContactNo}  placeholder="Contact info"  />
+                    <label htmlFor="dob">DOB
+                <input ref={dob} type="date" defaultValue={userData?.dob} id="dob" placeholder="Date of Birth" />
                     </label>
-                    <label htmlFor="emergencyContactRltn">Contact Relation
-                    <input ref={emergencyContactRltn} type="text" defaultValue={userData?.emergencyContactRltn}  placeholder="Relation"  />
+                    <label htmlFor="contactInfo">ContactInfo
+                <input ref={contactInfo} type="text" defaultValue={userData?.contactInfo} id="contactInfo" placeholder="Contact Number" />
                     </label>
+                    <input type="file" accept="image/*" alt="Profile photo" onChange={handleChange} />
+                    <img src={userData.photo} style={{ height: '81px', width: '256px' }} className={`image ${darkMode && "imageDark"}`} alt="Uploaded" />
+                    <label htmlFor="occupation">Occupation
+                <input ref={occupation} type="text" defaultValue={userData?.occupation} placeholder="Occupation" />
+                    </label>
+                    <div className="personalDetail__select">
+                        <h4>Gender</h4>
+                        <div className="personalDetail__customSelect">
+                            <select ref={gender} defaultValue={userData?.gender} id="gender" >
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <button type="submit" form="personalDetailForm">Change</button>
-            </form>
+                    <div className="personalDetail__emergency">
+                        <h4>Emergency contact</h4>
+                        <hr />
+                        <div>
+                            <label htmlFor="emergencyContactName">Name
+                    <input ref={emergencyContactName} type="text" defaultValue={userData?.emergencyContactName} placeholder="Name" />
+                            </label>
+                            <label htmlFor="emergencyContactNo">Contact No
+                    <input ref={emergencyContactNo} type="text" id="contactInfo" defaultValue={userData?.emergencyContactNo} placeholder="Contact info" />
+                            </label>
+                            <label htmlFor="emergencyContactRltn">Contact Relation
+                    <input ref={emergencyContactRltn} type="text" defaultValue={userData?.emergencyContactRltn} placeholder="Relation" />
+                            </label>
+                        </div>
+                    </div>
+                    <button type="submit" form="personalDetailForm">Change</button>
+                </form>
             </div>
         </div>
     )

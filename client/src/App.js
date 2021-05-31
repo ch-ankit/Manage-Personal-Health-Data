@@ -11,6 +11,7 @@ import PasswordSet from './PasswordSet'
 import PatientDocuments from './PatientDocuments'
 import Report from './Report'
 import SignUp from './SignUp'
+import SignUpDoc from './SignUpDoc'
 function App() {
   return (
     <div className="app" >
@@ -20,20 +21,21 @@ function App() {
           <Route path="/about" component={About} />
           <Route path="/signUp" component={SignUp} />
           <Route path="/home">
-              <HomeNav />
-              <HomeDrawer />
-              <Switch>
+            <HomeNav />
+            <HomeDrawer />
+            <Switch>
               <Route exact path='/home'>
                 <HomePage />
               </Route>
-              <Route  path='/home/documents'>
+              <Route path='/home/documents'>
                 <PatientDocuments />
               </Route>
               <Route path="/home/documentViewer" component={DocumentViewer} />
-              <Route path="/home/report" component={Report}/>
-              </Switch>
+              <Route path="/home/report" component={Report} />
+            </Switch>
           </Route>
           <Route path="/passwordSet" render={(routeProps) => <PasswordSet {...routeProps} />} />
+          <Route path="/doc" component={SignUpDoc} />
           <Route path="/*" component={PageNotFound} />
         </Switch>
       </Router>

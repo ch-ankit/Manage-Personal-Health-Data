@@ -8,14 +8,20 @@ const database = require('./database');
 const signupRouter = require("./routes/signup")
 const loginRouter = require("./routes/login")
 const passwordRouter = require("./routes/password")
+const medicalReportRouter = require("./routes/medicalReport")
+
 require("dotenv").config({ path: "./config.env" });
 app.use(cors())
-app.use(bodyParser.json());
+app.use(express.urlencoded({
+  extended: true
+}));
+app.use(express.json())
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use("/signup", signupRouter);
 app.use("/login", loginRouter);
 app.use("/password", passwordRouter);
+app.use("/report",medicalReportRouter)
 
 app.use((req, res, next) => {
   const err = new Error('Not Found');

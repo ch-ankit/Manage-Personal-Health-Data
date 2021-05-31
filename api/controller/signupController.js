@@ -61,7 +61,6 @@ exports.patientSignup = async (req, res, next) => {
         return returnValue;
       }).then((returnValue) => {
         console.log(returnValue)
-
         var query = `MATCH (n:patient{email:$email}) SET n.id = $id`;
         session
           .run(query, returnValue)
@@ -135,6 +134,7 @@ exports.doctorSignup = async (req, res, next) => {
 };
 
 exports.patientLogin = async (req, res, next) => {
+  console.log(req.body)
   var session = driver.session();
   console.log(req.body.id)
   var query = `MATCH (n:people) WHERE n.id = "${req.body.id}" return n`
@@ -244,3 +244,4 @@ exports.changePassword = async (req, res, next) => {
       next(err)
     })
 }
+

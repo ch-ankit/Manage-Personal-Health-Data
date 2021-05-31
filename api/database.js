@@ -1,10 +1,9 @@
 // npm install --save neo4j-driver
 // node example.js
 const neo4j = require('neo4j-driver');
-const driver = neo4j.driver('bolt://54.173.247.57:7687',
-                  neo4j.auth.basic('neo4j', 'accesses-barrel-evaporation'), 
+const driver = neo4j.driver('bolt://54.172.123.120:7687',
+                  neo4j.auth.basic('neo4j', 'menu-harmonies-capacity'), 
                   {});
-
 const query =
   `
   MATCH (n)

@@ -41,8 +41,8 @@ function HomeNav() {
             <div className="homeNav__right" onClick={() => {
                 document.querySelector('.homeNav__onClick').classList.toggle('active')
             }}>
-                <img className={`homeNav__icon ${darkMode && "iconDark"}  `} src={userData.photo} alt={userData?.name.slice(0, 1)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} />
-                <p>{userData.name}</p>   {/* display the userName */}
+                <img className={`homeNav__icon ${darkMode && "iconDark"}  `} src={userData?.photo} alt={userData?.name.slice(0, 1)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} />
+                <p>{userData?.name}</p>   {/* display the userName */}
                 <div className="downArrow">
                 </div>
                 <div className="homeNav__onClick">

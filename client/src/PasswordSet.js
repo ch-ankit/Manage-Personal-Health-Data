@@ -41,11 +41,11 @@ function PasswordSet(props) {
         <div className="passwordset">
             <h2>Set Your Login Password</h2>
             <form onSubmit={handleSubmit} id="passwordSet">
-                <input ref={userId} type='text' placeholder="User-ID" required />
-                <input ref={password} type='password' placeholder="Password" required />
-                <input ref={confirmPassword} type='password' placeholder="Confirm Password" required />
+                <input ref={userId} type='text' id="userId" placeholder="User-ID" required />
+                <input ref={password} type='password' id="password" placeholder="Password" required />
+                <input ref={confirmPassword} type='password' id="confirmPassword" placeholder="Confirm Password" required />
                 {!isValid && <span style={{ color: 'red' }}>*Passwords donot match!! </span>}
-                <button type="submit" form="passwordSet">Confirm</button>
+                <button type="submit" id='submit' form="passwordSet">Confirm</button>
             </form>
         </div>
     );

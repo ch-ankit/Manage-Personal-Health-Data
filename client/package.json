@@ -13,6 +13,7 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "firebase": "^8.6.2",
+    "neo4j-driver": "^4.3.0",
     "node-sass": "^5.0.0",
     "pdfjs-dist": "^2.6.347",
     "react": "^17.0.2",

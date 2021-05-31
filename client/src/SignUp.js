@@ -122,11 +122,11 @@ function SignUp() {
                     </label>
                 </div>
                 <input ref={zipCode} type="text" id="zipCode" placeholder="Zip-Code" required />
-                <input ref={dob} type="date" id="dob" placeholder="Date of Birth" required />
+                <input ref={dob} type="date" onChange={()=>{console.log(dob.current.value)}} id="dob" placeholder="Date of Birth" required />
                 <input ref={contactInfo} type="text" id="contactInfo" placeholder="Contact Number" required />
-                <input type="file" accept="image/*" alt="Profile photo" onChange={handleChange} required />
+                <input type="file" accept="image/*" id="image" alt="Profile photo" onChange={handleChange} required />
                 <img src={viewFile} style={{ height: '81px', width: '256px' }} alt="Uploaded" />
-                <input ref={occupation} type="text" placeholder="Occupation" required />
+                <input ref={occupation} id="Occupation" type="text" placeholder="Occupation" required />
                 <div className="signUp__select">
                     <h4>Gender</h4>
                     <div className="signUp__customSelect">
@@ -141,11 +141,11 @@ function SignUp() {
                 <div className="signUp__emergency">
                     <h4>Emergency contact</h4>
                     <hr />
-                    <input ref={emergencyContactName} type="text" placeholder="Name" required />
-                    <input ref={emergencyContactNo} type="text" id="contactInfo" placeholder="Contact info" required />
-                    <input ref={emergencyContactRltn} type="text" placeholder="Relation" required />
+                    <input ref={emergencyContactName} id="emergencyContactName" type="text" placeholder="Name" required />
+                    <input ref={emergencyContactNo} type="text" id="emergencyContactInfo" placeholder="Contact info" required />
+                    <input ref={emergencyContactRltn} type="text" id='relation' placeholder="Relation" required />
                 </div>
-                <button type="submit" form="SignUpForm">Sign Up</button>
+                <button type="submit" id='submit' form="SignUpForm">Sign Up</button>
             </form>
         </div>
     )

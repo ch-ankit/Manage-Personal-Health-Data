@@ -1,21 +1,24 @@
 .patientDocument{
     width: 100%;
-    height: 100vh;
+    height: 94.5vh;
     background-color: white;
     &__documents{
         width: 100%;
         height: 100%;
-        padding: 3em 2em;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     &__searchBar{
-        width: 80%;
-        margin: 0 auto 2em auto;
+        padding: 2em 0;
+        width: clamp(60%,20em,2em);
         display: flex;
         justify-content: space-evenly;
         align-items: center;
 
         input[type="search"]{
+            width:50%;
             height:2em;
             border-right: none;
             border-top-left-radius: 10em;
@@ -28,35 +31,43 @@
             text-align: center;
         }
         input[type="text"]{
+            width:40%;
             height: 2em;
             text-align: center;
-            flex: 0.5;
         }
 
         .searchIcon{
-            width: 2em;
+            width: 10%;
             height: 1.7em;
             border-top-right-radius: 10em;
             border-bottom-right-radius: 10em;
-            border-right: 2px solid darkgreen;
+            border-right: 1px solid darkgreen;
             cursor: pointer;
             flex-shrink: 0;
         }
     }
-    table{
+
+    &s__details{
         width: 100%;
-        background-color: white;
-        border: 1px solid lightgreen;
-        text-align: center;
-        tr{
-            background-color: lightblue;
-        }
-        tr:first-child{
+        display: flex;
+        justify-content: center;
+        table{
+            width: 80%;
+            background-color: white;
+            border: 1px solid lightgreen;
             text-align: center;
-            font-size: 2.3rem;
-            -webkit-text-stroke: 1px green;
+            tbody{
+                background-color: lightblue;
+            }
+            thead{
+                text-align: center;
+                background-color: burlywood;
+                font-size: 2.1rem;
+                -webkit-text-stroke: 1px green;
+            }
         }
     }
+   
 }
 
 @media screen and (max-width:600px) {

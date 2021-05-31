@@ -2,6 +2,8 @@ import React from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import About from './About'
 import DocumentViewer from './DocumentViewer'
+import HomeDrawer from './HomeDrawer'
+import HomeNav from './HomeNav'
 import HomePage from './HomePage'
 import LandingPage from './LandingPage'
 import PageNotFound from './PageNotFound'
@@ -17,11 +19,21 @@ function App() {
         <Switch>
           <Route exact path="/" component={LandingPage} />
           <Route path="/about" component={About} />
-          <Route exact path="/home" component={HomePage} />
           <Route path="/signUp" component={SignUp} />
-          <Route exact path="/home/documents" component={PatientDocuments} />
-          <Route path="/home/documentViewer" component={DocumentViewer} />
-          <Route path="/home/report" component={Report} />
+          <Route path="/home">
+            <HomeNav />
+            <HomeDrawer />
+            <Switch>
+              <Route exact path='/home'>
+                <HomePage />
+              </Route>
+              <Route path='/home/documents'>
+                <PatientDocuments />
+              </Route>
+              <Route path="/home/documentViewer" component={DocumentViewer} />
+              <Route path="/home/report" component={Report} />
+            </Switch>
+          </Route>
           <Route path="/passwordSet" render={(routeProps) => <PasswordSet {...routeProps} />} />
           <Route path="/doc" component={SignUpDoc} />
           <Route path="/*" component={PageNotFound} />

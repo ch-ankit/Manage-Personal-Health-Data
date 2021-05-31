@@ -1,11 +1,11 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import storage from './firebaseConfig';
 import HomeDrawer from './HomeDrawer';
 import HomeNav from './HomeNav';
 import './Report.scss'
 
 function Report() {
-    const [pdfFile,setpdfFile]=useState(null);
+    const [pdfFile, setpdfFile] = useState(null);
 
     const handleChange = (e) => {
         e.preventDefault();
@@ -13,26 +13,26 @@ function Report() {
             setpdfFile(e.target.files[0]);
         }
     }
-    const handleUpload=async(e)=>{
+    const handleUpload = async (e) => {
         e.preventDefault();
         const uploadTask = storage.ref(`Documents/${pdfFile.name}`).put(pdfFile);
         uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-        },
-        (error) => {
-            console.log(error);
-            alert(error.message);
-        },
-        () => {
-            storage
-                .ref("Documents")
-                .child(pdfFile.name)
-                .getDownloadURL()
-                .then(async(url) => {
-                    console.log(url)
-                })
-                
+            "state_changed",
+            (snapshot) => {
+            },
+            (error) => {
+                console.log(error);
+                alert(error.message);
+            },
+            () => {
+                storage
+                    .ref("Documents")
+                    .child(pdfFile.name)
+                    .getDownloadURL()
+                    .then(async (url) => {
+                        console.log(url)
+                    })
+
             }
         )
 
@@ -40,12 +40,12 @@ function Report() {
     return (
         <div className="report">
             <HomeNav />
-            <HomeDrawer/>
+            <HomeDrawer />
             <div className="report__upload">
                 <form onSubmit={handleUpload}>
                     <input type="text" placeholder="Document Name" />
                     <input type="text" placeholder="Category" />
-                    <input onChange={handleChange} type="file"  />
+                    <input onChange={handleChange} type="file" />
                     <button type="submit">Upload</button>
                 </form>
             </div>

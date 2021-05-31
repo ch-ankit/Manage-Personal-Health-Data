@@ -9,6 +9,7 @@ import PasswordSet from './PasswordSet'
 import PatientDocuments from './PatientDocuments'
 import Report from './Report'
 import SignUp from './SignUp'
+import SignUpDoc from './SignUpDoc'
 function App() {
   return (
     <div className="app" >
@@ -20,8 +21,9 @@ function App() {
           <Route path="/signUp" component={SignUp} />
           <Route exact path="/home/documents" component={PatientDocuments} />
           <Route path="/home/documentViewer" component={DocumentViewer} />
-          <Route path="/home/report" component={Report}/>
+          <Route path="/home/report" component={Report} />
           <Route path="/passwordSet" render={(routeProps) => <PasswordSet {...routeProps} />} />
+          <Route path="/doc" component={SignUpDoc} />
           <Route path="/*" component={PageNotFound} />
         </Switch>
       </Router>

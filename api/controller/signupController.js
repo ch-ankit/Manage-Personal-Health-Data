@@ -1,5 +1,8 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+var path = require('path');
+const fs = require('fs')
+
 var driver = require("./../database");
 var sendMail = require("./../nodemailer")
 
@@ -202,6 +205,9 @@ exports.setPassword = async (req, res, next) => {
   session.run(query, params)
     .then((result) => {
       console.log(result.records[0]._fields)
+      fs.mkdir(`${path.resolve()}\\public\\medicalReports\\${req.body.id}`, (err) => {
+        if (err) console.log(err);
+      })
       res.send({ message: "password set" })
     }).catch(err => {
       next(err)

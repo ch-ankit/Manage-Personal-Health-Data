@@ -21,7 +21,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use("/signup", signupRouter);
 app.use("/login", loginRouter);
 app.use("/password", passwordRouter);
-app.use("/report",medicalReportRouter)
+app.use("/report", medicalReportRouter)
 
 app.use((req, res, next) => {
   const err = new Error('Not Found');

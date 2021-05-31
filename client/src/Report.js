@@ -1,7 +1,5 @@
-import React, { useRef, useState } from 'react';
+import React, {useState } from 'react';
 import storage from './firebaseConfig';
-import HomeDrawer from './HomeDrawer';
-import HomeNav from './HomeNav';
 import './Report.scss'
 
 function Report() {
@@ -39,8 +37,6 @@ function Report() {
     }
     return (
         <div className="report">
-            <HomeNav />
-            <HomeDrawer/>
             <div className="report__upload">
                 <form onSubmit={handleUpload}>
                     <input type="text" placeholder="Document Name" />

@@ -1,6 +1,4 @@
 import React, { useRef } from 'react'
-import HomeDrawer from './HomeDrawer'
-import HomeNav from './HomeNav'
 import "./PatientDocument.scss"
 import {SearchIcon} from '@heroicons/react/solid'
 import { useHistory } from 'react-router'
@@ -10,9 +8,7 @@ function PatientDocuments() {
     const history=useHistory()
     return (
         <div className="patientDocument">
-            <HomeNav />
             <div className="patientDocument__content">
-                <HomeDrawer />
                 <div className="patientDocument__documents">
                     <div className="patientDocument__searchBar">
                         <input ref={searchText} type="search" placeholder="Input the name of the documents" />
@@ -29,21 +25,24 @@ function PatientDocuments() {
                         </datalist>
                         <SearchIcon className="searchIcon" />
                     </div>
-                    <div className="patienDocuments__details">
+                    <div className="patientDocuments__details">
                         <table>
-                            <tr>
-                                <td>Id</td>
-                                <td>Document</td>
-                                <td>Created Date</td>
-                                <td>Category</td>
-                            </tr>
-
-                            <tr onClick={()=>history.push('documentviewer')} >
-                                <td>101345</td>
-                                <td>Check up for stomach ache</td>
-                                <td>2020-01-22</td>
-                                <td>Stomach</td>
-                            </tr>
+                            <thead>
+                                <tr>
+                                    <td>Id</td>
+                                    <td>Document</td>
+                                    <td>Created Date</td>
+                                    <td>Category</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr onClick={()=>history.push('documentviewer')} >
+                                    <td>101345</td>
+                                    <td>Check up for stomach ache</td>
+                                    <td>2020-01-22</td>
+                                    <td>Stomach</td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>

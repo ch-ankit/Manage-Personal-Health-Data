@@ -1,9 +1,11 @@
 import React from 'react'
+import { useHistory } from 'react-router'
 import "./DocumentViewer.scss"
 function DocumentViewer() {
+    const history = useHistory()
     return (
         <div className="documentViewer">
-            <embed src="https://firebasestorage.googleapis.com/v0/b/mhpd-652a9.appspot.com/o/Documents%2FCh8.pdf?alt=media&token=59f4cea4-dde7-448c-8406-a1044813be0b" 
+            <embed src="http://localhost:7000/report?id=2000-03-16456132&reportName=1622447862606-Interrupt%20Cycle.pdf"
                 className="documentViewer__document"
             />
         </div>

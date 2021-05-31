@@ -42,8 +42,8 @@ post http://localhost:7000/login/patient
 content-type: application/json
 
 {
-    "id":"2001-01-0146000",
-    "password":"secretLuffy3"
+    "id":"2021-05-0644600",
+    "password":"user1234"
 }
 
 ###
@@ -76,3 +76,11 @@ content-type: application/json
 
 ###
 GET http://localhost:7000/report?reportName=ac.pdf
+
+###
+POST http://localhost:7000/report
+content-type: application/json
+
+{
+    "id":"o1010"
+}

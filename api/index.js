@@ -12,7 +12,10 @@ const medicalReportRouter = require("./routes/medicalReport")
 
 require("dotenv").config({ path: "./config.env" });
 app.use(cors())
-app.use(bodyParser.json());
+app.use(express.urlencoded({
+  extended: true
+}));
+app.use(express.json())
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use("/signup", signupRouter);

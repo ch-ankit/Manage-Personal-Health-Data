@@ -1,6 +1,5 @@
 var driver = require("./../database");
 var path = require('path');
-const fs = require('fs')
 var multer = require('multer')
 
 exports.getReport = async (req, res, next) => {
@@ -12,21 +11,24 @@ exports.getReport = async (req, res, next) => {
 }
 
 exports.addReport = async (req, res, next) => {
-  upload(req, res, function (err) {
-    if (err instanceof multer.MulterError) {
-      return res.status(500).json(err)
-      // A Multer error occurred when uploading.
-    } else if (err) {
-      return res.status(500).json(err)
-      // An unknown error occurred when uploading.
-    }
-    return res.status(200).send(req.file)
-    // Everything went fine.
-  })
+  try {
+    upload(req, res, function (err) {
+      if (err instanceof multer.MulterError) {
+        return res.status(500).json(err)
+        // A Multer error occurred when uploading.
+      } else if (err) {
+        return res.status(500).json(err)
+        // An unknown error occurred when uploading.
+      }
+      return res.status(200).send(req.files)
+      // Everything went fine.
+    })
+  } catch (err) {
+    next(err)
+  }
 
 }
-
-var storage = multer.diskStorage({
+const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     console.log(req.body.id)
     cb(null, `public\\medicalReports\\${req.body.id}`)
@@ -36,7 +38,7 @@ var storage = multer.diskStorage({
   }
 })
 
-var upload = multer({ storage: storage }).array('file')
+const upload = multer({ storage: storage }).array('file')
 
 exports.changeReport = (req, res, next) => {
   res.send(req.body);

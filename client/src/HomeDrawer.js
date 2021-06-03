@@ -8,14 +8,17 @@ function HomeDrawer() {
             <ul>
                 <li
                 onClick={()=>{
+                    document.querySelector(".homeDrawer").classList.remove("active")
                     history.push("/home")
                 }}
                 >Profile</li>
                 <li>Lists</li>
                 <li onClick={()=>{
+                    document.querySelector(".homeDrawer").classList.remove("active")
                     history.push('/home/documents')
                 }}>Patient Documents</li>
                 <li onClick={()=>{
+                    document.querySelector(".homeDrawer").classList.remove("active")
                     history.push('/home/report')
                 }}
                 >Reports</li>

@@ -3,13 +3,19 @@ import Staff from "./images/staff.png"
 import Nav from "./Nav.js"
 import "./LandingPage.scss"
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "./features/counterSlice"
 function LandingPage() {
     const password = useRef(null);
     const id = useRef(null);
     const history = useHistory();
     const dispatch = useDispatch();
+    const userData = useSelector(state => state.user.value?.data);
+
+    if (userData != null) {
+        history.push('/home')
+    }
+
     const logIn = async (e) => {
         e.preventDefault();
         const response = await fetch("http://localhost:7000/login/patient", {

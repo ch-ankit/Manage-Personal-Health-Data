@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import "./PersonalDetail.scss"
 import { useHistory } from 'react-router-dom'
 function PersonalDetail() {
-    const userData = useSelector((state) => state.user.value.data);
+    const userData = useSelector((state) => state.user.value?.data);
     const darkMode = useSelector((state) => state.user.darkMode);
     const history = useHistory();
     const address = useRef(null)

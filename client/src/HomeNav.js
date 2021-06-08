@@ -6,7 +6,7 @@ import { darkmode, logout } from './features/counterSlice';
 function HomeNav() {
     const history = useHistory();
     const dispatch = useDispatch()
-    const userData = useSelector(state => state.user.value.data)
+    const userData = useSelector(state => state.user.value?.data)
     let darkMode = useSelector((state) => state.user.darkMode)
     const [, setDark] = useState(false)
     useEffect(() => {

@@ -7,18 +7,15 @@ const driver = neo4j.driver('bolt://54.172.123.120:7687',
 const query =
   `
   MATCH (n)
-  RETURN COUNT(n) AS count
-  LIMIT $limit
+  RETURN n
   `;
-
-const params = {"limit": 10};
 
 const session = driver.session({database:"neo4j"});
 
-session.run(query, params)
+session.run(query)
   .then((result) => {
     result.records.forEach((record) => {
-        // console.log(record.get('count'));
+        // console.log(record._fields);
     });
     session.close();
   })

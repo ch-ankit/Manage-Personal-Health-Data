@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import "./PersonalDetail.scss"
 import { useHistory } from 'react-router-dom'
 function PersonalDetail() {
-    const userData = useSelector((state) => state.user.value?.data);
+    const userData = useSelector((state) => state.user.value);
     const darkMode = useSelector((state) => state.user.darkMode);
     const history = useHistory();
     const address = useRef(null)
@@ -45,12 +45,12 @@ function PersonalDetail() {
                     <div className="personalDetail__who">
                         <h4>Who</h4>
                         <div className="personalDetail__who1">
-                            <p>{userData?.name}</p>              {/* display name of the user */}
+                            <p>{userData?.firstName+ ' ' + userData.lastName}</p>              {/* display name of the user */}
                             <p>Sex : {userData?.gender}</p>                   {/* display sex of the user */}
                             <p>Martial Status: {userData?.maritalStatus} </p>      {/* display maarital status of the user */}
                         </div>
                         <div className="personalDetail__who2">
-                            <p>DOB: {userData?.dob}</p>              {/* display the DOB of the user */}
+                            <p>DOB: {userData?.birthDate}</p>              {/* display the DOB of the user */}
                         </div>
                     </div>
                     <div className="personalDetail__contact">

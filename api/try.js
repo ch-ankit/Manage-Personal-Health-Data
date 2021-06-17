@@ -28,7 +28,6 @@
 
 // // console.log(data)
 
-
 // MATCH(n:identifier{value:"1324"})
 // MERGE(n)-[:identifies{}]->(m:patient{resourceType:"patient",status:"active",gender:"male",birthDate:"2001-07-21",deceasedBoolean:"false",multipleBirth:"false",multipleBirthInteger:"1"})-[a:hasName{use:"offical"}]->(o:name{given:["Pamala"],family:"Andreson"})
 // MERGE (n)-[:isOfType{type:"coding"}]->(p:coding{system:"someurl",code:"some abbreviated value"})
@@ -39,7 +38,6 @@
 // MERGE(n)-[:communication{preferred:"true",text:"name of language"}]->(:coding{system:"url",code:"abbr."})
 // MERGE(n)-[:generalPractitioner{reference:"literal reference",type:"url as above"}]->(z:practitioner{name:"i am doctor"})
 // MERGE(n)-[:link{type:"see-also/replacedby"}]->(:other{reference:"patientid"})
-
 
 // {
 //     "resourceType":"Patient",
@@ -65,7 +63,7 @@
 //             "family": "//Bhandari",
 //             "given": [
 //               "//Nixchal"
-//           ]  
+//           ]
 //         }
 //     ],
 //     "telecom": [
@@ -141,7 +139,7 @@
 //                     "family": "//Bhandari",
 //                     "given": [
 //                       "//Nixchal"
-//                   ]  
+//                   ]
 //             },
 //             "telecom": [
 //                 {

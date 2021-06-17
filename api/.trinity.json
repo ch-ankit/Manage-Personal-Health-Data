@@ -1,9 +1,9 @@
 {
-    "dbAddress": "bolt://54.173.247.57:7687",
-    "username": "neo4j",
-    "password": "accesses-barrel-evaporation",
-    "clearChannelOnSave": true,
-    "writeOutputToJSON": true,
-    "JSONOutputRelativePath": "./",
-    "outputFilename": "output.json"
+  "dbAddress": "bolt://54.173.247.57:7687",
+  "username": "neo4j",
+  "password": "accesses-barrel-evaporation",
+  "clearChannelOnSave": true,
+  "writeOutputToJSON": true,
+  "JSONOutputRelativePath": "./",
+  "outputFilename": "output.json"
 }

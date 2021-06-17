@@ -10,7 +10,7 @@ function LandingPage() {
     const id = useRef(null);
     const history = useHistory();
     const dispatch = useDispatch();
-    const userData = useSelector(state => state.user.value?.data);
+    const userData = useSelector(state => state.user.value);
 
     if (userData != null) {
         history.push('/home')
@@ -29,8 +29,21 @@ function LandingPage() {
             })
         });
         const data = await response.json();
-        dispatch(login(data));
-        console.log(data);
+        let patientData={};
+        patientData.uId=data.identifier[0].value;
+        patientData.birthDate=data.birthDate;
+        patientData.gender=data.gender;
+        patientData.firstName=data.name[0].given[0];
+        patientData.lastName=data.name[0].family;
+        patientData.email=data.telecom[0].value;
+        patientData.mobile=data.telecom[1].value;
+
+
+
+
+        dispatch(login(patientData));
+        console.log({data});
+        console.log(patientData)
         history.push('/home')
     }
     return (

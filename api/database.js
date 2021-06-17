@@ -1,21 +1,23 @@
 // npm install --save neo4j-driver
 // node example.js
-const neo4j = require('neo4j-driver');
-const driver = neo4j.driver('bolt://54.172.123.120:7687',
-                  neo4j.auth.basic('neo4j', 'menu-harmonies-capacity'), 
-                  {});
-const query =
-  `
-  MATCH (n)
-  RETURN n
-  `;
+const neo4j = require("neo4j-driver");
+const driver = neo4j.driver(
+  "bolt://3.92.189.76:7687",
+  neo4j.auth.basic("neo4j", "terminators-accountabilities-principals"),
+  {
+    /* encrypted: 'ENCRYPTION_OFF' */
+  }
+);
+const query = `
+MATCH(n:Patient)-[r1:telecom]->(m2) return n,r1,m2`;
 
-const session = driver.session({database:"neo4j"});
+const session = driver.session({ database: "neo4j" });
 
-session.run(query)
+session
+  .run(query)
   .then((result) => {
     result.records.forEach((record) => {
-        // console.log(record._fields);
+      // record.forEach((el) => console.log(el.properties));
     });
     session.close();
   })

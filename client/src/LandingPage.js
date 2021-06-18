@@ -28,23 +28,31 @@ function LandingPage() {
                 password: password.current.value
             })
         });
+        console.log(response)
+        console.log('Hello')
         const data = await response.json();
+        console.log(data)
         let patientData={};
         patientData.uId=data.identifier[0].value;
         patientData.birthDate=data.birthDate;
         patientData.gender=data.gender;
         patientData.firstName=data.name[0].given[0];
         patientData.lastName=data.name[0].family;
-        patientData.email=data.telecom[0].value;
-        patientData.mobile=data.telecom[1].value;
-
-
-
-
-        dispatch(login(patientData));
-        console.log({data});
+        data.telecom.forEach((tel)=>
+            patientData[tel.system]=tel.value
+        )
+        patientData.maritalStatus=data.maritialStatus.text;
+        patientData.photo=data.photo.url;
+        data.address.forEach((val)=>{
+            let arr=Object.getOwnPropertyNames(val);
+            arr.forEach((name)=>{
+                patientData[`address${val.type}${name}`]=val[name]
+            })
+        })
+        console.log(data);
         console.log(patientData)
-        history.push('/home')
+        dispatch(login(patientData));
+
     }
     return (
         <div className="landingPage">

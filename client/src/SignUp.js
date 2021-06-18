@@ -5,8 +5,13 @@ import "./SignUp.scss"
 
 function SignUp() {
     //Patient parameters
-    const address = useRef(null)
-    const contactInfo = useRef(null)
+    const city = useRef(null)
+    const district = useRef(null)
+    const state = useRef(null)
+    const country = useRef(null)
+    const mobileNo = useRef(null)
+    const houseNo = useRef(null)
+    const streetName = useRef(null)
     const dob = useRef(null);
     const email = useRef(null)
     const emergencyContactName = useRef(null)
@@ -16,29 +21,17 @@ function SignUp() {
     const occupation = useRef(null)
     const language = useRef(null)
     const maritalStatus = useRef(null)
-    const name = useRef(null)
-    const zipCode = useRef(null)
+    const multipleBirthBoolean = useRef(null)
+    const birthOrder = useRef(null)
+    const firstName = useRef(null)
+    const middleName = useRef(null)
+    const lastName = useRef(null)
+    const prefix = useRef(null)
+    const suffix = useRef(null)
+    const postalCode = useRef(null)
     //view File is to check photo upload and send photo to firebase
     const [photo, setPhoto] = useState('')
     const [viewFile, setViewFile] = useState('')
-
-    //Practitioner Parameters
-    const docGivenName = useRef(null) //Firstname
-    const docFamilyName = useRef(null) //Lastname
-    const docMidlleName = useRef(null) //add this to Firstname with a space
-    const docMobileNo = useRef(null)
-    const docEmail = useRef(null)
-    const docAddress = useRef({
-        houseNumber: null,
-        state: null,
-        district: null,
-        city: null,
-        postalCode: null
-    })
-    const docGender = useRef(null)
-    const nmcRegdNo = useRef(null)
-    //Firebase resource
-    const [docPhoto, useDocPhoto] = useState('')
 
     //Functions
     const handleChange = (e) => {
@@ -77,8 +70,13 @@ function SignUp() {
                                 'Content-type': 'application/json'
                             },
                             body: JSON.stringify({
-                                address: address.current.value,
-                                contactInfo: contactInfo.current.value,
+                                city: city.current.value,
+                                district: district.current.value,
+                                state: state.current.value,
+                                country: country.current.value,
+                                mobileNo: mobileNo.current.value,
+                                houseNo: houseNo.current.value,
+                                streetName: streetName.current.value,
                                 dob: dob.current.value,
                                 email: email.current.value,
                                 emergencyContactName: emergencyContactName.current.value,
@@ -88,12 +86,18 @@ function SignUp() {
                                 occupation: occupation.current.value,
                                 language: language.current.value,
                                 maritalStatus: maritalStatus.current.value,
-                                name: name.current.value,
-                                zipCode: zipCode.current.value,
+                                multipleBirthBoolean: multipleBirthBoolean.current.value,
+                                birthOrder: birthOrder.current.value,
+                                firstName: firstName.current.value,
+                                middleName: middleName.current.value,
+                                lastName: lastName.current.value,
+                                prefix: prefix.current.value,
+                                suffix: suffix.current.value,
+                                postalCode: postalCode.current.value,
                                 photo: url
                             })
                         })
-
+                        setViewFile('')
                         console.log(response)
                     })
 
@@ -106,10 +110,34 @@ function SignUp() {
             <Nav />
             <form id="SignUpForm" onSubmit={handleSubmit}>
                 <h1>Sign Up</h1>
-                <input ref={name} type="text" id="name" placeholder="Name" required />
-                <input ref={address} type="text" id="address" placeholder="Address" required />
+                <input ref={firstName} type="text" id="name" placeholder="First Name" required />
+                <input ref={middleName} type="text" id="name" placeholder="Middle Name" required />
+                <input ref={lastName} type="text" id="name" placeholder="Last Name" required />
+                <input ref={streetName} type="text" id="address" placeholder="Street" required />
+                <input ref={houseNo} type="text" id="address" placeholder="House/Appartment Number" required />
+                <input ref={city} type="text" id="address" placeholder="City" required />
+                <input ref={district} type="text" id="address" placeholder="District" required />
+                <input ref={state} type="text" id="address" placeholder="State" required />
+                <input ref={country} type="text" id="address" placeholder="Country" required />
                 <input ref={email} type="email" id="email" placeholder="Email" required />
                 <input ref={language} type="text" id="language" placeholder="Language" required />
+                <div className="signUp__radio">
+                    <h5>Multiple Birth?</h5>
+                    <label htmlFor="yes">
+                        <input ref={maritalStatus} type="radio" id="yes" value={true} name="Marital Status" onClick={() => { multipleBirthBoolean.current.value = true }} required />
+                        Yes
+                    </label>
+                    <label htmlFor="no">
+                        <input ref={maritalStatus} type="radio" id="no" value={false} name="Marital Status" onClick={() => { multipleBirthBoolean.current.value = false }} required />
+                        No
+                    </label>
+                </div>
+                {/* {multipleBirthBoolean.current.value ??
+                    <div>
+                        Enter Your Birth Order:
+                    <input useRef={birthOrder} type='text' placeholder="Birth Order" />
+                    </div>
+                } */}
                 <div className="signUp__radio">
                     <h5>Marital Status:</h5>
                     <label htmlFor="Married">
@@ -121,9 +149,9 @@ function SignUp() {
                         Single
                     </label>
                 </div>
-                <input ref={zipCode} type="text" id="zipCode" placeholder="Zip-Code" required />
-                <input ref={dob} type="date" onChange={()=>{console.log(dob.current.value)}} id="dob" placeholder="Date of Birth" required />
-                <input ref={contactInfo} type="text" id="contactInfo" placeholder="Contact Number" required />
+                <input ref={postalCode} type="text" id="postalCode" placeholder="Postal Code" required />
+                <input ref={dob} type="date" onChange={() => { console.log(dob.current.value) }} id="dob" placeholder="Date of Birth" required />
+                <input ref={mobileNo} type="text" id="contactInfo" placeholder="Mobile Number" required />
                 <input type="file" accept="image/*" id="image" alt="Profile photo" onChange={handleChange} required />
                 <img src={viewFile} style={{ height: '81px', width: '256px' }} alt="Uploaded" />
                 <input ref={occupation} id="Occupation" type="text" placeholder="Occupation" required />

@@ -15,7 +15,7 @@ session.close();
     await driver.findElement(By.id('sign')).click();
     await driver.findElement(By.id('name')).sendKeys("pixcal");
     await driver.findElement(By.id('address')).sendKeys('pokhara');
-    await driver.findElement(By.id('email')).sendKeys('presentator7@gmail.com'); 
+    await driver.findElement(By.id('email')).sendKeys('presentator39@gmail.com'); 
     await driver.findElement(By.id('language')).sendKeys('Nepali'); 
     await driver.findElement(By.id('Single')).click();
     await driver.findElement(By.id('zipCode')).sendKeys('44600'); 

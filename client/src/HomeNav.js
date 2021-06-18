@@ -6,7 +6,7 @@ import { darkmode, logout } from './features/counterSlice';
 function HomeNav() {
     const history = useHistory();
     const dispatch = useDispatch()
-    const userData = useSelector(state => state.user.value.data)
+    const userData = useSelector(state => state.user.value)
     let darkMode = useSelector((state) => state.user.darkMode)
     const [, setDark] = useState(false)
     useEffect(() => {
@@ -41,8 +41,8 @@ function HomeNav() {
             <div className="homeNav__right" onClick={() => {
                 document.querySelector('.homeNav__onClick').classList.toggle('active')
             }}>
-                <img className={`homeNav__icon ${darkMode && "iconDark"}  `} src={userData?.photo} alt={userData?.name.slice(0, 1)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} />
-                <p>{userData?.name}</p>   {/* display the userName */}
+                <img className={`homeNav__icon ${darkMode && "iconDark"}  `} src={userData?.photo} alt={userData?.firstName.slice(0, 1)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} />
+                <p>{userData?.firstName + " " + userData?.lastName}</p>   {/* display the userName */}
                 <div className="downArrow">
                 </div>
                 <div className="homeNav__onClick">

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
+import {useSelector} from 'react-redux'
 import storage from './firebaseConfig';
 import './Report.scss'
 
 function Report() {
     const [pdfFile, setpdfFile] = useState(null);
-
+    const userData = useSelector(state => state.user.value.data)
     const handleChange = (e) => {
         e.preventDefault();
         if (e.target.files[0]) {
@@ -34,7 +35,7 @@ function Report() {
         //     }
         // )
         const formData = new FormData();
-        formData.append('id', '2000-03-16456132') //in id userId must be sent
+        formData.append('id', userData.id) //in id userId must be sent
         formData.append('file', pdfFile) //'file' should be same because backend expects our pdf inside file
         console.log(formData)
         const response = await fetch('http://localhost:7000/report', {

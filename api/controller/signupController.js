@@ -344,125 +344,127 @@ exports.patientLogin = async (req, res, next) => {
             },
           ];
           patient.token = token;
-          session.close();
-          return patient;
+          {
+            var query = `MATCH (n:Patient{value:"${req.body.id}"}) -[:identifies{}]->(m:patient) return m`;
+            var params = {};
+            session
+              .run(query, params)
+              .then((result) => {
+                patient = {
+                  ...patient,
+                  ...result.records[0]._fields[0].properties,
+                };
+                session.close();
+                return patient;
+              })
+              .then((patient) => {
+                var query = `MATCH (n:Patient{value:"${req.body.id}"})-[r:hasName{}]->(m:name) return r,m `;
+                var params = {};
+                var session = driver.session();
+                session
+                  .run(query, params)
+                  .then((result) => {
+                    var data = Object.keys(result.records).map(
+                      (el) => result.records[el]._fields[0].properties
+                    );
+                    var data1 = Object.keys(result.records).map(
+                      (el) => result.records[el]._fields[1].properties
+                    );
+                    for (var i = 0; i < data.length; i++) {
+                      data1[i].use = data[i].use;
+                    }
+                    patient.name = data1;
+                    session.close();
+                    return patient;
+                  })
+                  .then((patient) => {
+                    var query = `MATCH (n:Patient{value:"${req.body.id}"})-[r:telecom{}]->(m) return r,m `;
+                    var params = {};
+                    var session = driver.session();
+                    session
+                      .run(query, params)
+                      .then((result) => {
+                        var data = Object.keys(result.records).map(
+                          (el) => result.records[el]._fields[0].properties
+                        );
+                        var data1 = Object.keys(result.records).map(
+                          (el) => result.records[el]._fields[1].properties
+                        );
+                        for (var i = 0; i < data.length; i++) {
+                          data1[i].system = data[i].system;
+                        }
+                        patient.telecom = data1;
+                        session.close();
+                        return patient;
+                      })
+                      .then((patient) => {
+                        var query = `MATCH (n:Patient{value:"${req.body.id}"})-[r:address{}]->(m) return r,m `;
+                        var params = {};
+                        var session = driver.session();
+                        session
+                          .run(query, params)
+                          .then((result) => {
+                            var data = Object.keys(result.records).map(
+                              (el) => result.records[el]._fields[0].properties
+                            );
+                            var data1 = Object.keys(result.records).map(
+                              (el) => result.records[el]._fields[1].properties
+                            );
+                            for (var i = 0; i < data.length; i++) {
+                              data1[i].use = data[i].use;
+                            }
+                            patient.address = data1;
+                            session.close();
+                            return patient;
+                          })
+                          .then((patient) => {
+                            var query = `MATCH (n:Patient{value:"${req.body.id}"})-[r:maritialStatus{}]->(m) return r,m `;
+                            var params = {};
+                            var session = driver.session();
+                            session
+                              .run(query, params)
+                              .then((result) => {
+                                var data =
+                                  result.records[0]._fields[0].properties;
+                                var data1 =
+                                  result.records[0]._fields[1].properties;
+                                maritialStatus = {
+                                  coding: [data1],
+                                  text: data.text,
+                                };
+                                session.close();
+                                patient.maritialStatus = maritialStatus;
+                                return patient;
+                              })
+                              .then((patient) => {
+                                var query = `MATCH (n:Patient{value:"${req.body.id}"})-[r:photo{}]->(m) return m `;
+                                var params = {};
+                                var session = driver.session();
+                                session
+                                  .run(query, params)
+                                  .then((result) => {
+                                    var data =
+                                      result.records[0]._fields[0].properties;
+                                    patient.photo = data;
+                                    session.close();
+                                    res.send(patient);
+                                  })
+                                  .catch((err) => next(err));
+                              })
+                              .catch((err) => next(err));
+                          })
+                          .catch((err) => next(err));
+                      })
+                      .catch((err) => next(err));
+                  })
+                  .catch((err) => next(err));
+              })
+              .catch((err) => next(err));
+          }
         }
       } else {
         res.send({ message: "Unregistered Username" });
       }
-    })
-    .then((patient) => {
-      var query = `MATCH (n:Patient{value:"${req.body.id}"}) -[:identifies{}]->(m:patient) return m`;
-      var params = {};
-      var session = driver.session();
-      session
-        .run(query, params)
-        .then((result) => {
-          patient = { ...patient, ...result.records[0]._fields[0].properties };
-          session.close();
-          return patient;
-        })
-        .then((patient) => {
-          var query = `MATCH (n:Patient{value:"${req.body.id}"})-[r:hasName{}]->(m:name) return r,m `;
-          var params = {};
-          var session = driver.session();
-          session
-            .run(query, params)
-            .then((result) => {
-              var data = Object.keys(result.records).map(
-                (el) => result.records[el]._fields[0].properties
-              );
-              var data1 = Object.keys(result.records).map(
-                (el) => result.records[el]._fields[1].properties
-              );
-              for (var i = 0; i < data.length; i++) {
-                data1[i].use = data[i].use;
-              }
-              patient.name = data1;
-              session.close();
-              return patient;
-            })
-            .then((patient) => {
-              var query = `MATCH (n:Patient{value:"${req.body.id}"})-[r:telecom{}]->(m) return r,m `;
-              var params = {};
-              var session = driver.session();
-              session
-                .run(query, params)
-                .then((result) => {
-                  var data = Object.keys(result.records).map(
-                    (el) => result.records[el]._fields[0].properties
-                  );
-                  var data1 = Object.keys(result.records).map(
-                    (el) => result.records[el]._fields[1].properties
-                  );
-                  for (var i = 0; i < data.length; i++) {
-                    data1[i].system = data[i].system;
-                  }
-                  patient.telecom = data1;
-                  session.close();
-                  return patient;
-                })
-                .then((patient) => {
-                  var query = `MATCH (n:Patient{value:"${req.body.id}"})-[r:address{}]->(m) return r,m `;
-                  var params = {};
-                  var session = driver.session();
-                  session
-                    .run(query, params)
-                    .then((result) => {
-                      var data = Object.keys(result.records).map(
-                        (el) => result.records[el]._fields[0].properties
-                      );
-                      var data1 = Object.keys(result.records).map(
-                        (el) => result.records[el]._fields[1].properties
-                      );
-                      for (var i = 0; i < data.length; i++) {
-                        data1[i].use = data[i].use;
-                      }
-                      patient.address = data1;
-                      session.close();
-                      return patient;
-                    })
-                    .then((patient) => {
-                      var query = `MATCH (n:Patient{value:"${req.body.id}"})-[r:maritialStatus{}]->(m) return r,m `;
-                      var params = {};
-                      var session = driver.session();
-                      session
-                        .run(query, params)
-                        .then((result) => {
-                          var data = result.records[0]._fields[0].properties;
-                          var data1 = result.records[0]._fields[1].properties;
-                          maritialStatus = {
-                            coding: [data1],
-                            text: data.text,
-                          };
-                          session.close();
-                          patient.maritialStatus = maritialStatus;
-                          return patient;
-                        })
-                        .then((patient) => {
-                          var query = `MATCH (n:Patient{value:"${req.body.id}"})-[r:photo{}]->(m) return m `;
-                          var params = {};
-                          var session = driver.session();
-                          session
-                            .run(query, params)
-                            .then((result) => {
-                              var data =
-                                result.records[0]._fields[0].properties;
-                              patient.photo = data;
-                              session.close();
-                              res.send(patient);
-                            })
-                            .catch((err) => next(err));
-                        })
-                        .catch((err) => next(err));
-                    })
-                    .catch((err) => next(err));
-                })
-                .catch((err) => next(err));
-            })
-            .catch((err) => next(err));
-        })
-        .catch((err) => next(err));
     })
     .catch((err) => next(err));
 };
@@ -524,7 +526,7 @@ exports.setPassword = async (req, res, next) => {
 
 exports.changePassword = async (req, res, next) => {
   var session = driver.session();
-  var query = `MATCH (n{id:"${req.body.id}"}) return n`;
+  var query = `MATCH (n{value:"${req.body.id}"}) return n`;
   session
     .run(query)
     .then(async (result) => {
@@ -536,7 +538,7 @@ exports.changePassword = async (req, res, next) => {
         if (!passwordMatched) {
           res.send({ message: "OLD PASSWORD NOT CORRECT" });
         } else {
-          var query = ` MATCH (n:people{id:$id}) SET n.password = $newPassword`;
+          var query = ` MATCH (n{value:$id}) SET n.password = $newPassword`;
           var params = {
             newPassword: await bcrypt.hash(req.body.newPassword, 10),
             id: `${req.body.id}`,

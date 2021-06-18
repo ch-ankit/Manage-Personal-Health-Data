@@ -130,8 +130,8 @@ post http://localhost:7000/login/patient
 content-type: application/json
 
 {
-    "id":"20000101-933873",
-    "password":"secretLuffy3"
+    "id":"20000101-292771",
+    "password":"secretLuffy"
 }
 
 ###
@@ -139,7 +139,7 @@ post http://localhost:7000/password
 content-type: application/json
 
 {
-    "id":"20000101-933873",
+    "id":"20000101-292771",
     "password":"secretLuffy"
 }
 
@@ -148,7 +148,71 @@ patch http://localhost:7000/password
 content-type: application/json
 
 {
-    "id":"20000101-933873",
+    "id":"20000101-292771",
     "oldPassword":"secretLuffy",
     "newPassword":"secretLuffy3"
+}
+
+###
+
+POST http://localhost:7000/signup/doctor
+content-type: application/json
+
+{
+"id":"777333",
+"lastName":"khatri",
+"firstName":"Babin",
+"middleName":"",
+"prefix":"Er",
+"suffix":"PHD",
+"mobileNo":"9876543210",
+"email":"presentator7@gmail.com",
+"gender":"Male",
+"dob":"2000-01-01",
+"city":"Gothatar",
+"district":"Kathmandu",
+"state":"Bagmati",
+"country":"Nepal",
+"houseNo":"6139",
+"streetName":"Kageshwori",
+"postalCode":"4567",
+"qualificationCodeSystem":"trial",
+"qualificationCodeCode":"trial",
+"qualificationCodeDisplay":"trial",
+"qualificationCodetext":"trial",
+"qualificationIdentifierSystem":"trial",
+"qualificationIdentifierValue":"trial",
+"periodStart":"trial",
+"issuer":"trial",
+"photo":"data:image/jpeg;base64,/9j/",
+"languageCode":"en-US",
+"language":"English"
+}
+
+###
+post http://localhost:7000/password/doctor
+content-type: application/json
+
+{
+    "id":"777333",
+    "password":"secretLuffy"
+}
+
+###
+patch http://localhost:7000/password/doctor
+content-type: application/json
+
+{
+    "id":"777333",
+    "oldPassword":"secretLuffy",
+    "newPassword":"secretLuffy3"
+}
+
+###
+post http://localhost:7000/login/doctor
+content-type: application/json
+
+{
+    "id":"777333",
+    "password":"secretLuffy"
 }

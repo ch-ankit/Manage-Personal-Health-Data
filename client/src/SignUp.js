@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react'
 import storage from './firebaseConfig'
 import Nav from './Nav'
 import "./SignUp.scss"
+import { languages } from './LanguageDataset'
 
 function SignUp() {
     //Patient parameters
@@ -20,8 +21,7 @@ function SignUp() {
     const gender = useRef(null)
     const occupation = useRef(null)
     const language = useRef(null)
-    const maritalStatus = useRef(null)
-    const multipleBirthBoolean = useRef(null)
+    const maritalStatusCode = useRef(null)
     const birthOrder = useRef(null)
     const firstName = useRef(null)
     const middleName = useRef(null)
@@ -30,6 +30,10 @@ function SignUp() {
     const suffix = useRef(null)
     const postalCode = useRef(null)
     //view File is to check photo upload and send photo to firebase
+    const [customPrefix, setCustomPrefix] = useState(false)
+    const [customSuffix, setCustomSuffix] = useState(false)
+    const [maritalStatus, setMaritalStatus] = useState('')
+    const [multipleBirthBoolean, setMultipleBirthBoolean] = useState(false)
     const [photo, setPhoto] = useState('')
     const [viewFile, setViewFile] = useState('')
 
@@ -64,6 +68,7 @@ function SignUp() {
                     .child(photo.name)
                     .getDownloadURL()
                     .then(async (url) => {
+                        const system = language.current.value.split('-')
                         const response = await fetch('http://localhost:7000/signup/patient', {
                             method: 'POST',
                             headers: {
@@ -84,10 +89,12 @@ function SignUp() {
                                 emergencyContactRltn: emergencyContactRltn.current.value,
                                 gender: gender.current.value,
                                 occupation: occupation.current.value,
-                                language: language.current.value,
-                                maritalStatus: maritalStatus.current.value,
-                                multipleBirthBoolean: multipleBirthBoolean.current.value,
-                                birthOrder: birthOrder.current.value,
+                                language: system[0],
+                                languageCode: system[1],
+                                maritialStatus: maritalStatus,
+                                maritialStatusCode: maritalStatusCode.current.value,
+                                multipleBirthBoolean: multipleBirthBoolean,
+                                birthOrder: multipleBirthBoolean ? birthOrder.current.value : 1,
                                 firstName: firstName.current.value,
                                 middleName: middleName.current.value,
                                 lastName: lastName.current.value,
@@ -105,14 +112,44 @@ function SignUp() {
         )
 
     }
+    const languageMap = Object.keys(languages).map(el => <option key={el} value={`${languages[el].name}-${languages[el].code}`} > {languages[el].name}</ option>)
     return (
         <div className="signUp">
             <Nav />
             <form id="SignUpForm" onSubmit={handleSubmit}>
                 <h1>Sign Up</h1>
+                <div className="signUp__customSelect" style={{ display: `${customPrefix ? 'none' : 'flex'}` }}>
+                    <select ref={prefix} defaultChecked="Prefix" id="prefix" >
+                        <option value="Prefix" hidden > Please Select you Prefix</option>
+                        <option value="Mr."> Mr.</option>
+                        <option value="Mrs.">Mrs.</option>
+                        <option value="Ms.">Ms.</option>
+                        <option value="Dr.">Dr.</option>
+                        <option value="Er.">Er.</option>
+                        <option value="Prof.">Prof.</option>
+                        <option value="custom" onClick={() => setCustomPrefix(true)}>Custom</option>
+                    </select>
+                </div>
+                {
+                    customPrefix ?
+                        <input ref={prefix} type="text" id="prefix" placeholder="Prefix" required /> : ''
+                }
                 <input ref={firstName} type="text" id="name" placeholder="First Name" required />
-                <input ref={middleName} type="text" id="name" placeholder="Middle Name" required />
+                <input ref={middleName} type="text" id="name" placeholder="Middle Name" />
                 <input ref={lastName} type="text" id="name" placeholder="Last Name" required />
+                <div className="signUp__customSelect" style={{ display: `${customSuffix ? 'none' : 'flex'}` }}>
+                    <select ref={suffix} defaultChecked="Suffix" id="suffix" required>
+                        <option value="Suffix" hidden > Please Select you Suffix</option>
+                        <option value="Phd."> Phd.</option>
+                        <option value="MD">MD</option>
+                        <option value="MS">MS</option>
+                        <option value="custom" onClick={() => setCustomSuffix(true)}>Custom</option>
+                    </select>
+                </div>
+                {
+                    customSuffix ?
+                        <input ref={suffix} type="text" id="suffix" placeholder="Suffix" required /> : ''
+                }
                 <input ref={streetName} type="text" id="address" placeholder="Street" required />
                 <input ref={houseNo} type="text" id="address" placeholder="House/Appartment Number" required />
                 <input ref={city} type="text" id="address" placeholder="City" required />
@@ -120,34 +157,48 @@ function SignUp() {
                 <input ref={state} type="text" id="address" placeholder="State" required />
                 <input ref={country} type="text" id="address" placeholder="Country" required />
                 <input ref={email} type="email" id="email" placeholder="Email" required />
-                <input ref={language} type="text" id="language" placeholder="Language" required />
+                <div className="signUp__customSelect">
+                    <select ref={language} defaultChecked="Language" id="language" required>
+                        <option value="Language" hidden > Please Select preferred Language</option>
+                        {languageMap}
+                    </select>
+                </div>
                 <div className="signUp__radio">
                     <h5>Multiple Birth?</h5>
                     <label htmlFor="yes">
-                        <input ref={maritalStatus} type="radio" id="yes" value={true} name="Marital Status" onClick={() => { multipleBirthBoolean.current.value = true }} required />
+                        <input type="radio" id="yes" value={true} name="Marital Status" onClick={() => { setMultipleBirthBoolean(true) }} required />
                         Yes
                     </label>
                     <label htmlFor="no">
-                        <input ref={maritalStatus} type="radio" id="no" value={false} name="Marital Status" onClick={() => { multipleBirthBoolean.current.value = false }} required />
+                        <input type="radio" id="no" value={false} name="Marital Status" onClick={() => { setMultipleBirthBoolean(false) }} required />
                         No
                     </label>
                 </div>
-                {/* {multipleBirthBoolean.current.value ??
-                    <div>
-                        Enter Your Birth Order:
-                    <input useRef={birthOrder} type='text' placeholder="Birth Order" />
-                    </div>
-                } */}
+                {
+                    multipleBirthBoolean ?
+                        <div>
+                            Enter Your Birth Order:
+                            <input ref={birthOrder} type='text' placeholder="Birth Order" />
+                        </div> : ''
+                }
                 <div className="signUp__radio">
                     <h5>Marital Status:</h5>
-                    <label htmlFor="Married">
-                        <input ref={maritalStatus} type="radio" id="Married" value="Married" name="Marital Status" onClick={() => { maritalStatus.current.value = "Married" }} required />
-                        Married
-                    </label>
-                    <label htmlFor="Single">
-                        <input ref={maritalStatus} type="radio" id="Single" value="Single" name="Marital Status" onClick={() => { maritalStatus.current.value = "Single" }} required />
-                        Single
-                    </label>
+                    <div className="signUp__customSelect">
+                        <select ref={maritalStatusCode} defaultChecked="Marital Status" id="Marital Status" required>
+                            <option value="Marital Status" hidden > Please Select you status</option>
+                            <option value="A" onClick={() => setMaritalStatus('Annuled')} >Annuled</option>
+                            <option value="D" onClick={() => setMaritalStatus('Divorced')} >Divorced</option>
+                            <option value="I" onClick={() => setMaritalStatus('Interlocutory')} >Interlocutory</option>
+                            <option value="L" onClick={() => setMaritalStatus('Legally Separated')} >Legally Seperated</option>
+                            <option value="M" onClick={() => setMaritalStatus('Married')} >Married</option>
+                            <option value="P" onClick={() => setMaritalStatus('Polygamous')} >Polygamous</option>
+                            <option value="S" onClick={() => setMaritalStatus('Never Married')} >Never Married</option>
+                            <option value="T" onClick={() => setMaritalStatus('Domestic Partner')} >Domestic Partner</option>
+                            <option value="U" onClick={() => setMaritalStatus('Unmarried')} >Unmarried</option>
+                            <option value="W" onClick={() => setMaritalStatus('Widowed')} >Widowed</option>
+                            <option value="UNK" onClick={() => setMaritalStatus('unknown')} >unknown</option>
+                        </select>
+                    </div>
                 </div>
                 <input ref={postalCode} type="text" id="postalCode" placeholder="Postal Code" required />
                 <input ref={dob} type="date" onChange={() => { console.log(dob.current.value) }} id="dob" placeholder="Date of Birth" required />

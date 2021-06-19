@@ -37,7 +37,7 @@ function HomeNav() {
                     <div className="circle"></div>
                 </div>
                 Dark
-                </div>
+            </div>
             <div className="homeNav__right" onClick={() => {
                 document.querySelector('.homeNav__onClick').classList.toggle('active')
             }}>

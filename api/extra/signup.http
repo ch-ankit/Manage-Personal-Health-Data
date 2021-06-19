@@ -1,80 +1,4 @@
 ###
-POST http://localhost:7000/signup/patient
-content-type: application/json
-
-{
-    "address":"bhaktapur",
-    "contactInfo":"9841756432",
-    "dob":"2001-01-01",
-    "email":"nbhn333@gmail.com",
-    "emergencyContactName":"Hari",
-    "emergencyContactNo":"9876543210",
-    "emergencyContactRltn":"Father",
-    "gender":"Male",
-    "language":"Neplai",
-    "maritalStatus":"Married",
-    "name":"Ram Gopal Sharma",
-    "zipCode":"46000",
-    "photo":"https://media.istockphoto.com/vectors/big-data-and-artificial-intelligence-concept-vector-id1040557296"
-}
-
-###
-
-POST http://localhost:7000/signup/doctor
-content-type: application/json
-
-{
-    "address":"bhaktapur",
-    "contactInfo":"9841756432",
-    "dob":"1995-01-01",
-    "email":"lalbhadur@gmail.com",
-    "gender":"Male",
-    "language":"Neplai",
-    "name":"Lal Bahadur Sharma",
-    "zipCode":"47000",
-    "photo":"https://media.istockphoto.com/vectors/big-data-and-artificial-intelligence-concept-vector-id1040557296",
-    "qualification":"MBBS"
-}
-
-###
-
-post http://localhost:7000/login/patient
-content-type: application/json
-
-{
-    "id":"2021-05-0644600",
-    "password":"user1234"
-}
-
-###
-post http://localhost:7000/password
-content-type: application/json
-
-{
-    "id":"2001-01-0146000",
-    "password":"secretLuffy"
-}
-
-###
-patch http://localhost:7000/password
-content-type: application/json
-
-{
-    "id":"2001-01-0146000",
-    "oldPassword":"secretLuffy",
-    "newPassword":"secretLuffy3"
-}
-
-###
-
-GET http://localhost:7000/signup/data
-content-type: application/json
-
-{
-    "id":"2010-03-2142600"
-}
-
-###
 GET http://localhost:7000/report?reportName=ac.pdf
 
 ###
@@ -106,7 +30,7 @@ content-type: application/json
 "prefix":"Er",
 "suffix":"PHD",
 "mobileNo":"9876543210",
-"email":"presentator7@gmail.com",
+"email":"akgunner6@gmail.com",
 "gender":"Male",
 "dob":"2000-01-01",
 "city":"Gothatar",

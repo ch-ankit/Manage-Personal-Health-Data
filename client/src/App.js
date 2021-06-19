@@ -1,6 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import About from './About'
+import Chose from './Chose'
 import DocumentViewer from './DocumentViewer'
 import HomeDrawer from './HomeDrawer'
 import HomeNav from './HomeNav'
@@ -19,7 +20,8 @@ function App() {
         <Switch>
           <Route exact path="/" component={LandingPage} />
           <Route path="/about" component={About} />
-          <Route path="/signUp" component={SignUp} />
+          <Route path="/signUpPatient" component={SignUp} />
+          <Route path="/signUp" component={Chose} />
           <Route path="/home">
             <HomeNav />
             <HomeDrawer />

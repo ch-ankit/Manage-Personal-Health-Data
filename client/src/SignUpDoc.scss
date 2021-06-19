@@ -6,21 +6,33 @@
     form {
         box-shadow: 0 0 15px lightgreen;
         margin-top: 2em;
+        background-color: rgba(255, 255, 255, 0.55);
+        -webkit-backdrop-filter: blur(8px);
+        backdrop-filter: blur(10px);
         margin-left: 2rem;
         margin-right: auto;
         display: grid;
-        width: 25em;
+        width:50%;
         place-items: center;
-        mix-blend-mode: hard-light;
         z-index: -5;
         .signUpForm__name {
+            width: 100%;
             display: flex;
+            justify-content: space-around;
+            padding:1em 1em;
+            flex-wrap: wrap;
+            input{
+                width: 15em;
+                margin: 1em 0.5em;
+            }
         }
         .signUpForm__address {
             display: flex;
+            justify-content: center;
             flex-wrap: wrap;
             input {
-                width: 40%;
+                margin: 1em 1em;
+                width: 15em;
             }
         }
         input {
@@ -94,5 +106,13 @@
         input[type="text"] {
             width: 100%;
         }
+    }
+}
+
+@media screen and (max-width:500px) {
+    
+    #SignUpForm{
+        margin: 1em auto;
+        width: 60%;
     }
 }

@@ -421,3 +421,345 @@
 //     })
 //     .catch((err) => next(err));
 // };
+
+// {
+//     "resourceType":"Observation",
+//     "identifier": [
+//         {
+//             "use": "official",
+//             "type": {
+//                 "coding": [
+//                     {
+//                         "system": "Take user id and take datetime",
+//                         "code": "UID-DateTime"
+//                     }
+//                 ]
+//             },
+//             "system": "Our system url which generates the uniqe id http://localhost:3000/uniqueObservation",
+//             "value": "Value of our unique identifier for an observation"
+//         }
+//     ],
+//     "basedOn": [
+//         {
+//             "reference": "url of our service request",
+//             "type": "Service Request",
+//             "identifier": {
+//                 "use": "official",
+//                 "type": {
+//                     "coding": [
+//                         {
+//                             "system": "What is used to make the code for service request",
+//                             "code": "Code for the  request"
+//                         }
+//                     ]
+//                 },
+//                 "system": "our system url for generating service request",
+//                 "value": "value of identifier of service req"
+//             },
+//             "display": "Text description of what is referenced"
+//         }
+//     ],
+//     "partOf": [{
+//         "reference": ""
+//     }],
+//     "status": " registered | preliminary | final | amended ",
+//     "category": [{
+//         "coding": [
+
+//         ],
+//         "text": "Classification of type of observation"
+//     }],
+//     "code": {
+//         "coding": [
+//             {
+//                 "system": "http://loinc.org",
+//                 "code": "codes in above url",
+//                 "display": "Text to describe what the code means"
+//             }
+//         ],
+//         "text": "plain text to describe the coding system"
+//     },
+//     "subject": {
+//         "reference": "url of patient",
+//         "type": "Patient",
+//         "identifier": {
+//             "value": "patient id"
+//         },
+//         "display": "Text for description"
+//     },
+//     "focus": [{
+//         "reference": "What the observation is about  if it is not about Service Request"
+//     }],
+//     "encounter": {
+//         "reference": "url of encounter",
+//         "type": "Encounter",
+//         "identifier": {
+//             "value": "Value of encounter"
+//         },
+//         "display": "Text description"
+//     },
+//     "effectiveDateTime": " Clinically relevant time/time-period for observation.A date, date-time or partial date (e.g. just year or year + month) as used in human communication. The format is YYYY, YYYY-MM, YYYY-MM-DD or YYYY-MM-DDThh:mm:ss+zz:zz, e.g. 2018, 1973-06, 1905-08-23, 2015-02-07T13:28:17-05:00 or 2017-01-01T00:00:00.000Z. If hours and minutes are specified, a time zone SHALL be populated. Seconds must be provided due to schema type constraints but may be zero-filled and may be ignored at receiver discretion. Dates SHALL be valid dates. The time "24:00" is not allowed",
+//     "issued": "When was this obs. issued. An instant in time in the format YYYY-MM-DDThh:mm:ss.sss+zz:zz (e.g. 2015-02-07T13:28:17.239+02:00 or 2017-01-01T00:00:00Z). The time SHALL specified at least to the second and SHALL include a time zone. Note: This is intended for when precisely observed times are required (typically system logs etc.), and not human-reported times - for those, use date or dateTime (which can be as precise as instant, but is not required to be). instant is a more constrained dateTime",
+//     "performer": [
+//         {
+//             "reference": "url of practitioner",
+//             "type": "Practitioner",
+//             "identifier": {
+//                 "value": "id of the practitioner"
+//             },
+//             "display": "Text description."
+//         }
+//     ],
+//     // value[x]: Actual result. One of these 11:
+//   "valueQuantity" : {
+//       "value": 0,
+//       "comparator": "comarision operators <,>,=<",
+//        "unit": "unit of representation cc/m3, mol/l",
+//        "code": "code of unit"
+//    },
+//   "valueCodeableConcept" : {
+//       "coding": [
+//           {
+//             "system": "url of system",
+//             "code": "code of the concept"
+//           }
+//       ],
+//       "text": "Plain text of concept"
+//    },
+//   "valueString" : "<string>",
+//   "valueBoolean" : "true/false boolean",
+//   "valueInteger" : "integer value",
+//   "valueRange" : {
+//       "low": {
+//           "value": 30,
+//           "comparator": "<"
+//       },
+//       "high": {
+//         "value": 30,
+//         "comparator": ">"
+//       }
+//    },
+//   "valueRatio" : {
+//       "numerator": {
+//           "value": 10
+//       },
+//       "denominator": {
+//           "value": 5
+//       }
+//    },
+//   "valueSampledData" : {
+//       "origin": {
+//           "value": "Base value of measurement"
+//       },
+//       "period": "Number of milliseconds between samples",
+//       "factor": "Multiply data by this before adding to origin",
+//       "lowerLimit": 4,
+//       "upperLimit": 5,
+//       "dimensions": "number of sample points",
+//       "data":"Decimal values with spaces, or E=error | U=above detection limit | L= below detection limit"
+//    },
+//   "valueTime" : "<time>",
+//   "valueDateTime" : "<dateTime>",
+//   "valuePeriod" : {
+//       "start": "<dateTime",
+//       "end": "<datetime>"
+//    },
+//    "dataAbsentReason": {
+//        "coding": [
+//            {
+//                "system": "url of system",
+//                "code": "U for unavailable, N for not permitted"
+//            }
+//        ],
+//        "text": "Text description why data is absent"
+//    },
+//    "interpretation": [
+//        {
+//            "coding": [
+//                 {
+//                     "system": "url",
+//                     "code": "H for high, L for Low etc"
+//                 }
+//            ],
+//            "text": "high/low/normal"
+//        }
+//    ],
+//    "note": [
+//        {
+//            "authorReference": {
+//                "reference": "url of author",
+//                "identifier": {
+//                    "system": "url",
+//                    "value": "id of author"
+//                },
+//                "type": "Practitioner"
+//            },
+//            "authorString": "Some string with author name",
+//            "time": "<datetime>",
+//            "text": "Text content"
+//        }
+//    ],
+//    "bodySite": {
+//        "coding": [
+//            {
+//                "system": "url of system",
+//                "code": ""
+//            }
+//        ],
+//        "text": "text representation of what body part is under study"
+//    },
+//    "method": {
+//        "coding": [
+//            {
+//                "system": "url",
+//                "code": "I for imaging, similar"
+//            }
+//        ],
+//        "text": "text representation of what method was used to study body part"
+//    },
+//    "specimen": {
+//        "reference": "what reference specimen was taken for study? blood? urine etc.",
+//        "identifier": {
+//            "system": "url of system where speciment data is present",
+//            "value": "what value was given to specimen"
+//        },
+//        "type": "Specimen"
+//    },
+//    "device": {
+//         "reference": "what device was used for measuremnt",
+//         "identifier": {
+//             "system": "url of system where device data is present",
+//             "value": "what value was given to device"
+//         },
+//         "type": "Device"
+//    },
+//    "referenceRange": [
+//        {
+//         "low" : {
+//             "value": 30,
+//             "comparator": "<"
+//          },
+//         "high" : {
+//             "value": 30,
+//             "comparator": "<"
+//         },
+//         "age" : {
+//             "low": {
+//                 "value": 30,
+//                 "comparator": "<"
+//             },
+//             "high": {
+//                 "value": 30,
+//                 "comparator": "<"
+//             }
+//          },
+//         "text" : "<string>"
+//        }
+//    ],
+//    "hasMember": [
+//        {
+//            "reference": "Related observation to this one",
+//            "type": "Observation",
+//            "identifier": {
+//                "system": "system url which contains another observation",
+//                "value": "id for another observation"
+//            }
+//        }
+//    ],
+//    "derivedFrom": [
+//         {
+//             "reference": "Related documents this observation is made from",
+//             "type": "Observation",
+//             "identifier": {
+//                 "system": "system url which contains other documents",
+//                 "value": "id for another document"
+//             }
+//         }
+//    ],
+//    "component": [
+//        {
+//         "code": {
+//             "coding": [
+//                 {
+//                     "system": "",
+//                     "code": ""
+//                 }
+//             ],
+//             "text": ""
+//         },
+//         "valueQuantity" : {
+//              "value": 0,
+//              "comparator": "comarision operators <,>,=<",
+//               "unit": "unit of representation cc/m3, mol/l",
+//               "code": "code of unit"
+//          },
+//         "valueCodeableConcept" : {
+//             "coding": [
+//                 {
+//                   "system": "url of system",
+//                   "code": "code of the concept"
+//                 }
+//             ],
+//             "text": "Plain text of concept"
+//          },
+//         "valueString" : "<string>",
+//         "valueBoolean" : "true/false boolean",
+//         "valueInteger" : "integer value",
+//         "valueRange" : {
+//             "low": {
+//                 "value": 30,
+//                 "comparator": "<"
+//             },
+//             "high": {
+//               "value": 30,
+//               "comparator": ">"
+//             }
+//          },
+//         "valueRatio" : {
+//             "numerator": {
+//                 "value": 10
+//             },
+//             "denominator": {
+//                 "value": 5
+//             }
+//          },
+//         "valueSampledData" : {
+//             "origin": {
+//                 "value": "Base value of measurement"
+//             },
+//             "period": "Number of milliseconds between samples",
+//             "factor": "Multiply data by this before adding to origin",
+//             "lowerLimit": 4,
+//             "upperLimit": 5,
+//             "dimensions": "number of sample points",
+//             "data":"Decimal values with spaces, or E=error | U=above detection limit | L= below detection limit"
+//          },
+//         "valueTime" : "<time>",
+//         "valueDateTime" : "<dateTime>",
+//         "valuePeriod" : {
+//             "start": "<dateTime",
+//             "end": "<datetime>"
+//          },
+//          "dataAbsentReason": {
+//             "coding": [
+//                 {
+//                     "system": "url of system",
+//                     "code": "U for unavailable, N for not permitted"
+//                 }
+//             ],
+//             "text": "Text description why data is absent"
+//         },
+//         "interpretation": [
+//             {
+//                 "coding": [
+//                      {
+//                          "system": "url",
+//                          "code": "H for high, L for Low etc"
+//                      }
+//                 ],
+//                 "text": "high/low/normal"
+//             }
+//         ]
+//        }
+//    ]
+// }

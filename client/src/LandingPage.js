@@ -18,41 +18,46 @@ function LandingPage() {
 
     const logIn = async (e) => {
         e.preventDefault();
-        const response = await fetch("http://localhost:7000/login/patient", {
-            method: "POST",
-            headers: {
-                "Content-type": "application/json"
-            },
-            body: JSON.stringify({
-                id: id.current.value,
-                password: password.current.value
+        try{
+            const response = await fetch("http://localhost:7000/login/patient", {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json"
+                },
+                body: JSON.stringify({
+                    id: id.current.value,
+                    password: password.current.value
+                })
+            });
+            console.log(response)
+            console.log('Hello')
+            const data = await response.json();
+            console.log(data)
+            let patientData={};
+            patientData.uId=data.identifier[0].value;
+            patientData.birthDate=data.birthDate;
+            patientData.gender=data.gender;
+            patientData.firstName=data.name[0].given[0];
+            patientData.lastName=data.name[0].family;
+            data.telecom.forEach((tel)=>
+                patientData[tel.system]=tel.value
+            )
+            patientData.maritalStatus=data.maritialStatus.text;
+            patientData.photo=data.photo.url;
+            data.address.forEach((val)=>{
+                let arr=Object.getOwnPropertyNames(val);
+                arr.forEach((name)=>{
+                    patientData[`address${val.type}${name}`]=val[name]
+                })
             })
-        });
-        console.log(response)
-        console.log('Hello')
-        const data = await response.json();
-        console.log(data)
-        let patientData={};
-        patientData.uId=data.identifier[0].value;
-        patientData.birthDate=data.birthDate;
-        patientData.gender=data.gender;
-        patientData.firstName=data.name[0].given[0];
-        patientData.lastName=data.name[0].family;
-        data.telecom.forEach((tel)=>
-            patientData[tel.system]=tel.value
-        )
-        patientData.maritalStatus=data.maritialStatus.text;
-        patientData.photo=data.photo.url;
-        data.address.forEach((val)=>{
-            let arr=Object.getOwnPropertyNames(val);
-            arr.forEach((name)=>{
-                patientData[`address${val.type}${name}`]=val[name]
-            })
-        })
-        console.log(data);
-        console.log(patientData)
-        dispatch(login(patientData));
-
+            console.log(data);
+            console.log(patientData)
+            dispatch(login(patientData));
+        }
+        catch(err){
+            alert('Username or Password Incorrect')
+        }
+        
     }
     return (
         <div className="landingPage">

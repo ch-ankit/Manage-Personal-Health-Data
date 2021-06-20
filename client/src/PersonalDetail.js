@@ -56,7 +56,7 @@ function PersonalDetail() {
                     <div className="personalDetail__contact">
                         <h4>Contact</h4>
                         <div className="personalDetail__contact1">
-                            <p>Address: {userData?.addressbothtext}</p>          {/* display the address of the user */}
+                            <p>Address: {userData?.addressbothcity}</p>          {/* display the address of the user */}
                             <p>Country: {(userData?.addresspermanentcountry) ?? (userData?.addressbothcountry)}</p>               {/* display the country name */}
                             <p>Emergency Contact: {userData?.emergencyContactName}</p>   {/* dsplay emergency contact name */}
                             <p>Home Phone:12343445</p>          {/* display home phone number of user */}

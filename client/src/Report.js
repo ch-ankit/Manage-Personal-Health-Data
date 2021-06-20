@@ -47,10 +47,9 @@ function Report() {
     return (
         <div className="report">
             <div className="report__upload">
+                <h1>Upload your report</h1>
                 <form onSubmit={handleUpload} encType="multipart/form-data">
-                    <input type="text" placeholder="Document Name" />
-                    <input type="text" placeholder="Category" />
-                    <input onChange={handleChange} type="file" name="file" />
+                    <input onChange={handleChange} type="file" name="file" multiple/>
                     <button type="submit">Upload</button>
                 </form>
             </div>

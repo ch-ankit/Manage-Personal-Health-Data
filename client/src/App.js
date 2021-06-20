@@ -7,6 +7,7 @@ import HomeDrawer from './HomeDrawer'
 import HomeNav from './HomeNav'
 import HomePage from './HomePage'
 import LandingPage from './LandingPage'
+import LandingPageDoc from './LandingPageDoc'
 import PageNotFound from './PageNotFound'
 import PasswordSet from './PasswordSet'
 import PatientDocuments from './PatientDocuments'
@@ -24,7 +25,7 @@ function App() {
           <Route path="/signUp" component={Chose} />
           <Route path="/home">
             <HomeNav />
-            <HomeDrawer />
+            <HomeDrawer doctor={false} />
             <Switch>
               <Route exact path='/home'>
                 <HomePage />
@@ -37,6 +38,11 @@ function App() {
             </Switch>
           </Route>
           <Route path="/passwordSet" render={(routeProps) => <PasswordSet {...routeProps} />} />
+          <Route path="/doc/home">
+            {/* <HomeNav /> */}
+            <HomeDrawer doctor={true} />
+            <LandingPageDoc />
+          </Route>
           <Route path="/doc" component={SignUpDoc} />
           <Route path="/*" component={PageNotFound} />
         </Switch>

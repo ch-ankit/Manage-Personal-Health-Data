@@ -103,7 +103,8 @@ function SignUp() {
                                 qualificationCodetext: qualificationCodetext,
                                 qualificationIdentifierSystem: qualificationIdentifierSystem,
                                 qualificationIdentifierValue: qualificationIdentifierValue,
-                                issuer: issuer
+                                issuer: issuer,
+                                photo: photo
                             })
                         })
 

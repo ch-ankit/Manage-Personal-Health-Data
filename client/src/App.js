@@ -37,7 +37,8 @@ function App() {
               <Route path="/home/report" component={Report} />
             </Switch>
           </Route>
-          <Route path="/passwordSet" render={(routeProps) => <PasswordSet {...routeProps} />} />
+          <Route path="/passwordSet/doctor" render={(routeProps) => <PasswordSet doctor={true} {...routeProps} />} />
+          <Route path="/passwordSet" render={(routeProps) => <PasswordSet doctor={false} {...routeProps} />} />
           <Route path="/doc/home">
             {/* <HomeNav /> */}
             <HomeDrawer doctor={true} />

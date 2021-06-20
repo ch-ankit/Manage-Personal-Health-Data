@@ -3,17 +3,18 @@ import { useHistory } from 'react-router';
 import './PasswordSet.scss'
 
 function PasswordSet(props) {
+    const { doctor } = props
     const userId = useRef(null)
     const password = useRef(null)
     const confirmPassword = useRef(null)
     const [isValid, setIsValid] = useState(true)
     const history = useHistory()
-
     //Functions
     const handleSubmit = async (e) => {
         e.preventDefault()
         if (isValidated()) {
-            const response = await fetch('http://localhost:7000/password', {
+            const backendUrl = doctor ? 'http://localhost:7000/password/doctor' : 'http://localhost:7000/password'
+            const response = await fetch(backendUrl, {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json'

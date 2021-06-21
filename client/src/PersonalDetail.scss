@@ -1,16 +1,19 @@
 .personalDetail{
-    width: 85%;
+    width: 90%;
     margin: 3em auto;
     background-color: white;
     border: 1px solid lightgreen;
     &__content{
         grid-template-rows: repeat(2,1fr);
-        grid-row-gap: 10em;
     }
 
     h2{
         width: 100%;
         
+    }
+    p{
+        font-size: 1rem;
+        word-wrap:inherit;
     }
     &__button{
         display: flex;
@@ -20,7 +23,8 @@
             width: fit-content;
         }
         button{
-            width: 5em;
+            height: 3em;
+            width: 4.5em;
             border-radius: 100em;
             border:1px solid lightgreen;
             outline: none;
@@ -34,7 +38,7 @@
         grid-column-gap:1.3em;
 
         h4{
-            padding-left:1.5em;
+            padding-left:1em;
         }
     }
     &__contact{
@@ -43,7 +47,7 @@
         grid-template-columns: repeat(3,1fr);
         grid-column-gap:1.3em;
         h4{
-            padding-left:1.5em;
+            padding-left:1em;
         }
     }
 
@@ -147,5 +151,10 @@
             width:clamp(20em,100%,15em)
         }
 
+    }
+}
+@media screen and (max-width:600px) {
+    :root{
+        font-size: 13px;
     }
 }

@@ -115,7 +115,7 @@ function PersonalDetail() {
                 <input ref={contactInfo} type="text" defaultValue={userData?.contactInfo} id="contactInfo" placeholder="Contact Number" />
                     </label>
                     <input type="file" accept="image/*" alt="Profile photo" onChange={handleChange} />
-                    <img src={userData?.photo} style={{ height: '81px', width: '256px' }} className={`image ${darkMode && "imageDark"}`} alt="Uploaded" />
+                    <img loading="lazy" src={userData?.photo} style={{ height: '81px', width: '256px' }} className={`image ${darkMode && "imageDark"}`} alt="Uploaded" />
                     <label htmlFor="occupation">Occupation
                 <input ref={occupation} type="text" defaultValue={userData?.occupation} placeholder="Occupation" />
                     </label>

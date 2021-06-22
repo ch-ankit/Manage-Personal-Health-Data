@@ -1,22 +1,25 @@
-import React from 'react'
+import React, {lazy} from 'react'
+import { Suspense } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import About from './About'
-import Chose from './Chose'
-import DocumentViewer from './DocumentViewer'
-import HomeDrawer from './HomeDrawer'
-import HomeNav from './HomeNav'
-import HomePage from './HomePage'
-import LandingPage from './LandingPage'
-import PageNotFound from './PageNotFound'
-import PasswordSet from './PasswordSet'
-import PatientDocuments from './PatientDocuments'
-import Report from './Report'
-import SignUp from './SignUp'
-import SignUpDoc from './SignUpDoc'
+const About=lazy(()=>import('./About'));
+const Chose=lazy(()=>import('./Chose'));
+const DocumentViewer=lazy(()=>import('./DocumentViewer'));
+const HomeDrawer=lazy(()=>import('./HomeDrawer'));
+const HomeNav=lazy(()=>import('./HomeNav'));
+const HomePage=lazy(()=>import('./HomePage'));
+const LandingPage=lazy(()=>import('./LandingPage'));
+const LandingPageDoc=lazy(()=>import('./LandingPageDoc'));
+const PageNotFound=lazy(()=>import('./PageNotFound'));  
+const PasswordSet = lazy(()=>import('./PasswordSet'));
+const PatientDocuments= lazy(()=> import('./PatientDocuments'))
+const Report =lazy(()=>import('./Report'))
+const SignUp =lazy(()=>import('./SignUp'))
+const SignUpDoc=lazy(()=>import('./SignUpDoc'));
 function App() {
   return (
     <div className="app" >
       <Router>
+        <Suspense fallback={()=><p>Loading</p>}>
         <Switch>
           <Route exact path="/" component={LandingPage} />
           <Route path="/about" component={About} />
@@ -24,7 +27,7 @@ function App() {
           <Route path="/signUp" component={Chose} />
           <Route path="/home">
             <HomeNav />
-            <HomeDrawer />
+            <HomeDrawer doctor={false} />
             <Switch>
               <Route exact path='/home'>
                 <HomePage />
@@ -36,10 +39,17 @@ function App() {
               <Route path="/home/report" component={Report} />
             </Switch>
           </Route>
-          <Route path="/passwordSet" render={(routeProps) => <PasswordSet {...routeProps} />} />
+          <Route path="/passwordSet/doctor" render={(routeProps) => <PasswordSet doctor={true} {...routeProps} />} />
+          <Route path="/passwordSet" render={(routeProps) => <PasswordSet doctor={false} {...routeProps} />} />
+          <Route path="/doc/home">
+            {/* <HomeNav /> */}
+            <HomeDrawer doctor={true} />
+            <LandingPageDoc />
+          </Route>
           <Route path="/doc" component={SignUpDoc} />
           <Route path="/*" component={PageNotFound} />
         </Switch>
+        </Suspense>
       </Router>
     </div>
   )

@@ -55,10 +55,10 @@ async function historyTodatabase(reportObj, next) {
               MERGE(n)-[:medicalHistroy{use:$identifierUse,identifierSystem:$identifierSystem,identifierValue:$identifierValue}]->(m:observation{system:$identifierCodingSystem,code:$identifierCodingCode})
               MERGE(m)-[:basedOn]->(q:basedOn{reference:$basedOnReference,type:$basedOnType,display:$basedOnDisplay})
               MERGE(q)-[:basedOnIdentifies{use:$basedOnIdentifierUse,system:$basedOnIdentifierSystem,value:$basedOnIdentifiervalue}]->(:coding{system:$basedOnIdentifierCodingSystem,code:$basedOnIdentifierCodingCode})
-              MERGE(m)-[:partOf{}]->(:partOf{referrence:$partOfReference})
+              MERGE(m)-[:partOfIdentifier{system:$partOfIdentifierSystem,value:$partOfIdentifierValue}]->(:partOf{referrence:$partOfReference,type:$partOfType,display:$partOfDisplay})
               MERGE(m)-[:miscellenous]->(:miscellanous{resourceType:$resourceType,status:$status,effectiveDateTime:$effectiveDateTime,issued:$issued})
-              MERGE(m)-[:category{text:$categoryText}]->(:coding{coding:$categoryCoding})
-              MERGE(m)-[:code{text:$codeText}]->(:coding{system:$codeCodingSystem,code:$codeCodingCode,display:$codeCodingDisplay})
+              MERGE(m)-[:category{text:$categoryText}]->(:categoryCoding{code:$categoryCodingCode,systme:$categoryCodingSystem,display:$categoryCodingDisplay})
+              MERGE(m)-[:code{text:$codeText}]->(:codeCoding{system:$codeCodingSystem,code:$codeCodingCode,display:$codeCodingDisplay})
               MERGE(m)-[:belongsTo{value:$subjectIdentifierValue}]->(:subject{reference:$subjectReference,type:$subjectType,display:$subjectDisplay})
               MERGE(m)-[:focus]->(:focus{refernce:$focusRefernce})
               MERGE(m)-[:encounter{value:$encounterIdentifierValue}]-(:encounter{reference:$encounterReference,type:$encounterType,display:$encounterDisplay})
@@ -102,6 +102,10 @@ var medicalData = {
   basedOnIdentifierCodingSystem: "aadd",
   basedOnIdentifierCodingCode: "aadd",
   partOfReference: "aadd",
+  partOfIdentifierSystem: "aadd",
+  partOfIdentifierValue: "aadd",
+  partOfType: "aadd",
+  partOfDisplay: "aadd",
   resourceType: "aadd",
   status: "aadd",
   effectiveDateTime: "aadd",

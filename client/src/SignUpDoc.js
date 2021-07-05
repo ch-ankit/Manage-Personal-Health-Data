@@ -123,16 +123,18 @@ function SignUp() {
                 <h1>Sign Up</h1>
                 <div className="signUpForm__name">
                     <div className="signUp__select" style={{ display: `${customPrefix ? 'none' : 'flex'}` }}>
-                        <select ref={prefix} defaultChecked="Prefix" id="prefix" >
-                            <option value="Prefix" hidden > Please Select you Prefix</option>
-                            <option value="Mr."> Mr.</option>
-                            <option value="Mrs.">Mrs.</option>
-                            <option value="Ms.">Ms.</option>
-                            <option value="Dr.">Dr.</option>
-                            <option value="Er.">Er.</option>
-                            <option value="Prof.">Prof.</option>
-                            <option value="custom" onClick={() => setCustomPrefix(true)}>Custom</option>
-                        </select>
+                        <div className="signUp__customSelect">
+                            <select ref={prefix} defaultChecked="Prefix" id="prefix" >
+                                <option value="Prefix" hidden >Prefix</option>
+                                <option value="Mr."> Mr.</option>
+                                <option value="Mrs.">Mrs.</option>
+                                <option value="Ms.">Ms.</option>
+                                <option value="Dr.">Dr.</option>
+                                <option value="Er.">Er.</option>
+                                <option value="Prof.">Prof.</option>
+                                <option value="custom" onClick={() => setCustomPrefix(true)}>Custom</option>
+                            </select>
+                        </div>
                     </div>
                     {
                         customPrefix ?
@@ -142,13 +144,15 @@ function SignUp() {
                     <input ref={middleName} type="text" id="name" placeholder="Middle Name" />
                     <input ref={lastName} type="text" id="name" placeholder="Last Name" required />
                     <div className="signUp__select" style={{ display: `${customSuffix ? 'none' : 'flex'}` }}>
-                        <select ref={suffix} defaultChecked="Suffix" id="suffix" >
-                            <option value="Suffix" hidden > Please Select you Suffix</option>
-                            <option value="Phd."> Phd.</option>
-                            <option value="MD">MD</option>
-                            <option value="MS">MS</option>
-                            <option value="custom" onClick={() => setCustomSuffix(true)}>Custom</option>
-                        </select>
+                        <div className="signUp__customSelect">
+                            <select ref={suffix} defaultChecked="Suffix" id="suffix" >
+                                <option value="Suffix" hidden > Please Select your Suffix</option>
+                                <option value="Phd."> Phd.</option>
+                                <option value="MD">MD</option>
+                                <option value="MS">MS</option>
+                                <option value="custom" onClick={() => setCustomSuffix(true)}>Custom</option>
+                            </select>
+                        </div>
                     </div>
                     {
                         customSuffix ?

@@ -120,7 +120,7 @@ function SignUp() {
                 <h1>Sign Up</h1>
                 <div className="signUp__customSelect" style={{ display: `${customPrefix ? 'none' : 'flex'}` }}>
                     <select ref={prefix} defaultChecked="Prefix" id="prefix" >
-                        <option value="Prefix" hidden > Please Select you Prefix</option>
+                        <option value="Prefix" hidden > Please Select your Prefix</option>
                         <option value="Mr."> Mr.</option>
                         <option value="Mrs.">Mrs.</option>
                         <option value="Ms.">Ms.</option>
@@ -139,7 +139,7 @@ function SignUp() {
                 <input ref={lastName} type="text" id="name" placeholder="Last Name" required />
                 <div className="signUp__customSelect" style={{ display: `${customSuffix ? 'none' : 'flex'}` }}>
                     <select ref={suffix} defaultChecked="Suffix" id="suffix" required>
-                        <option value="Suffix" hidden > Please Select you Suffix</option>
+                        <option value="Suffix" hidden > Please Select your Suffix</option>
                         <option value="Phd."> Phd.</option>
                         <option value="MD">MD</option>
                         <option value="MS">MS</option>

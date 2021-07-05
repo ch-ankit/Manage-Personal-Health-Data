@@ -54,8 +54,8 @@ post http://localhost:7000/login/patient
 content-type: application/json
 
 {
-    "id":"20000101-292771",
-    "password":"secretLuffy"
+    "id":"20000101-687825",
+    "password":"user123"
 }
 
 ###
@@ -63,8 +63,8 @@ post http://localhost:7000/password
 content-type: application/json
 
 {
-    "id":"20000101-292771",
-    "password":"secretLuffy"
+    "id":"20000101-687825",
+    "password":"user123"
 }
 
 ###
@@ -72,9 +72,9 @@ patch http://localhost:7000/password
 content-type: application/json
 
 {
-    "id":"20000101-292771",
-    "oldPassword":"secretLuffy",
-    "newPassword":"secretLuffy3"
+    "id":"20000101-687825",
+    "oldPassword":"user123",
+    "newPassword":"user333"
 }
 
 ###

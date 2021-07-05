@@ -67,20 +67,37 @@ fs.readFile(`${path.resolve()}//public//ReportSample.pdf`, (err, pdfBuffer) => {
   });
 });
 
-// new pdfReader().parseFileItems(
-//   `${path.resolve()}\\public\\ReportSample.pdf`,
-//   function (err, item) {
-//     if (err) callback(err);
-//     else if (!item) callback();
-//     else if (item.text) console.log(item.text);
-//   }
-// );
+pdfParser.loadPDF("./public/ReportSample.pdf");
 
-// fs.readFile(`${path.resolve()}\\public\\ReportSample.pdf`, (err, data) => {
-//   if (err) console.log(err);
-//   else {
-//     console.log(data);
-//     // const x = data.split("\r");
-//     // console.log(x);
-//   }
+// fs.readFile(`${path.resolve()}\\public\\ReportSample.pdf`, async (err, pdfBuffer) => {
+//   let pdfParser = new PDFParser(this, 1);
+//   pdfParser.on("pdfParser_dataError", errData => console.log(errData.parseError));
+//   // console.log(pdfBuffer)
+//   pdfParser.on("pdfParser__dataReady", pdfData => {
+//     console.log(pdfData)
+//     console.log(`"extractedData":${pdfParser.getRawTextContent()}`)
+//   })
+//   pdfParser.loadPDF(`${path.resolve()}\\public\\ReportSample.pdf`)
+// })
+
+// fs.readFile(`${path.resolve()}\\public\\ReportSample.pdf`, (err, pdfBuffer) => {
+//   var processItem = Rule.makeItemProcessor([
+//     Rule.on(/^Device Reference: \"(.*)\"$/)
+//       .extractRegexpValues()
+//       .then(items => console.log(items)),
+//     Rule.on(/^Value\:/)
+//       .parseNextItemValue()
+//       .then(items => console.log(items)),
+//     Rule.on(/^c1$/).parseTable(3).then(items => console.log(items)),
+//     Rule.on(/^Values\:/)
+//       .accumulateAfterHeading()
+//       .then(items => console.log(items)),
+//   ]);
+//   // pdfBuffer contains the file content
+//   new pdfReader.PdfReader().parseBuffer(pdfBuffer, function (err, item) {
+//     processItem(item)
+//     if (err) console.log(err);
+//     else if (!item) console.log("1");
+//     else if (item.text) console.log(item.text);
+//   });
 // });

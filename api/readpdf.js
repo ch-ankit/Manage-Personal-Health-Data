@@ -1,13 +1,31 @@
 const fs = require("fs");
 var path = require("path");
 var pdfReader = require("pdfreader");
+var y;
+var text;
 
-fs.readFile(`${path.resolve()}\\public\\ReportSample.pdf`, (err, pdfBuffer) => {
+fs.readFile(`${path.resolve()}//public//ReportSample.pdf`, (err, pdfBuffer) => {
   // pdfBuffer contains the file content
   new pdfReader.PdfReader().parseBuffer(pdfBuffer, function (err, item) {
     if (err) console.log(err);
-    else if (!item) console.log("1");
-    else if (item.text) console.log(item.text);
+    else if (!item){
+      console.log(text); 
+      console.log("1")
+    }
+    else if (item.text){
+      if(text===undefined){
+        text=item.text;
+      }
+      else if(y===item.y){
+        text= text + item.text;  
+      }
+      else{
+        console.log(text);
+        text=item.text;
+      }
+      
+      y=item.y;
+    }
   });
 });
 

@@ -1,6 +1,7 @@
 import React, {lazy} from 'react'
 import { Suspense } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import DoctorLanding from './DoctorLanding';
 const About=lazy(()=>import('./About'));
 const Chose=lazy(()=>import('./Chose'));
 const DocumentViewer=lazy(()=>import('./DocumentViewer'));
@@ -37,6 +38,15 @@ function App() {
               </Route>
               <Route path="/home/documentViewer" component={DocumentViewer} />
               <Route path="/home/report" component={Report} />
+            </Switch>
+          </Route>
+          <Route path="/Doctor">
+            <HomeNav />
+            <HomeDrawer doctor={true} />
+            <Switch>
+              <Route exact path="/Doctor">
+                <DoctorLanding />
+              </Route>
             </Switch>
           </Route>
           <Route path="/passwordSet/doctor" render={(routeProps) => <PasswordSet doctor={true} {...routeProps} />} />

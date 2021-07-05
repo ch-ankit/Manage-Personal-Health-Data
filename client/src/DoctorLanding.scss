@@ -1,0 +1,39 @@
+.doctorLanding{
+    width: 100%;
+    height:94.5vh;
+    background-color: white;
+    padding-top: 2.33em;
+    position: relative;
+    &__greeting{
+        padding-left: 2rem;
+        width: 80%;
+        height:3em;
+        margin: 0 auto;
+        border-radius: 1000em;
+        box-shadow: 0 0 15px lightgreen;
+
+    }
+    &__imgBox{
+        width:10em;
+        max-height:fit-content ;
+        img{
+            width: 100%;
+            object-fit: contain;
+        }
+
+    }
+
+    &__list{
+        width: 40%;
+        display: flex;
+        margin-top: 10%;
+        margin-left: 2%;
+        flex-direction: column;
+        z-index: 3;
+    }
+
+    &__patients{
+        width: 100%;
+        box-shadow: 0 0 15px lightgreen;
+    }
+}

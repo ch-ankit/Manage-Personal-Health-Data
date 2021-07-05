@@ -1,18 +1,31 @@
 const fs = require("fs");
 var path = require("path");
 var pdfReader = require("pdfreader");
-var { Rule } = require("pdfreader");
-var PDFParser = require("pdf2json");
+var y;
+var text;
 
-let pdfParser = new PDFParser(this, 1);
+fs.readFile(`${path.resolve()}//public//ReportSample.pdf`, (err, pdfBuffer) => {
+  // pdfBuffer contains the file content
+  new pdfReader.PdfReader().parseBuffer(pdfBuffer, function (err, item) {
+    if (err) console.log(err);
+    else if (!item) {
+      console.log(text);
+      console.log("1")
+    }
+    else if (item.text) {
+      if (text === undefined) {
+        text = item.text;
+      }
+      else if (y === item.y) {
+        text = text + item.text;
+      }
+      else {
+        console.log(text);
+        text = item.text;
+      }
 
-pdfParser.on("pdfParser_dataError", errData => console.error(errData.parserError));
-pdfParser.on("pdfParser_dataReady", pdfData => {
-  fs.readFile('./public/ReportSample.pdf', 'utf-8', () => {
-    const data = pdfParser.getRawTextContent()
-    const read = data.split('\r\n').filter(item => data[item] !== '')
-    // const value = Object.keys(read).map(items => )
-    console.log(data)
+      y = item.y;
+    }
   });
 });
 

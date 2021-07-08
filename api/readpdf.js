@@ -230,16 +230,17 @@ fs.readFile(
         } Hospital`;
         medicalData.masterIdentifier.value = /Date Time:\s(.*?)Name of Doctor/i
           .exec(reportData)[1]
-          .replace(" - ", "-")
-          .replace(" - ", "-");
+          .replace(/ - /g, "-");
 
         medicalData.identifier.value = /Tests to be performed\s(.*?)/i.exec(
           reportData
         )[1];
-        var x = reportData.substring(reportData.indexOf("Performed 1.") + 10);
-
+        var x = reportData
+          .substring(reportData.indexOf("Performed 1.") + 10)
+          .replace(/1.|2|3|4|5|6|7|8|9|0/g, "")
+          .split(".");
         console.log(x);
-        console.log(medicalData.identifier.value);
+        console.log(medicalData.masterIdentifier.value);
         // medicalData.derivedFromIdentifierValue =
         //   /Master ReportId:\s(.*?)Patient Id:/i.exec(reportData)[1];
         // medicalData.subjectIdentifierValue = /Patient\s(.*?)Date:/i

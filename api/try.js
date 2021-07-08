@@ -763,3 +763,206 @@
 //        }
 //    ]
 // }
+{
+    "resourceType":"DocumentReference",
+    "masterIdentifier":{
+        "use": "official",
+        "type": {
+            "coding": [
+                {
+                    "system": "url of system which defines what is used by our system to generate this value of identifier Eg: PatientId-CreatedDate",
+                    "code": "PID-DATE"
+                }
+            ],
+            "text": "Patient id and the date the document was created is used to generate the masterIdentifier"
+        },
+        "system": "url of our system which generates this value",
+        "value": "Identifier value for this version of the document. This master identifier is used for this specific version of the document another version has seperate master identifier but can have the same identifier"
+    },
+    "identifier": [
+        {
+            "use": "official",
+            "type": {
+                "coding": [
+                    {
+                        "system": "url of system which defines what is used by our system to generate this value of identifier Eg: PatientId-CreatedDate",
+                        "code": "PID-DATE"
+                    }
+                ],
+                "text": "Patient id and the date the document was created is used to generate the identifier"
+            },
+            "system": "url of our system which generates this value",
+            "value": "value of the identifier"
+        }
+    ],
+    "status": " preliminary | final | amended | entered-in-error",
+    "type": {
+        "coding": [
+            {
+                "system": "https://www.hl7.org/fhir/valueset-c80-doc-typecodes.html | http://loinc.org",
+                "code": "55107-7. This is in the url very long list"
+            }
+        ],
+        "text": "Addendum Document"
+    },
+    "category": [
+        {
+            "coding": [
+                {
+                    "system": "http://localhost:3000/DocumentCategorySet",
+                    "code": "History and Physical",
+                    "display": "History and Physical"
+                }
+            ]
+        }
+    ],
+    "subject": {
+        "reference": "url of patient",
+        "type": "Patient",
+        "identifier": {
+            "system": "patient identifier generator systme url ",
+            "value": "patientId"
+        },
+        "display": "Patient Name"
+    },
+    "date": "YYYY-MM-DDThh:mm:ss.sss+zz:zz <instant this document was created>",
+    "author": [
+        {
+            "reference": "url of practitioner",
+            "type": "Practitioner",
+            "identifier": {
+                "system": "Practitioner identifier generator systme url // NMC url",
+                "value": "practitionerId"
+            },
+            "display": "Name of Practitioner"
+        }
+    ],
+    "authenticator": {
+        "reference": "url of practitioner who autheticated this document can be same as above in our case",
+        "type": "Practitioner",
+        "identifier": {
+            "system": "Practitioner identifier generator systme url // NMC url",
+            "value": "practitionerId"
+        },
+        "display": "Name of Practitioner"
+    },
+    "custodian": {
+        "reference": "Our app so we are the organizationn maitaining the document so our url",
+        "type": "Organization",
+        "identifier": {
+            "system": "who gives organization id that system url",
+            "value": "organizationID"
+        },
+        "display": "Managing Personal Health Data"
+    },
+    "relatesTo":[
+        {
+            "code": "appends|replaces|signs",
+            "target": {
+                "reference": "url of referenced report",
+                "identifier": {
+                    "system": "url of system where report is present",
+                    "value": "12345"
+                },
+                "display": "Regular CheckUp Reprot"
+            }
+        }
+    ],
+    "description": "<string descriptio  of the report>",
+    "securityLabel": [
+        {
+            "coding": [
+                {
+                    "system": "url",
+                    "code":"S"
+                }
+            ],
+            "text": "Cleared for sharing report"
+        }
+    ],
+    "content": [
+        {
+            "attachment": {
+                "contentType": "*/pdf",
+                "language": "en",
+                "data": "",
+                "url":"",
+                "size": 0,
+                "hash": "",
+                "title": "",
+                "creation": "<dateTime>"
+            },
+            "format": {
+                "system": "",
+                "code": "",
+                "display": ""
+            }
+        }
+    ],
+    "context": {
+        "encounter": [
+            {
+                "reference": "url of encounter",
+                "identifier": {
+                    "system": "",
+                    "value": ""
+                },
+                "display": ""
+            }
+        ],
+        "event": [
+            {
+                "coding": [
+                    {
+                        "system": "url for codes",
+                        "code": "T-D8200",
+                        "display": "Arm"
+                    }
+                ],
+                "text": "Arm pain problem"
+            }
+        ],
+        "period": {
+            "start": "<dateTime>",
+            "end": "<dateTime>"
+        },
+        "facilityType": {
+            "coding": [
+                {
+                    "system": "url of system for codes",
+                    "code": "OPD",
+                    "display": ""
+                }
+            ],
+            "text": "Out patient department"
+        },
+        "practiceSetting": {
+            "coding": [
+                {
+                    "system": "url for codes",
+                    "code": "General Medicine",
+                    "display": ""
+                }
+            ],
+            "text": "General medicine"
+        },
+        "sourcePatientInfo": {
+            "reference": "url of patient",
+            "identifier": {
+                "system": "",
+                "value": "PatientID"
+            },
+            "display": ""
+        },
+        "related": [
+            {
+                "reference": "url of related observation/report/documents",
+                "identifier": {
+                    "system": "",
+                    "value": ""
+                },
+                "display": "Realted to this document"
+            }
+        ]
+    }
+}

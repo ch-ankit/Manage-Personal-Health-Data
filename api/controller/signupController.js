@@ -25,8 +25,9 @@ var checker = async (label, email, next) => {
 var uniqueId = async (dob, label, next) => {
   var session = driver.session();
   var dob = dob.split("-").join("");
-  var id = `${dob}-${10 + Math.floor(Math.random() * 89)}${10 + Math.floor(Math.random() * 89)
-    }${10 + Math.floor(Math.random() * 89)}`;
+  var id = `${dob}-${10 + Math.floor(Math.random() * 89)}${
+    10 + Math.floor(Math.random() * 89)
+  }${10 + Math.floor(Math.random() * 89)}`;
   console.log(id);
   var query = `MATCH (n:${label}{value:$value}) RETURN n.value`;
   var params = {
@@ -86,8 +87,9 @@ exports.patientSignup = async (req, res, next) => {
       telecom1rank: 1,
       telecom2System: `email`,
       telecom2Value: `${req.body.email}`,
-      telecom2Use: `${req.body.email.includes("@gmail.com") ? "personal" : "work"
-        }`,
+      telecom2Use: `${
+        req.body.email.includes("@gmail.com") ? "personal" : "work"
+      }`,
       telecom2rank: 2,
       gender: `${req.body.gender}`,
       birthDate: `${req.body.dob}`,
@@ -187,8 +189,9 @@ exports.doctorSignup = async (req, res, next) => {
       telecom1rank: 1,
       telecom2System: `email`,
       telecom2Value: `${req.body.email}`,
-      telecom2Use: `${req.body.email.includes("@gmail.com") ? "personal" : "work"
-        }`,
+      telecom2Use: `${
+        req.body.email.includes("@gmail.com") ? "personal" : "work"
+      }`,
       telecom2rank: 2,
       gender: `${req.body.gender}`,
       birthDate: `${req.body.dob}`,
@@ -707,11 +710,12 @@ exports.setPasswordPatient = async (req, res, next) => {
     .then((result) => {
       console.log(result.records[0]._fields);
       fs.mkdir(
-        `${path.resolve()}\\public\\medicalReports\\${req.body.id}`,
+        `${path.resolve()}\\public\\medicalRecords\\${req.body.id}`,
         (err) => {
           if (err) console.log(err);
         }
       );
+
       res.send({ message: "password set" });
     })
     .catch((err) => {

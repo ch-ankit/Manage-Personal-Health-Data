@@ -9,19 +9,25 @@ const driver = neo4j.driver(
   }
 );
 const query = `
-MATCH(n:Patient)-[r1:telecom]->(m2) return n,r1,m2`;
+Merge(n:trial{name:$person[0].name})`;
 
 const session = driver.session({ database: "neo4j" });
-
-session
-  .run(query)
-  .then((result) => {
-    result.records.forEach((record) => {
-      // record.forEach((el) => console.log(el.properties));
-    });
-    session.close();
-  })
-  .catch((error) => {
-    console.error(error);
-  });
+var params = {
+  person: [
+    {
+      name: "kyale",
+    },
+  ],
+};
+// session
+//   .run(query, params)
+//   .then((result) => {
+//     result.records.forEach((record) => {
+//       // record.forEach((el) => console.log(el.properties));
+//     });
+//     session.close();
+//   })
+//   .catch((error) => {
+//     console.error(error);
+//   });
 module.exports = driver;

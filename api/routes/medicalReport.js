@@ -1,11 +1,11 @@
 var express = require("express");
 var router = express.Router();
-var medicalRecordController = require("./../controller/medicalRecordController");
+var medicalReportController = require("./../controller/medicalReportController");
 
 router
   .route("/")
-  .get(medicalRecordController.getReport)
-  .post(medicalRecordController.addReport)
-  .patch(medicalRecordController.changeReport);
+  .get(medicalReportController.getReport)
+  .post(medicalReportController.addReport)
+  .patch(medicalReportController.changeReport);
 
 module.exports = router;

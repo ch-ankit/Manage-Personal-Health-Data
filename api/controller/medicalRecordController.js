@@ -1,14 +1,14 @@
-var driver = require("./../database");
+var driver = require("../database");
 var path = require("path");
 var multer = require("multer");
 const fs = require("fs");
 var path = require("path");
 var pdfReader = require("pdfreader");
 
-exports.getReport = async (req, res, next) => {
+exports.getRecord = async (req, res, next) => {
   try {
     res.sendFile(
-      `${path.resolve()}\\public\\medicalReports\\${req.query.id}\\${
+      `${path.resolve()}\\public\\medicalRecord\\${req.query.id}\\${
         req.query.reportName
       }`
     );
@@ -17,7 +17,7 @@ exports.getReport = async (req, res, next) => {
   }
 };
 
-exports.addReport = async (req, res, next) => {
+exports.addRecord = async (req, res, next) => {
   try {
     var patientId;
     upload(req, res, function (err) {
@@ -36,91 +36,210 @@ exports.addReport = async (req, res, next) => {
     setTimeout(() => {
       var y;
       var text;
-      var reportData = "";
-      var medicalData = {
-        identifierUse: "official",
-        identifierSystem: "MasterId-Report Category Code CV",
-        identifierCodingSystem: "link link link",
-        identifierCodingCode: "Some abbr",
-        basedOnReference: "--",
-        basedOnType: "--",
-        basedOnDisplay: "--",
-        basedOnIdentifierUse: "--",
-        basedOnIdentifierSystem: "--",
-        basedOnIdentifiervalue: "--",
-        basedOnIdentifierCodingSystem: "--",
-        basedOnIdentifierCodingCode: "--",
-        partOfReference: "--",
-        partOfIdentifierSystem: "link link link",
-        partOfIdentifierValue: "--",
-        partOfDisplay: "--",
-        resourceType: "Observation",
-        categoryText: "--", //thapna baki fetch garne time vayema
-        categoryCodingCode: "---",
-        categoryCodingSystem: "---",
-        categoryCodingDisplay: " ",
-        codeText: "--",
-        codeCodingSystem: "--",
-        codeCodingDisplay: "--",
-        subjectReference: "link to patient profile",
-        subjectDisplay: "--",
-        subjectType: "--",
-        encounterIdentifierValue: "--",
-        encounterReference: "--",
-        encounterType: "--",
-        encounterDisplay: "--",
-        performerReference: "--",
-        performerType: "Practitioner",
-        dataAbsentReasonText: "--",
-        dataAbsentReasonCodingSystem: "--",
-        dataAbsentReasonCodingCode: "**",
-        interpretationText: "--",
-        interpretationCodingSystem: "--",
-        interpretationCodingCode: "--",
-        noteAuthorString: "--",
-        authorReferenceReference: "--",
-        authorReferenceType: "--",
-        noteAuthorReferenceIdentifierSystem: "--",
-        noteAuthorReferenceIdentifierValue: "--",
-        bodySiteText: "--",
-        noteTime: "--",
-        noteText: "--",
-        bodySiteCodingSystem: "--",
-        bodySiteCodingCode: "--",
-        methodText: "--",
-        methodCodingSystem: "--",
-        methodCodingCode: "--",
-        specimenReference: "--",
-        specimenType: "--",
-        specimenIdentifierSystem: "--",
-        deviceType: "--",
-        deviceIdentifierSystem: "--",
-        deviceIdentifierValue: "--",
-        referenceRangeLowValue: "**",
-        referenceRangeLowComparator: "**",
-        referenceRangeHighValue: "**",
-        referenceRangeHighComparator: "**",
-        referenceRangeAgeLowValue: "**",
-        referenceRangeAgeLowComparator: "**",
-        referenceRangeAgeHighValue: "**",
-        referenceRangeAgeHighComparator: "**",
-        hasMemberReference: "--",
-        hasMemberType: "--",
-        hasMemberIdentifierSystem: "--",
-        hasMemberIdentifierValue: "--",
-        derivedFromReference: "--",
-        derivedFromType: "--",
-        derivedFromIdentifierSystem: "--",
-        componentCodeCodingSystem: "--",
-        componentCodeCodingCode: "--",
-        componentCodeText: "--",
-        componentDataAbsentReasonText: "--",
-        componentDataAbsentReasonCodingSystem: "--",
-        componentDataAbsentReasonCodingCode: "--",
-        componentInterpretationCodingSystem: "--",
-        componentInterpretationCodingCode: "--",
-        componentInterpretationText: "--",
-      };
+      var recordData = "";
+      //   var medicalData = {
+      //     "resourceType":"DocumentReference",
+      //     "masterIdentifier":{
+      //         "use": "official",
+      //         "type": {
+      //             "coding": [
+      //                 {
+      //                     "system": "url of system which defines what is used by our system to generate this value of identifier Eg: PatientId-CreatedDate",
+      //                     "code": "PID-DATE"
+      //                 }
+      //             ],
+      //             "text": "Patient id and the date the document was created is used to generate the masterIdentifier"
+      //         },
+      //         "system": "url of our system which generates this value",
+      //         "value": "Identifier value for this version of the document. This master identifier is used for this specific version of the document another version has seperate master identifier but can have the same identifier"
+      //     },
+      //     "identifier": [
+      //         {
+      //             "use": "official",
+      //             "type": {
+      //                 "coding": [
+      //                     {
+      //                         "system": "url of system which defines what is used by our system to generate this value of identifier Eg: PatientId-CreatedDate",
+      //                         "code": "PID-DATE"
+      //                     }
+      //                 ],
+      //                 "text": "Patient id and the date the document was created is used to generate the identifier"
+      //             },
+      //             "system": "url of our system which generates this value",
+      //             "value": "value of the identifier"
+      //         }
+      //     ],
+      //     "status": " preliminary | final | amended | entered-in-error",
+      //     "type": {
+      //         "coding": [
+      //             {
+      //                 "system": "https://www.hl7.org/fhir/valueset-c80-doc-typecodes.html | http://loinc.org",
+      //                 "code": "55107-7. This is in the url very long list"
+      //             }
+      //         ],
+      //         "text": "Addendum Document"
+      //     },
+      //     "category": [
+      //         {
+      //             "coding": [
+      //                 {
+      //                     "system": "http://localhost:3000/DocumentCategorySet",
+      //                     "code": "History and Physical",
+      //                     "display": "History and Physical"
+      //                 }
+      //             ]
+      //         }
+      //     ],
+      //     "subject": {
+      //         "reference": "url of patient",
+      //         "type": "Patient",
+      //         "identifier": {
+      //             "system": "patient identifier generator systme url ",
+      //             "value": "patientId"
+      //         },
+      //         "display": "Patient Name"
+      //     },
+      //     "date": "YYYY-MM-DDThh:mm:ss.sss+zz:zz <instant this document was created>",
+      //     "author": [
+      //         {
+      //             "reference": "url of practitioner",
+      //             "type": "Practitioner",
+      //             "identifier": {
+      //                 "system": "Practitioner identifier generator systme url // NMC url",
+      //                 "value": "practitionerId"
+      //             },
+      //             "display": "Name of Practitioner"
+      //         }
+      //     ],
+      //     "authenticator": {
+      //         "reference": "url of practitioner who autheticated this document can be same as above in our case",
+      //         "type": "Practitioner",
+      //         "identifier": {
+      //             "system": "Practitioner identifier generator systme url // NMC url",
+      //             "value": "practitionerId"
+      //         },
+      //         "display": "Name of Practitioner"
+      //     },
+      //     "custodian": {
+      //         "reference": "Our app so we are the organizationn maitaining the document so our url",
+      //         "type": "Organization",
+      //         "identifier": {
+      //             "system": "who gives organization id that system url",
+      //             "value": "organizationID"
+      //         },
+      //         "display": "Managing Personal Health Data"
+      //     },
+      //     "relatesTo":[
+      //         {
+      //             "code": "appends|replaces|signs",
+      //             "target": {
+      //                 "reference": "url of referenced report",
+      //                 "identifier": {
+      //                     "system": "url of system where report is present",
+      //                     "value": "12345"
+      //                 },
+      //                 "display": "Regular CheckUp Reprot"
+      //             }
+      //         }
+      //     ],
+      //     "description": "<string descriptio  of the report>",
+      //     "securityLabel": [
+      //         {
+      //             "coding": [
+      //                 {
+      //                     "system": "url",
+      //                     "code":"S"
+      //                 }
+      //             ],
+      //             "text": "Cleared for sharing report"
+      //         }
+      //     ],
+      //     "content": [
+      //         {
+      //             "attachment": {
+      //                 "contentType": "*/pdf",
+      //                 "language": "en",
+      //                 "data": "",
+      //                 "url":"",
+      //                 "size": 0,
+      //                 "hash": "",
+      //                 "title": "",
+      //                 "creation": "<dateTime>"
+      //             },
+      //             "format": {
+      //                 "system": "",
+      //                 "code": "",
+      //                 "display": ""
+      //             }
+      //         }
+      //     ],
+      //     "context": {
+      //         "encounter": [
+      //             {
+      //                 "reference": "url of encounter",
+      //                 "identifier": {
+      //                     "system": "",
+      //                     "value": ""
+      //                 },
+      //                 "display": ""
+      //             }
+      //         ],
+      //         "event": [
+      //             {
+      //                 "coding": [
+      //                     {
+      //                         "system": "url for codes",
+      //                         "code": "T-D8200",
+      //                         "display": "Arm"
+      //                     }
+      //                 ],
+      //                 "text": "Arm pain problem"
+      //             }
+      //         ],
+      //         "period": {
+      //             "start": "<dateTime>",
+      //             "end": "<dateTime>"
+      //         },
+      //         "facilityType": {
+      //             "coding": [
+      //                 {
+      //                     "system": "url of system for codes",
+      //                     "code": "OPD",
+      //                     "display": ""
+      //                 }
+      //             ],
+      //             "text": "Out patient department"
+      //         },
+      //         "practiceSetting": {
+      //             "coding": [
+      //                 {
+      //                     "system": "url for codes",
+      //                     "code": "General Medicine",
+      //                     "display": ""
+      //                 }
+      //             ],
+      //             "text": "General medicine"
+      //         },
+      //         "sourcePatientInfo": {
+      //             "reference": "url of patient",
+      //             "identifier": {
+      //                 "system": "",
+      //                 "value": "PatientID"
+      //             },
+      //             "display": ""
+      //         },
+      //         "related": [
+      //             {
+      //                 "reference": "url of related observation/report/documents",
+      //                 "identifier": {
+      //                     "system": "",
+      //                     "value": ""
+      //                 },
+      //                 "display": "Realted to this document"
+      //             }
+      //         ]
+      //     }
+      // }
       fs.readFile(
         `${path.resolve()}//public//medicalReports//${patientId}//ReportSample.pdf`,
         (err, pdfBuffer) => {
@@ -131,52 +250,52 @@ exports.addReport = async (req, res, next) => {
               if (err) console.log(err);
               else if (!item) {
                 // console.log(text);
-                reportData = reportData + text;
-                console.log(reportData);
-                reportData.replace(/\r\n/g, " ");
-                medicalData.deviceReference =
-                  /Device Reference:\s(.*?)Medical/i.exec(reportData)[1];
-                medicalData.identifierValue =
-                  /Report Id:\s(.*?)Master ReportId:/i.exec(reportData)[1];
-                medicalData.derivedFromIdentifierValue =
-                  /Master ReportId:\s(.*?)Patient Id:/i.exec(reportData)[1];
-                medicalData.subjectIdentifierValue =
-                  "20000101-687825"; /*/Patient\s(.*?)Date:/i
-                .exec(reportData)[1]
-                .slice(3);*/
-                medicalData.effectiveDateTime =
-                  /Date:\s(.*?)Report Type:/i.exec(reportData)[1];
-                medicalData.issued = /Date:\s(.*?)Report Type:/i.exec(
-                  reportData
-                )[1];
-                medicalData.partOfType = /Report Type:\s(.*?)Reference:/i.exec(
-                  reportData
-                )[1];
-                medicalData.referenceRangeText =
-                  /TestReference:\s(.*?)Status:/i.exec(reportData)[1];
-                medicalData.status = /Status:\s(.*?)Category:/i.exec(
-                  reportData
-                )[1];
-                medicalData.categoryCoding = /Category:\s(.*?)Code:/i.exec(
-                  reportData
-                )[1];
-                medicalData.codeCodingCode = /Code:\s(.*?)Focus:/i.exec(
-                  reportData
-                )[1];
-                medicalData.focusReference = /Focus:\s(.*?)Specimen:/i.exec(
-                  reportData
-                )[1];
-                medicalData.specimenIdentifierValue =
-                  /Specimen:\s(.*?)Performed By:/i.exec(reportData)[1];
-                medicalData.performerIdentifierValue = /Performed By:\s(.*?)S./i
-                  .exec(reportData)[1]
-                  .slice(0, 7);
-                medicalData.performerDisplay = /Performed By:\s(.*?)Bio/i
-                  .exec(reportData)[1]
-                  .slice(7)
-                  .replace("S.No.", "");
+                recordData = recordData + text;
+                console.log(recordData);
+                recordData.replace(/\r\n/g, " ");
+                // medicalData.deviceReference =
+                //   /Device Reference:\s(.*?)Medical/i.exec(recordData)[1];
+                // medicalData.identifierValue =
+                //   /Report Id:\s(.*?)Master ReportId:/i.exec(recordData)[1];
+                // medicalData.derivedFromIdentifierValue =
+                //   /Master ReportId:\s(.*?)Patient Id:/i.exec(recordData)[1];
+                // medicalData.subjectIdentifierValue =
+                //   "20000101-687825"; /*/Patient\s(.*?)Date:/i
+                // .exec(recordData)[1]
+                // .slice(3);*/
+                // medicalData.effectiveDateTime =
+                //   /Date:\s(.*?)Report Type:/i.exec(recordData)[1];
+                // medicalData.issued = /Date:\s(.*?)Report Type:/i.exec(
+                //   recordData
+                // )[1];
+                // medicalData.partOfType = /Report Type:\s(.*?)Reference:/i.exec(
+                //   recordData
+                // )[1];
+                // medicalData.referenceRangeText =
+                //   /TestReference:\s(.*?)Status:/i.exec(recordData)[1];
+                // medicalData.status = /Status:\s(.*?)Category:/i.exec(
+                //   recordData
+                // )[1];
+                // medicalData.categoryCoding = /Category:\s(.*?)Code:/i.exec(
+                //   recordData
+                // )[1];
+                // medicalData.codeCodingCode = /Code:\s(.*?)Focus:/i.exec(
+                //   recordData
+                // )[1];
+                // medicalData.focusReference = /Focus:\s(.*?)Specimen:/i.exec(
+                //   recordData
+                // )[1];
+                // medicalData.specimenIdentifierValue =
+                //   /Specimen:\s(.*?)Performed By:/i.exec(recordData)[1];
+                // medicalData.performerIdentifierValue = /Performed By:\s(.*?)S./i
+                //   .exec(recordData)[1]
+                //   .slice(0, 7);
+                // medicalData.performerDisplay = /Performed By:\s(.*?)Bio/i
+                //   .exec(recordData)[1]
+                //   .slice(7)
+                //   .replace("S.No.", "");
 
-                historyTodatabase(medicalData, next);
+                // historyTodatabase(medicalData, next);
               } else if (item.text) {
                 if (text === undefined) {
                   text = item.text;
@@ -184,7 +303,7 @@ exports.addReport = async (req, res, next) => {
                   text = text + item.text;
                 } else {
                   // console.log(text);
-                  reportData = reportData + text;
+                  recordData = recordData + text;
                   text = item.text;
                 }
 

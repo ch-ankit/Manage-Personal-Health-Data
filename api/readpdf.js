@@ -4,6 +4,9 @@ var pdfReader = require("pdfreader");
 var y;
 var text;
 var reportData = "";
+var isTable= false;
+var rowData=[]
+var tableData=[];
 var medicalData = {
   resourceType: "DocumentReference",
   masterIdentifier: {
@@ -215,13 +218,18 @@ var medicalData = {
 };
 
 fs.readFile(
-  `${path.resolve()}//public//ObservationReport_1.pdf`,
+  `${path.resolve()}//public//ReportSample.pdf`,
   (err, pdfBuffer) => {
     // pdfBuffer contains the file content
     new pdfReader.PdfReader().parseBuffer(pdfBuffer, function (err, item) {
       if (err) console.log(err);
       else if (!item) {
         // console.log(text);
+          if(isTable===true){
+            tableData.push(rowData);
+            rowData=[];
+          }
+          console.log(tableData)
         reportData = reportData + " " + text;
         reportData.replace(/\r\n/g, " ");
         console.log(reportData);
@@ -274,9 +282,19 @@ fs.readFile(
         if (text === undefined) {
           text = item.text;
         } else if (y === item.y) {
+          if(isTable==true){
+            rowData.push(item.text)
+          }
           text = text + " " + item.text;
         } else {
+          if(isTable===true){
+            tableData.push(rowData);
+            rowData=[];
+          }
           // console.log(text);
+          if(text.includes('S.No.')){
+            isTable=true;
+          }
           reportData = reportData + " " + text;
           text = item.text;
         }

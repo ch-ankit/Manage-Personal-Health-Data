@@ -1,0 +1,70 @@
+const radiologyLoinc = [
+    { code: "18782-3", name: "X-ray unspecified site study" },
+    { code: "28564-3", name: "X-ray head study" },
+    { code: "28613-8", name: "X-ray spine unspecified study" },
+    { code: "24946-6", name: "X-ray spine cervical study" },
+    { code: "24983-9", name: "X-ray spine thoracic study" },
+    { code: "24972-2", name: "X-ray spine lumbar study" },
+    { code: "24762-7", name: "X-ray hip study" },
+    { code: "28561-9", name: "X-ray pelvis study" },
+    { code: "24704-9", name: "X-ray femur study" },
+    { code: "28565-0", name: "X-ray knee study" },
+    { code: "25011-8", name: "X-ray tibia and fibula study" },
+    { code: "24541-5", name: "X-ray ankle study" },
+    { code: "24709-8", name: "X-ray foot study" },
+    { code: "24909-4", name: "X-ray shoulder study" },
+    { code: "28567-6", name: "X-ray humerus study" },
+    { code: "24891-4", name: "X-ray radius and ulna study" },
+    { code: "24676-9", name: "X-ray elbow study" },
+    { code: "24619-9", name: "X-ray wrist study" },
+    { code: "28582-5", name: "X-ray hand study" },
+    { code: "25045-6", name: "CT Unspecified body region" },
+    { code: "24725-4", name: "CT Head" },
+    { code: "28566-8", name: "CT spine study" },
+    { code: "24932-6", name: "CT spine cervical study" },
+    { code: "24978-9", name: "CT spine thoracic study" },
+    { code: "24963-1", name: "CT spine lumbar study" },
+    { code: "24627-2", name: "CT Chest" },
+    { code: "41806-1", name: "CT Abdomen" },
+    { code: "24866-6", name: "CT pelvis study" },
+    { code: "24690-0", name: "CT extremity study" },
+    { code: "25056-3", name: "MR Unspecified body region" },
+    { code: "18756-7", name: "MRI spine study" },
+    { code: "24590-2", name: "MR Brain" },
+    { code: "24935-9", name: "MRI spine cervical study" },
+    { code: "24980-5", name: "MRI spine thoracic study" },
+    { code: "24968-0", name: "MRI spine lumbar study" },
+    { code: "24629-8", name: "MRI chest study" },
+    { code: "24556-3", name: "MRI abdomen study" },
+    { code: "24872-4", name: "MRI pelvis and hips study" },
+    { code: "24707-2", name: "MRI foot study" },
+    { code: "24710-6", name: "MRI forearm study" },
+    { code: "28576-7", name: "MRI joint study" },
+    { code: "24720-5", name: "MRI hand study" },
+    { code: "24605-8", name: "Mammogram diagnostic views study" },
+    { code: "24606-6", name: "Mammogram screening views study" },
+    { code: "24888-0", name: "Nuclear medicine pulmonary VQ scan study" },
+    { code: "30695-1", name: "Nuclear medicine thyroid scan study" },
+    { code: "44136-0", name: "PT Unspecified body region" },
+    { code: "25043-1", name: "CT guidance for aspiration of unspecified site study" },
+    { code: "25044-9", name: "CT guidance for biopsy of unspecified site study" },
+    { code: "25069-6", name: "Fluoroscopic guidance for biopsy of unspecified site study" },
+    { code: "25059-7", name: "Ultrasound guidance for biopsy of unspecified site study" },
+    { code: "25061-3", name: "US Unspecified body region" },
+    { code: "24731-2", name: "Ultrasound of head study" },
+    { code: "24842-7", name: "Ultrasound of neck study" },
+    { code: "24558-9", name: "Ultrasound of abdomen study" },
+    { code: "28614-6", name: "Ultrasound of liver study" },
+    { code: "24601-7", name: "Ultrasound of breast study" },
+    { code: "24869-0", name: "Ultrasound of pelvis study" }
+]
+
+var loincCode;
+const givenName = 'Ultrasound of pelvis study'
+const returnValue = radiologyLoinc.forEach(element => {
+    if (element.name === givenName) {
+        loincCode = element.code
+    }
+});
+loincCode = loincCode == undefined ? '' : loincCode
+console.log(loincCode)

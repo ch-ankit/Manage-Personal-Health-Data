@@ -373,8 +373,8 @@ fs.readFile(
               }
             })
             .on("end", () => {
-              medicalData.identifier.value = testcode;
-              console.log(medicalData);
+              medicalData.identifier[0].value = testcode;
+              console.log(medicalData.identifier);
             });
         } else if (item.text) {
           if (text === undefined) {

@@ -14,7 +14,7 @@ function DocumentViewer() {
   return (
     <div className="documentViewer">
       <Document
-        file="http://localhost:7000/report?reportName=ReportSample%20copy.pdf&id=20000101-687825&masterId=12345"
+        file="http://localhost:7000/record?recordName=Observation_Report.pdf&patientId=20000101-687825"
         onLoadSuccess={onDocumentLoadSuccess}
         className="documentViewer__document"
       >

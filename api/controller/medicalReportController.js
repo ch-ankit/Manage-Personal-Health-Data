@@ -126,7 +126,7 @@ exports.addReport = async (req, res, next) => {
         componentInterpretationText: "--",
       };
       fs.readFile(
-        `${path.resolve()}//public//medicalReports//${patientId}//${masterId}//ReportSample.pdf`,
+        `${path.resolve()}//public//ReportSample.pdf`,
         (err, pdfBuffer) => {
           // pdfBuffer contains the file content
           new pdfReader.PdfReader().parseBuffer(
@@ -139,9 +139,9 @@ exports.addReport = async (req, res, next) => {
                   tableData.push(rowData);
                   rowData = [];
                 }
-                console.log(tableData);
+                // //console.log(tableData);
                 reportData = reportData + text;
-                console.log(reportData);
+                //console.log(reportData);
                 reportData.replace(/\r\n/g, " ");
                 medicalData.deviceReference =
                   /Device Reference:\s(.*?)Medical/i.exec(reportData)[1];
@@ -184,7 +184,7 @@ exports.addReport = async (req, res, next) => {
                   .exec(reportData)[1]
                   .slice(7)
                   .replace("S.No.", "");
-                console.log(medicalData);
+                //console.log(medicalData);
                 //historyTodatabase(medicalData, next);
               } else if (item.text) {
                 if (text === undefined) {
@@ -222,7 +222,7 @@ exports.addReport = async (req, res, next) => {
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     console.log(req.body.id);
-    cb(null, `public\\medicalReports\\${req.body.id}`);
+    cb(null, `public\\medicalReports`);
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname);

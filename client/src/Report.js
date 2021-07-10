@@ -9,7 +9,7 @@ function Report() {
   const handleUpload = async (e) => {
     e.preventDefault();
     const formData = new FormData(form.current);
-    const response = await fetch("http://localhost:7000/report", {
+    const response = await fetch("http://localhost:7000/record", {
       method: "POST",
       body: formData,
     });

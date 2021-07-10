@@ -2,8 +2,8 @@
 // node example.js
 const neo4j = require("neo4j-driver");
 const driver = neo4j.driver(
-  "bolt://18.212.64.201:7687",
-  neo4j.auth.basic("neo4j", "techniques-sights-rock"),
+  "bolt://localhost:7687",
+  neo4j.auth.basic("neo4j", "user123"),
   {
     /* encrypted: 'ENCRYPTION_OFF' */
   }

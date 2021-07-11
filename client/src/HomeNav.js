@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux'
 import "./HomeNav.scss"
-import { darkmode, logout } from './features/counterSlice';
+import { darkmode, logoutUser,logoutDoctor } from './features/counterSlice';
 function HomeNav() {
     const history = useHistory();
     const dispatch = useDispatch()
-    const userData = useSelector(state => state.user.value)
+    const docData=useSelector(state => state.user.doctor) 
+    const userData = useSelector(state => state.user.value) ?? docData;
     let darkMode = useSelector((state) => state.user.darkMode)
     const [, setDark] = useState(false)
     useEffect(() => {
@@ -49,7 +50,8 @@ function HomeNav() {
                     <ul>
                         <li>Settings</li>
                         <li onClick={() => {
-                            dispatch(logout())
+                            dispatch(logoutUser())
+                            dispatch(logoutDoctor())
                             darkMode && dispatch(darkmode())
                             history.push('/')
                         }}>Log Out</li>

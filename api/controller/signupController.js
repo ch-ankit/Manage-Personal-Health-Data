@@ -710,7 +710,7 @@ exports.setPasswordPatient = async (req, res, next) => {
     .then((result) => {
       console.log(result.records[0]._fields);
       fs.mkdir(
-        `${path.resolve()}\\public\\medicalRecords\\${req.body.id}`,
+        `${path.resolve()}//public//medicalRecords//${req.body.id}`,
         (err) => {
           if (err) console.log(err);
         }

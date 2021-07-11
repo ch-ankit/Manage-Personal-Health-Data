@@ -1,7 +1,7 @@
 import React from 'react'
 import { useHistory } from 'react-router';
 import "./HomeDrawer.scss"
-import { darkmode, logout } from './features/counterSlice'
+import { darkmode, logoutUser, logoutDoctor } from './features/counterSlice'
 import { useDispatch, useSelector } from 'react-redux';
 function HomeDrawer(props) {
     const darkMode = useSelector(state => state.user.darkMode)
@@ -36,7 +36,8 @@ function HomeDrawer(props) {
                     history.push('/home/report')
                 }}>Reports</li>
                 <li onClick={() => {
-                    dispatch(logout())
+                    dispatch(logoutUser())
+                    dispatch(logoutDoctor())
                     darkMode && dispatch(darkmode())
                     history.push('/')
                 }}>Logout</li>

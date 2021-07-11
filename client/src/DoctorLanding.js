@@ -1,11 +1,13 @@
 import React from 'react'
+import { useSelector } from 'react-redux';
 import './DoctorLanding.scss'
 import DoctorImage from './images/doctorPointing.jpg'
 function DoctorLanding() {
-    return (
+    const docData=useSelector(state => state.user.doctor);
+   return (
         <div className='doctorLanding'>
             <div className="doctorLanding__greeting">
-                <h1>Welcome Doctor</h1>
+                <h1>Welcome Doctor {docData.firstName +" " + docData.lastName}</h1>
             </div>
             <div className="doctorLanding__list">
                 <div className="doctorLanding__imgBox">

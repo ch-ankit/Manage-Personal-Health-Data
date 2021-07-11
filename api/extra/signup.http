@@ -54,8 +54,8 @@ post http://localhost:7000/login/patient
 content-type: application/json
 
 {
-    "id":"20000101-687825",
-    "password":"user123"
+    "id":"20000101-754298",
+    "password":"user1234"
 }
 
 ###

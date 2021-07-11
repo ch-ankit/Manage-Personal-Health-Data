@@ -2,8 +2,8 @@
 // node example.js
 const neo4j = require("neo4j-driver");
 const driver = neo4j.driver(
-  "bolt://localhost:7687",
-  neo4j.auth.basic("neo4j", "user123"),
+  "bolt://3.94.21.244:7687",
+  neo4j.auth.basic("neo4j", "mules-transactions-subprogram"),
   {
     /* encrypted: 'ENCRYPTION_OFF' */
   }

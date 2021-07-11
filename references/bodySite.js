@@ -86,7 +86,7 @@ const systems = [
     }
 ]
 
-const part = 'Hands'.toLowerCase()
+const part = 'Mouth'.toLowerCase()
 var system;
 const display = systems.forEach(element => {
     if (element.bodyParts.includes(part)) {

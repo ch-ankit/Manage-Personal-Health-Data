@@ -1,12 +1,12 @@
 const fs = require("fs");
 var path = require("path");
 var pdfReader = require("pdfreader");
+const csv = require("csv-parser");
+var driver = require("./database");
+
 var y;
 var text;
 var reportData = "";
-var isTable= false;
-var rowData=[]
-var tableData=[];
 var medicalData = {
   resourceType: "DocumentReference",
   masterIdentifier: {
@@ -218,90 +218,178 @@ var medicalData = {
 };
 
 fs.readFile(
-  `${path.resolve()}//public//ReportSample.pdf`,
+  `${path.resolve()}//public//Observation_Report.pdf`,
   (err, pdfBuffer) => {
     // pdfBuffer contains the file content
-    new pdfReader.PdfReader().parseBuffer(pdfBuffer, function (err, item) {
-      if (err) console.log(err);
-      else if (!item) {
-        // console.log(text);
-          if(isTable===true){
-            tableData.push(rowData);
-            rowData=[];
-          }
-          console.log(tableData)
-        reportData = reportData + " " + text;
-        reportData.replace(/\r\n/g, " ");
-        console.log(reportData);
-        medicalData.custodian.display = `${
-          reportData.split("HOSPITAL")[0]
-        } Hospital`;
-        medicalData.masterIdentifier.value = /Date Time:\s(.*?)Name of Doctor/i
-          .exec(reportData)[1]
-          .replace(" - ", "-")
-          .replace(" - ", "-");
-
-        medicalData.identifier.value = /Tests to be performed\s(.*?)/i.exec(
-          reportData
-        )[1];
-        var x = reportData.substring(reportData.indexOf("Performed 1.") + 10);
-
-        console.log(x);
-        console.log(medicalData.identifier.value);
-        // medicalData.derivedFromIdentifierValue =
-        //   /Master ReportId:\s(.*?)Patient Id:/i.exec(reportData)[1];
-        // medicalData.subjectIdentifierValue = /Patient\s(.*?)Date:/i
-        //   .exec(reportData)[1]
-        //   .slice(3);
-        // medicalData.effectiveDateTime = /Date:\s(.*?)Report Type:/i.exec(
-        //   reportData
-        // )[1];
-        // medicalData.partOfType = /Report Type:\s(.*?)Reference:/i.exec(
-        //   reportData
-        // )[1];
-        // medicalData.referenceRangeText = /TestReference:\s(.*?)Status:/i.exec(
-        //   reportData
-        // )[1];
-        // medicalData.status = /Status:\s(.*?)Category:/i.exec(reportData)[1];
-        // medicalData.categoryCoding = /Category:\s(.*?)Code:/i.exec(reportData)[1];
-        // medicalData.codeCodingCode = /Code:\s(.*?)Focus:/i.exec(reportData)[1];
-        // medicalData.focusReference = /Focus:\s(.*?)Specimen:/i.exec(
-        //   reportData
-        // )[1];
-        // medicalData.specimenIdentifierValue =
-        //   /Specimen:\s(.*?)Performed By:/i.exec(reportData)[1];
-        // medicalData.performerIdentifierValue = /Performed By:\s(.*?)S./i
-        //   .exec(reportData)[1]
-        //   .slice(0, 7);
-        // medicalData.performerDisplay = /Performed By:\s(.*?)Bio/i
-        //   .exec(reportData)[1]
-        //   .slice(7)
-        //   .replace("S.No.", "");
-        // console.log(medicalData);
-      } else if (item.text) {
-        if (text === undefined) {
-          text = item.text;
-        } else if (y === item.y) {
-          if(isTable==true){
-            rowData.push(item.text)
-          }
-          text = text + " " + item.text;
-        } else {
-          if(isTable===true){
-            tableData.push(rowData);
-            rowData=[];
-          }
+    new pdfReader.PdfReader().parseBuffer(
+      pdfBuffer,
+      async function (err, item) {
+        if (err) console.log(err);
+        else if (!item) {
           // console.log(text);
-          if(text.includes('S.No.')){
-            isTable=true;
-          }
-          reportData = reportData + " " + text;
-          text = item.text;
-        }
+          reportData = reportData + text;
+          reportData.replace(/\r|\n/g, " ");
+          console.log(reportData);
+          medicalData.custodian.display = `${
+            reportData.split("HOSPITAL")[0]
+          }HOSPITAL`;
+          //console.log(medicalData.custodian.display);
+          medicalData.masterIdentifier.value =
+            /Date Time:\s(.*?)Name of Doctor/i
+              .exec(reportData)[1]
+              .replace(/ - /g, "-");
+          // console.log(medicalData.masterIdentifier.value);
+          medicalData.status = /Report Status:\s(.*?)Date/i.exec(reportData)[1];
+          //console.log(medicalData.status);
+          medicalData.subject.identifier.value =
+            /PatientId:\s(.*?)Patient Name/i.exec(reportData)[1];
+          var query = `MATCH (n:Patient{value:"20000101-633940"})-[:hasName]-(m) RETURN m`;
+          var params = {
+            value: medicalData.subject.identifier.value,
+          };
+          var session = driver.session();
+          medicalData.subject.display = await session
+            .run(query, params)
+            .then((result) => {
+              var nameObj = result.records[0]._fields[0].properties;
+              var name = `${nameObj.prefix}.${nameObj.given[0]} ${
+                nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
+              }${nameObj.family}${
+                nameObj.suffix == "" ? "" : `,${nameObj.suffix}`
+              }`;
+              return name;
+            });
+          medicalData.subject.display = /Patient Name:\s(.*?)Age/i.exec(
+            reportData
+          )[1];
+          //console.log(medicalData.subject);
+          medicalData.context.sourcePatientInfo = medicalData.subject;
+          delete medicalData.context.sourcePatientInfo.type;
+          //console.log(medicalData.sourcePatientInfo);
+          medicalData.date = /Date Time:\s(.*?)Name of/i
+            .exec(reportData)[1]
+            .replace(/ - /g, "-");
+          //console.log(medicalData.date);
+          medicalData.author[0].identifier.value =
+            /NMC No:\s(.*?)Allergy/i.exec(reportData)[1];
+          medicalData.author[0].display = /Name of Doctor:\s(.*?)MBBS/i.exec(
+            reportData
+          )[1];
+          //console.log(medicalData.author);
+          medicalData.authenticator = medicalData.author[0];
+          //console.log(medicalData.authenticator);
+          medicalData.description = /Comments\s(.*?)Teststo be performed/i
+            .exec(reportData)[1]
+            .replace(/1.|2|3|4|5|6|7|8|9|0/g, "")
+            .split(`.`)
+            .join();
+          //console.log(medicalData.description);
+          medicalData.content[0].attachment.creation =
+            /Date Time:\s(.*?)Name of/i
+              .exec(reportData)[1]
+              .replace(/ - /g, "-");
+          medicalData.content[0].attachment.title =
+            /Record Type:\s(.*?)Category/i
+              .exec(reportData)[1]
+              .replace(/ - /g, "-")
+              .trim();
+          // console.log(medicalData.content);
+          medicalData.context.event[0].coding[0].code =
+            /BodySite:\s(.*?)Record Type/i.exec(reportData)[1];
+          // console.log(medicalData.context.event[0].coding);
+          medicalData.category[0].coding[0].code =
+            /Category:\s(.*?) Report Status/i.exec(reportData)[1];
+          // console.log(medicalData.category[0].coding[0]);
+          medicalData.type.text = /Record Type:\s(.*?)Category/i
+            .exec(reportData)[1]
+            .replace(/ - /g, "-")
+            .trim();
+          medicalData.context.period.start = reportData.substring(
+            reportData.indexOf("Onset:") + 7,
+            reportData.indexOf("Onset:") + 17
+          );
+          //console.log(medicalData.context.period.start);
+          var x = /Teststo be Performed\s(.*?)Prescriptions/i
+            .exec(reportData)[1]
+            .replace(/1.|2|3|4|5|6|7|8|9|0/g, "")
+            .replace(/ - /g, "-")
+            .split(".");
+          x = x.map((str) => str.trim());
+          medicalData.symptoms = reportData
+            .substring(reportData.indexOf("Onset:") + 17)
+            .split(`${medicalData.custodian.display}`)[0]
+            .replace(/1.|2|3|4|5|6|7|8|9|0/g, "")
+            .split(".");
+          medicalData.symptoms = medicalData.symptoms.map((str) => str.trim());
+          medicalData.prescriptions = reportData
+            .substring(reportData.indexOf("Prescriptions") + 14)
+            .replace(/1.|2|3|4|5|6|7|8|9|0/g, "")
+            .split(".");
+          medicalData.prescriptions = medicalData.prescriptions.map((str) =>
+            str.trim()
+          );
+          //console.log(medicalData.prescriptions);
+          medicalData.toReport = {};
+          medicalData.toReport.allergy = /Allergy\s(.*?)Vital/i
+            .exec(reportData)[1]
+            .replace(/1.|2|3|4|5|6|7|8|9|0/g, "")
+            .split(".");
 
-        y = item.y;
+          medicalData.toReport.Pulse = /Pulse:\s(.*?)permin/i.exec(
+            reportData
+          )[1];
+
+          medicalData.toReport.Temperature = /Temperature:\s(.*?)F/i.exec(
+            reportData
+          )[1];
+
+          medicalData.toReport.Height = /Height:\s(.*?)cms/i.exec(
+            reportData
+          )[1];
+          medicalData.toReport.Weight = /Weight:\s(.*?)kgs/i.exec(
+            reportData
+          )[1];
+          medicalData.toReport.BMI = /BMI:\s(.*?)SPO2/i.exec(reportData)[1];
+          medicalData.toReport.SPO2 = /SPO2:\s(.*?)percentage/i.exec(
+            reportData
+          )[1];
+          medicalData.toReport.Respiration = /Respiration:\s(.*?)per min/i.exec(
+            reportData
+          )[1];
+          medicalData.toReport.Systolic = /Systolic:\s(.*?) Diastolic/i.exec(
+            reportData
+          )[1];
+          medicalData.toReport.Diastolic = / Diastolic:\s(.*?)Symptoms/i.exec(
+            reportData
+          )[1];
+          console.log(medicalData.toReport);
+          var testcode = [];
+
+          fs.createReadStream("data.csv")
+            .pipe(csv())
+            .on("data", (row) => {
+              if (x.includes(row.Common_Name)) {
+                testcode.push(row.Code);
+              }
+            })
+            .on("end", () => {
+              medicalData.identifier[0].value = testcode;
+              console.log(medicalData.identifier);
+            });
+        } else if (item.text) {
+          if (text === undefined) {
+            text = item.text;
+          } else if (y === item.y) {
+            text = text + item.text;
+          } else {
+            // console.log(text);
+            reportData = `${reportData} ${text}`;
+            text = item.text;
+          }
+          y = item.y;
+        }
       }
-    });
+    );
   }
 );
 

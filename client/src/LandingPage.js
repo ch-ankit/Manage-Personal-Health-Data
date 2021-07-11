@@ -6,8 +6,10 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { loginDoc, loginUser } from "./features/counterSlice"
 function LandingPage() {
-    const password = useRef(null);
-    const id = useRef(null);
+    const userpassword = useRef(null);
+    const userid = useRef(null);
+    const docid=useRef(null);
+    const docpassword= useRef(null);
     const history = useHistory();
     const dispatch = useDispatch();
     const userData = useSelector(state => state.user.value);
@@ -29,8 +31,8 @@ function LandingPage() {
                     "Content-type": "application/json"
                 },
                 body: JSON.stringify({
-                    id: id.current.value,
-                    password: password.current.value
+                    id: userid.current.value,
+                    password: userpassword.current.value
                 })
             });
             console.log(response)
@@ -72,8 +74,8 @@ function LandingPage() {
                     "Content-type": "application/json"
                 },
                 body: JSON.stringify({
-                    id: id.current.value,
-                    password: password.current.value
+                    id: docid.current.value,
+                    password: docpassword.current.value
                 })
             });
             console.log(response)
@@ -125,14 +127,14 @@ function LandingPage() {
             </div>
             <form className="landingPage__loginUser" onSubmit={logInUser}>
                 <h1>Log In User</h1>
-                <input ref={id} type="text" id="Email" placeholder="ID" aria-label="ID" />
-                <input ref={password} type="password" id="Password" placeholder="Password" aria-label="Password" />
+                <input ref={userid} type="text" id="Email" placeholder="ID" aria-label="ID" />
+                <input ref={userpassword} type="password" id="Password" placeholder="Password" aria-label="Password" />
                 <button type="submit" id="logInUser">Log In</button>
             </form>
             <form className="landingPage__loginDoctor" onSubmit={logInDoctor}>
                 <h1>Log In Doctor</h1>
-                <input ref={id} type="text" id="Email" placeholder="ID" aria-label="ID" />
-                <input ref={password} type="password" id="Password" placeholder="Password" aria-label="Password" />
+                <input ref={docid} type="text" id="Email" placeholder="ID" aria-label="ID" />
+                <input ref={docpassword} type="password" id="Password" placeholder="Password" aria-label="Password" />
                 <button type="submit" id="logInDoc">Log In</button>
             </form>
             <div className="landingPage__imgBox">

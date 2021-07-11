@@ -2,26 +2,27 @@ var driver = require("../database");
 var path = require("path");
 var multer = require("multer");
 const fs = require("fs");
-var path = require("path");
 var pdfReader = require("pdfreader");
 
 exports.getReport = async (req, res, next) => {
   try {
     res.sendFile(
       `${path.resolve()}\\public\\medicalReports\\${req.query.id}\\${
-        req.query.reportName
-      }`
+        req.query.masterId
+      }\\${req.query.reportName}`
     );
   } catch (err) {
-    next(err);
+    console.log(err);
   }
 };
 
 exports.addReport = async (req, res, next) => {
   try {
     var patientId;
+    var masterId;
     upload(req, res, function (err) {
       patientId = req.body.id;
+      masterId = req.body.masterId;
       if (err instanceof multer.MulterError) {
         return res.status(500).json(err);
         // A Multer error occurred when uploading.
@@ -37,6 +38,9 @@ exports.addReport = async (req, res, next) => {
       var y;
       var text;
       var reportData = "";
+      var isTable = false;
+      var rowData = [];
+      var tableData = [];
       var medicalData = {
         identifierUse: "official",
         identifierSystem: "MasterId-Report Category Code CV",
@@ -122,7 +126,7 @@ exports.addReport = async (req, res, next) => {
         componentInterpretationText: "--",
       };
       fs.readFile(
-        `${path.resolve()}//public//medicalReports//${patientId}//ReportSample.pdf`,
+        `${path.resolve()}//public//ReportSample.pdf`,
         (err, pdfBuffer) => {
           // pdfBuffer contains the file content
           new pdfReader.PdfReader().parseBuffer(
@@ -131,8 +135,13 @@ exports.addReport = async (req, res, next) => {
               if (err) console.log(err);
               else if (!item) {
                 // console.log(text);
+                if (isTable === true) {
+                  tableData.push(rowData);
+                  rowData = [];
+                }
+                // //console.log(tableData);
                 reportData = reportData + text;
-                console.log(reportData);
+                //console.log(reportData);
                 reportData.replace(/\r\n/g, " ");
                 medicalData.deviceReference =
                   /Device Reference:\s(.*?)Medical/i.exec(reportData)[1];
@@ -175,15 +184,25 @@ exports.addReport = async (req, res, next) => {
                   .exec(reportData)[1]
                   .slice(7)
                   .replace("S.No.", "");
-
-                historyTodatabase(medicalData, next);
+                //console.log(medicalData);
+                //historyTodatabase(medicalData, next);
               } else if (item.text) {
                 if (text === undefined) {
                   text = item.text;
                 } else if (y === item.y) {
+                  if (isTable == true) {
+                    rowData.push(item.text);
+                  }
                   text = text + item.text;
                 } else {
+                  if (isTable === true) {
+                    tableData.push(rowData);
+                    rowData = [];
+                  }
                   // console.log(text);
+                  if (text.includes("S.No.")) {
+                    isTable = true;
+                  }
                   reportData = reportData + text;
                   text = item.text;
                 }
@@ -203,7 +222,7 @@ exports.addReport = async (req, res, next) => {
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     console.log(req.body.id);
-    cb(null, `public\\medicalReports\\${req.body.id}`);
+    cb(null, `public\\medicalReports`);
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname);
@@ -253,9 +272,3 @@ async function historyTodatabase(reportObj, next) {
     })
     .catch((err) => next(err));
 }
-
-var next = (err) => {
-  console.log(err);
-};
-
-// historyTodatabase(medicalData, next);

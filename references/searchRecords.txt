@@ -1,0 +1,6 @@
+custodian.display
+content[0].attachment.title
+context.event[0].coding[0].display (Body Site)
+category[0].coding[0].code
+medicalData.symptoms
+medicalData.prescription

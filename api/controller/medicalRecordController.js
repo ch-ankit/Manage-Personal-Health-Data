@@ -269,10 +269,10 @@ exports.addRecord = async (req, res, next) => {
                     reportData.split("HOSPITAL")[0]
                   }HOSPITAL`;
                   //console.log(medicalData.custodian.display);
-                  medicalData.masterIdentifier.value =
-                    /Date Time:\s(.*?)Name of Doctor/i
-                      .exec(reportData)[1]
-                      .replace(/ - /g, "-");
+                  medicalData.masterIdentifier.value = recordFileName;
+                  // /Date Time:\s(.*?)Name of Doctor/i
+                  //   .exec(reportData)[1]
+                  //   .replace(/ - /g, "-");
                   // console.log(medicalData.masterIdentifier.value);
                   medicalData.status = /Report Status:\s(.*?)Date/i.exec(
                     reportData

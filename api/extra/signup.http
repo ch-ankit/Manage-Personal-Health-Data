@@ -46,7 +46,7 @@ post http://localhost:7000/login/patient
 content-type: application/json
 
 {
-    "id":"20000101-857026",
+    "id":"20000101-359062",
     "password":"user123"
 }
 
@@ -55,7 +55,7 @@ post http://localhost:7000/password
 content-type: application/json
 
 {
-    "id":"20000101-857026",
+    "id":"20000101-359062",
     "password":"user123"
 }
 
@@ -64,7 +64,7 @@ patch http://localhost:7000/password
 content-type: application/json
 
 {
-    "id":"20000101-857026",
+    "id":"20000101-359062",
     "oldPassword":"user123",
     "newPassword":"user333"
 }
@@ -134,7 +134,7 @@ content-type: application/json
 }
 
 ###
-GET http://localhost:7000/search?patientId=20000101-857026
+GET http://localhost:7000/search?patientId=20000101-359062
 
 ###
-GET http://localhost:7000/search/medicine?patientId=20000101-857026
+GET http://localhost:7000/search/medicine?patientId=20000101-359062

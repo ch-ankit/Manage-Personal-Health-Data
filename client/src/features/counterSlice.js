@@ -5,7 +5,8 @@ export const userSlice = createSlice({
   initialState: {
     value: JSON.parse(window.localStorage.getItem('user')),
     doctor:JSON.parse(window.localStorage.getItem('doctor')),
-    darkMode:false
+    darkMode:false,
+    documentName:JSON.parse(window.localStorage.getItem('documentName'))
   },
   reducers: {
     loginUser:(state,action)=>{
@@ -32,11 +33,16 @@ export const userSlice = createSlice({
       state.darkMode=!state.darkMode;
       const data=JSON.stringify(state.darkMode);
       window.localStorage.setItem('darkMode',data);
+    },
+    documentGet:(state,action)=>{
+      state.documentName=action.payload;
+      const data=JSON.stringify(action.payload);
+      window.localStorage.setItem('documentName',data);
     }
 
   }
 });
 
-export const { loginDoc,loginUser,logoutDoctor ,logoutUser, darkmode } = userSlice.actions;
+export const { loginDoc,loginUser,logoutDoctor ,logoutUser, darkmode,documentGet } = userSlice.actions;
 export const userEmail=(state)=>state.user.value
 export default userSlice.reducer;

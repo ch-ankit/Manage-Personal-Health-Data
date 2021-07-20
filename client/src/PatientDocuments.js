@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
-import {useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import "./PatientDocument.scss"
 import {SearchIcon} from '@heroicons/react/solid'
 import { useHistory } from 'react-router'
+import { documentGet } from './features/counterSlice'
 function PatientDocuments() {
     const [searchText,setSearchText] = useState('');
     const [category, setCategory]=useState('')
@@ -12,6 +13,7 @@ function PatientDocuments() {
     let [temporaryData, settemporaryData] = useState([]);
     const [reportDate2,setReportDate2]=useState('');
     const [reportDate1, setReportDate1] = useState('');
+    const dispatch = useDispatch();
    
 
     const [dummy,setDummy]=useState(false);
@@ -195,7 +197,10 @@ function PatientDocuments() {
                             {console.log(temporaryData)}
                                 {Object.keys(temporaryData).map((key)=>{
                                      return(
-                                        <tr key={key} onClick={()=>history.push('documentviewer')} >
+                                        <tr key={key} onClick={()=>{
+                                            dispatch(documentGet(temporaryData[key].filename));
+                                            history.push('documentviewer'
+                                            )}} >
                                             <td>{temporaryData[key].date}</td>
                                             <td>{temporaryData[key].reportTitle}</td>
                                             <td>{temporaryData[key].date}</td>

@@ -4,6 +4,27 @@ var multer = require("multer");
 const fs = require("fs");
 var pdfReader = require("pdfreader");
 
+exports.getTouploadReport = async (req, res, next) => {
+  var query = `MATCH(n:Patient{value:"${req.query.patientId}"})-[r:medicalRecord]->(m:masterIdentifier{value:"${req.query.masterIdentifier}"})-[:hasReport{}]->(m1)-[r1:type]->(:coding)
+  RETURN m.value,m1,r1`;
+  var session = driver.session();
+  session
+    .run(query)
+    .then((result) => {
+      console.log(result.records.length);
+      var data = result.records.map((el) => {
+        var returnData = {};
+        returnData.filename = el._fields[0];
+        returnData.value = el._fields[1].properties.value;
+        returnData.text = el._fields[2].properties.text;
+        return returnData;
+      });
+      // console.log(data);
+      res.send(data);
+    })
+    .catch((err) => next(err));
+};
+
 exports.getReport = async (req, res, next) => {
   try {
     res.sendFile(

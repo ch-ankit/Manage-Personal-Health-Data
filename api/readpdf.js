@@ -218,7 +218,7 @@ var medicalData = {
 };
 
 fs.readFile(
-  `${path.resolve()}//public//Observation_Report.pdf`,
+  `${path.resolve()}//public//Observation_Report_1.pdf`,
   (err, pdfBuffer) => {
     // pdfBuffer contains the file content
     new pdfReader.PdfReader().parseBuffer(
@@ -243,22 +243,22 @@ fs.readFile(
           //console.log(medicalData.status);
           medicalData.subject.identifier.value =
             /PatientId:\s(.*?)Patient Name/i.exec(reportData)[1];
-          var query = `MATCH (n:Patient{value:"20000101-633940"})-[:hasName]-(m) RETURN m`;
-          var params = {
-            value: medicalData.subject.identifier.value,
-          };
-          var session = driver.session();
-          medicalData.subject.display = await session
-            .run(query, params)
-            .then((result) => {
-              var nameObj = result.records[0]._fields[0].properties;
-              var name = `${nameObj.prefix}.${nameObj.given[0]} ${
-                nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
-              }${nameObj.family}${
-                nameObj.suffix == "" ? "" : `,${nameObj.suffix}`
-              }`;
-              return name;
-            });
+          // var query = `MATCH (n:Patient{value:"20000101-633940"})-[:hasName]-(m) RETURN m`;
+          // var params = {
+          //   value: medicalData.subject.identifier.value,
+          // };
+          // var session = driver.session();
+          // medicalData.subject.display = await session
+          //   .run(query, params)
+          //   .then((result) => {
+          //     var nameObj = result.records[0]._fields[0].properties;
+          //     var name = `${nameObj.prefix}.${nameObj.given[0]} ${
+          //       nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
+          //     }${nameObj.family}${
+          //       nameObj.suffix == "" ? "" : `,${nameObj.suffix}`
+          //     }`;
+          //     return name;
+          //   });
           medicalData.subject.display = /Patient Name:\s(.*?)Age/i.exec(
             reportData
           )[1];
@@ -278,7 +278,7 @@ fs.readFile(
           //console.log(medicalData.author);
           medicalData.authenticator = medicalData.author[0];
           //console.log(medicalData.authenticator);
-          medicalData.description = /Comments\s(.*?)Teststo be performed/i
+          medicalData.description = /Comments\s(.*?)Tests to be performed/i
             .exec(reportData)[1]
             .replace(/1.|2|3|4|5|6|7|8|9|0/g, "")
             .split(`.`)
@@ -295,7 +295,7 @@ fs.readFile(
               .trim();
           // console.log(medicalData.content);
           medicalData.context.event[0].coding[0].code =
-            /BodySite:\s(.*?)Record Type/i.exec(reportData)[1];
+            /Body Site:\s(.*?)Record Type/i.exec(reportData)[1];
           // console.log(medicalData.context.event[0].coding);
           medicalData.category[0].coding[0].code =
             /Category:\s(.*?) Report Status/i.exec(reportData)[1];
@@ -309,7 +309,7 @@ fs.readFile(
             reportData.indexOf("Onset:") + 17
           );
           //console.log(medicalData.context.period.start);
-          var x = /Teststo be Performed\s(.*?)Prescriptions/i
+          var x = /Tests to be Performed\s(.*?)Prescriptions/i
             .exec(reportData)[1]
             .replace(/1.|2|3|4|5|6|7|8|9|0/g, "")
             .replace(/ - /g, "-")
@@ -335,7 +335,7 @@ fs.readFile(
             .replace(/1.|2|3|4|5|6|7|8|9|0/g, "")
             .split(".");
 
-          medicalData.toReport.Pulse = /Pulse:\s(.*?)permin/i.exec(
+          medicalData.toReport.Pulse = /Pulse:\s(.*?)per min/i.exec(
             reportData
           )[1];
 
@@ -374,7 +374,7 @@ fs.readFile(
             })
             .on("end", () => {
               medicalData.identifier[0].value = testcode;
-              console.log(medicalData.identifier);
+              console.log(medicalData);
             });
         } else if (item.text) {
           if (text === undefined) {

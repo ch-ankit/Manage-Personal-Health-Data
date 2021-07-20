@@ -24,6 +24,7 @@ exports.addRecord = async (req, res, next) => {
     upload(req, res, function (err) {
       patientId = req.body.id;
       recordFileName = req.recordFileName;
+      console.log(recordFileName, patientId);
       if (err instanceof multer.MulterError) {
         console.log(err);
         return res.status(500).json(err);
@@ -314,7 +315,7 @@ exports.addRecord = async (req, res, next) => {
                   medicalData.authenticator = medicalData.author[0];
                   //console.log(medicalData.authenticator);
                   medicalData.description =
-                    /Comments\s(.*?)Teststo be performed/i
+                    /Comments\s(.*?)Tests to be performed/i
                       .exec(reportData)[1]
                       .replace(/1.|2|3|4|5|6|7|8|9|0/g, "")
                       .split(`.`)
@@ -331,7 +332,7 @@ exports.addRecord = async (req, res, next) => {
                       .trim();
                   // console.log(medicalData.content);
                   medicalData.context.event[0].coding[0].display =
-                    /BodySite:\s(.*?)Record Type/i.exec(reportData)[1];
+                    /Body Site:\s(.*?)Record Type/i.exec(reportData)[1];
                   // console.log(medicalData.context.event[0].coding);
                   medicalData.category[0].coding[0].code =
                     /Category:\s(.*?) Report Status/i.exec(reportData)[1];
@@ -368,7 +369,7 @@ exports.addRecord = async (req, res, next) => {
                     .replace(/1.|2|3|4|5|6|7|8|9|0/g, "")
                     .split(".");
 
-                  medicalData.toReport.Pulse = /Pulse:\s(.*?)permin/i.exec(
+                  medicalData.toReport.Pulse = /Pulse:\s(.*?)per min/i.exec(
                     reportData
                   )[1];
 
@@ -395,7 +396,7 @@ exports.addRecord = async (req, res, next) => {
                     / Diastolic:\s(.*?)Symptoms/i.exec(reportData)[1];
                   //console.log(medicalData.toReport);
                   medicalData.testCommonName =
-                    /Teststo be Performed\s(.*?)Prescriptions/i
+                    /Tests to be Performed\s(.*?)Prescriptions/i
                       .exec(reportData)[1]
                       .replace(/1.|2|3|4|5|6|7|8|9|0/g, "")
                       .replace(/ - /g, "-")

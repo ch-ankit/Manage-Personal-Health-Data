@@ -35,15 +35,28 @@ function Report() {
           <button type="submit">Upload</button>
         </form>
       </div>
-      <div className="newreport__upload">
+      {/* <div className="newreport__upload">
         <h1>Upload your Medical report</h1>
-        <form ref={form} onSubmit={handleMedicalUpload} encType="multipart/form-data">
-          <input value={20000101 - 794155} name="id" style={{ display: "none" }} />
-          <input value={1626764008937} name="masterId" style={{ display: "none" }} />
+        <form
+          ref={form}
+          onSubmit={handleMedicalUpload}
+          encType="multipart/form-data"
+        >
+          <input
+            value={"20000101-794155"}
+            name="id"
+            style={{ display: "none" }}
+          />
+          <input
+            value={"1626764008937"}
+            name="masterId"
+            style={{ display: "none" }}
+          />
+          <input value={"104"} name="reportId" style={{ display: "none" }} />
           <input type="file" name="file" multiple />
           <button type="submit">Upload</button>
         </form>
-      </div>
+      </div> */}
     </div>
   );
 }

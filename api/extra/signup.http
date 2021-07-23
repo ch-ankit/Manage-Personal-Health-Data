@@ -1,7 +1,9 @@
 ###
-GET http://localhost:7000/report?reportName=ReportSample copy.pdf&id=20000101-687825&masterId=12345
+GET http://localhost:7000/report?reportName=covidcard.pdf&id=20000101-794155&masterId=1626764008937
 ###
-GET http://localhost:7000/record?recordName=ReportSample copy.pdf&id=20000101-687825
+GET http://localhost:7000/record?recordName=1627039725380.pdf&patientId=20000101-794155
+###
+GET http://localhost:7000/report/toupload?masterIdentifier=1626764008937&id=20000101-794155
 
 ###
 POST http://localhost:7000/report
@@ -138,3 +140,5 @@ GET http://localhost:7000/search?patientId=20000101-794155
 
 ###
 GET http://localhost:7000/search/medicine?patientId=20000101-794155
+###
+GET http://localhost:7000/lastVisited?patientId=20000101-794155

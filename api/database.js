@@ -17,15 +17,16 @@ var params = {
   masterIdentifierValue: "1626764008937",
   reportIdentifierValue: "104",
 };
-// session
-//   .run(query, params)
-//   .then((result) => {
-//     result.records.forEach((record) => {
-//       record.forEach((el) => console.log(el.properties));
-//     });
-//     session.close();
-//   })
-//   .catch((error) => {
-//     console.error(error);
-//   });
+session
+  .run(
+    `MATCH(n:Patient{value:"20000101-794155"})-[r:medicalRecord{}]->(n1:masterIdentifier{value:"1626764008937"})-[:hasReport{}]-(m:reportdentifier{value:"104"})-[r1:basedOn]->() return r1`
+  )
+  .then((result) => {
+    if (result.records[0]) {
+      console.log({ message: "report available" });
+    } else {
+      console.log({ message: "report not available" });
+    }
+  })
+  .catch((err) => console.log(err));
 module.exports = driver;

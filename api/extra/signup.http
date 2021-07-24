@@ -10,7 +10,7 @@ POST http://localhost:7000/report
 content-type: application/json
 
 {
-    "id":"o1010"
+    "id":"01010"
 }
 ###
 POST http://localhost:7000/signup/patient

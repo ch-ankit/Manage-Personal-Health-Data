@@ -167,3 +167,6 @@ content-type: application/json
     "workplace":"dummy data",
     "id":"20000101-794155"
 }
+
+###
+GET http://localhost:7000/report/toupload?id=20000101-794155&masterIdentifier=1626501663741

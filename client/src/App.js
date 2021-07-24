@@ -2,7 +2,6 @@ import React, {lazy} from 'react'
 import { Suspense } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import DoctorLanding from './DoctorLanding';
-
 const About=lazy(()=>import('./About'));
 const Chose=lazy(()=>import('./Chose'));
 const DocumentViewer=lazy(()=>import('./DocumentViewer'));
@@ -18,6 +17,7 @@ const Report =lazy(()=>import('./Report'))
 const SignUp =lazy(()=>import('./SignUp'))
 const SignUpDoc=lazy(()=>import('./SignUpDoc'));
 const ListPage=lazy(()=>import('./ListPage'));
+const ReportUpload=lazy(()=>import('./ReportUpload'));
 function App() {
   return (
     <div className="app" >
@@ -40,6 +40,7 @@ function App() {
               </Route>
               <Route path="/home/lastVisited" component={ListPage}/>
               <Route path="/home/documentViewer" component={DocumentViewer} />
+              <Route path="/home/uploadReport" component={ReportUpload} />
               <Route path="/home/report" component={Report} />
             </Switch>
           </Route>

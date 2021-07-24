@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
 import "./DocumentViewer.scss";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { reportGet } from "./features/counterSlice";
 
 function DocumentViewer() {
   const [numPages, setNumPages] = useState(null);
@@ -10,6 +11,8 @@ function DocumentViewer() {
   const documentName = useSelector(state => state.user.documentName)
   const userData = useSelector((state) => state.user.value);
   const [uploadData,setUploadData]=useState([])
+  const history= useHistory();
+  const dispatch=useDispatch()
   function onDocumentLoadSuccess({ numPages }) {
     setNumPages(numPages);
   }
@@ -49,7 +52,19 @@ function DocumentViewer() {
         <ul>
           {Object.keys(uploadData).map((key)=>{
            return( 
-           <li key={key}>{uploadData[key].text}</li>
+           <li onClick={async()=>{
+              const response=await fetch(`http://localhost:7000/report/checkreport?id=${userData.uId}&masterId=${documentName.replace('.pdf','')}&reportId=${uploadData[key].value}`,{
+                method:"GET"
+              })
+              const data=await response.json();
+              console.log(data);
+              if(data.message==="report not available"){
+                dispatch(reportGet(uploadData[key]));
+                history.push("/home/uploadReport");
+              }else if(data.message==="report available"){
+                
+              }
+           }} key={key}>{uploadData[key].text}</li>
           )})}
         </ul>
       </div>

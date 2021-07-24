@@ -28,9 +28,9 @@ exports.getTouploadReport = async (req, res, next) => {
 exports.getReport = async (req, res, next) => {
   try {
     res.sendFile(
-      `${path.resolve()}\\public\\medicalReports\\${req.query.id}\\${
+      `${path.resolve()}//public//medicalReports//${req.query.id}//${
         req.query.masterId
-      }\\${req.query.reportName}`
+      }//${req.query.reportName}`
     );
   } catch (err) {
     console.log(err);
@@ -41,10 +41,10 @@ exports.checkReport = async (req, res, next) => {
   var session = driver.session();
   session
     .run(
-      `MATCH(n:Patient{value:${req.query.id}})-[r:medicalRecord{}]->(n1:masterIdentifier{value:${req.query.masterId}})-[:hasReport{}]-(m:reportdentifier{value:${req.query.reportId}})-[r1:basedOn]->() return r1`
+      `MATCH(n:Patient{value:"${req.query.id}"})-[r:medicalRecord{}]->(n1:masterIdentifier{value:"${req.query.masterId}"})-[:hasReport{}]-(m:reportdentifier{value:"${req.query.reportId}"})-[r1:basedOn]->() return r1`
     )
     .then((result) => {
-      if (result.records) {
+      if (result.records[0]) {
         res.send({ message: "report available" });
       } else {
         res.send({ message: "report not available" });

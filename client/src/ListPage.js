@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { documentGet } from './features/counterSlice';
 import "./ListPage.scss"
@@ -7,10 +7,11 @@ import "./ListPage.scss"
 function ListPage() {
     const [listData,setListData]=useState([]);
     const dispatch=useDispatch();
+    const user=useSelector(state=>state.user.value);
     const history=useHistory();
     useEffect(()=>{
         async function getLatestData(){
-            const response=await fetch("http://localhost:7000/lastVisited?patientId=20000101-794155",{
+            const response=await fetch(`http://localhost:7000/lastVisited?patientId=${user.uId}`,{
                 method:"GET"
             })
             const data= await response.json()

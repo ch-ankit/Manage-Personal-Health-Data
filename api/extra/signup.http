@@ -142,3 +142,28 @@ GET http://localhost:7000/search?patientId=20000101-794155
 GET http://localhost:7000/search/medicine?patientId=20000101-794155
 ###
 GET http://localhost:7000/lastVisited?patientId=20000101-794155
+
+###
+POST http://localhost:7000/signup/addcontact
+content-type: application/json
+
+{
+    "relationship":"dummy data",
+    "lastName":"dummy data",
+    "firstName":"dummy data",
+    "middleName":"dummy data",
+    "phoneNo":"dummy data",
+    "city":"dummy data",
+    "district":"dummy data",
+    "state":"dummy data",
+    "country":"dummy data",
+    "streetName":"dummy data",
+    "city":"dummy data",
+    "district":"dummy data",
+    "state":"dummy data",
+    "country":"dummy data",
+    "postalCode":"dummy data",
+    "gender":"dummy data",
+    "workplace":"dummy data",
+    "id":"20000101-794155"
+}

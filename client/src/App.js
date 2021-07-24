@@ -18,6 +18,7 @@ const SignUp =lazy(()=>import('./SignUp'))
 const SignUpDoc=lazy(()=>import('./SignUpDoc'));
 const ListPage=lazy(()=>import('./ListPage'));
 const ReportUpload=lazy(()=>import('./ReportUpload'));
+const ReportView=lazy(()=>import('./ReportView'));
 function App() {
   return (
     <div className="app" >
@@ -42,6 +43,7 @@ function App() {
               <Route path="/home/documentViewer" component={DocumentViewer} />
               <Route path="/home/uploadReport" component={ReportUpload} />
               <Route path="/home/report" component={Report} />
+              <Route path="/home/reportView" component={ReportView} />
             </Switch>
           </Route>
           <Route path="/Doctor">

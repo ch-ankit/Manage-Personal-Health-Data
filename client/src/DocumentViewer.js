@@ -62,7 +62,8 @@ function DocumentViewer() {
                 dispatch(reportGet(uploadData[key]));
                 history.push("/home/uploadReport");
               }else if(data.message==="report available"){
-                
+                dispatch(reportGet(uploadData[key]));
+                history.push("/home/reportView")
               }
            }} key={key}>{uploadData[key].text}</li>
           )})}

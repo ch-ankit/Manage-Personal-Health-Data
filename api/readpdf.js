@@ -3,6 +3,8 @@ var path = require("path");
 var pdfReader = require("pdfreader");
 const csv = require("csv-parser");
 var driver = require("./database");
+const mapCategoryCode = require('./references/categoryType.js')
+
 
 // var y;
 // var text;

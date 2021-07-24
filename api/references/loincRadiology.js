@@ -56,7 +56,8 @@ const radiologyLoinc = [
     { code: "24558-9", name: "Ultrasound of abdomen study" },
     { code: "28614-6", name: "Ultrasound of liver study" },
     { code: "24601-7", name: "Ultrasound of breast study" },
-    { code: "24869-0", name: "Ultrasound of pelvis study" }
+    { code: "24869-0", name: "Ultrasound of pelvis study" },
+    { code: "29680-3", name: "Ultrasound of eye" }
 ]
 
 var loincCode;

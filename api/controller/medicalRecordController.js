@@ -4,12 +4,12 @@ var multer = require("multer");
 const fs = require("fs");
 var pdfReader = require("pdfreader");
 const csv = require("csv-parser");
+const mapCategoryCode = require('./../references/categoryType.js')
 
 exports.getRecord = async (req, res, next) => {
   try {
     res.sendFile(
-      `${path.resolve()}//public//medicalRecords//${req.query.patientId}//${
-        req.query.recordName
+      `${path.resolve()}//public//medicalRecords//${req.query.patientId}//${req.query.recordName
       }`
     );
   } catch (err) {
@@ -266,9 +266,8 @@ exports.addRecord = async (req, res, next) => {
                   reportData = reportData + text;
                   reportData.replace(/\r|\n/g, " ");
                   // console.log(reportData);
-                  medicalData.custodian.display = `${
-                    reportData.split("HOSPITAL")[0]
-                  }HOSPITAL`;
+                  medicalData.custodian.display = `${reportData.split("HOSPITAL")[0]
+                    }HOSPITAL`;
                   //console.log(medicalData.custodian.display);
                   medicalData.masterIdentifier.value = recordFileName;
                   // /Date Time:\s(.*?)Name of Doctor/i
@@ -336,7 +335,8 @@ exports.addRecord = async (req, res, next) => {
                   // console.log(medicalData.context.event[0].coding);
                   medicalData.category[0].coding[0].code =
                     /Category:\s(.*?) Report Status/i.exec(reportData)[1];
-                  // console.log(medicalData.category[0].coding[0]);
+                  medicalData.category[0].coding[0].display = mapCategoryCode(medicalData.category[0].coding[0].code)
+                  console.log(medicalData.category[0].coding[0]);
                   medicalData.type.text = /Record Type:\s(.*?)Category/i
                     .exec(reportData)[1]
                     .replace(/ - /g, "-")

@@ -3,6 +3,8 @@ var path = require("path");
 var pdfReader = require("pdfreader");
 const csv = require("csv-parser");
 var driver = require("./database");
+const mapCategoryCode = require('./references/categoryType.js')
+
 
 var y;
 var text;
@@ -230,9 +232,8 @@ fs.readFile(
           reportData = reportData + text;
           reportData.replace(/\r|\n/g, " ");
           console.log(reportData);
-          medicalData.custodian.display = `${
-            reportData.split("HOSPITAL")[0]
-          }HOSPITAL`;
+          medicalData.custodian.display = `${reportData.split("HOSPITAL")[0]
+            }HOSPITAL`;
           //console.log(medicalData.custodian.display);
           medicalData.masterIdentifier.value =
             /Date Time:\s(.*?)Name of Doctor/i
@@ -299,7 +300,9 @@ fs.readFile(
           // console.log(medicalData.context.event[0].coding);
           medicalData.category[0].coding[0].code =
             /Category:\s(.*?) Report Status/i.exec(reportData)[1];
-          // console.log(medicalData.category[0].coding[0]);
+          medicalData.category[0].coding[0].display = mapCategoryCode(medicalData.category[0].coding[0].code)
+          console.log(medicalData.category[0].coding[0].display);
+          console.log(medicalData.category[0].coding[0]);
           medicalData.type.text = /Record Type:\s(.*?)Category/i
             .exec(reportData)[1]
             .replace(/ - /g, "-")
@@ -362,7 +365,7 @@ fs.readFile(
           medicalData.toReport.Diastolic = / Diastolic:\s(.*?)Symptoms/i.exec(
             reportData
           )[1];
-          console.log(medicalData.toReport);
+          // console.log(medicalData.toReport);
           var testcode = [];
 
           fs.createReadStream("data.csv")
@@ -374,7 +377,7 @@ fs.readFile(
             })
             .on("end", () => {
               medicalData.identifier[0].value = testcode;
-              console.log(medicalData);
+              // console.log(medicalData);
             });
         } else if (item.text) {
           if (text === undefined) {

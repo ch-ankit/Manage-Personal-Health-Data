@@ -715,6 +715,12 @@ exports.setPasswordPatient = async (req, res, next) => {
           if (err) console.log(err);
         }
       );
+      fs.mkdir(
+        `${path.resolve()}//public//medicalReports//${req.body.id}`,
+        (err) => {
+          if (err) console.log(err);
+        }
+      );
 
       res.send({ message: "password set" });
     })

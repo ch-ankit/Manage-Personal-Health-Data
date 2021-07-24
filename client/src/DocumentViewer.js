@@ -1,20 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
 import "./DocumentViewer.scss";
+import { useSelector } from "react-redux";
 
 function DocumentViewer() {
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
-
+  const documentName = useSelector(state => state.user.documentName)
+  const userData = useSelector((state) => state.user.value);
+  const [uploadData,setUploadData]=useState([])
   function onDocumentLoadSuccess({ numPages }) {
     setNumPages(numPages);
   }
+{console.log(documentName)}
 
+  useEffect(() => {
+    async function getToUploadData(){
+      console.log(documentName.replace('.pdf',''))
+      const response=await fetch(`http://localhost:7000/report/toupload?id=${userData.uId}&masterIdentifier=${documentName.replace('.pdf','')}`,{
+        method:"GET"
+      });
+      const data=await response.json();
+      
+      console.log(data)
+      setUploadData(data);
+    }
+    return getToUploadData();
+  }, []);
   return (
     <div className="documentViewer">
       <Document
-        file="http://localhost:7000/record?recordName=Observation_Report.pdf&patientId=20000101-687825"
+        file={`http://localhost:7000/record?recordName=${documentName}&patientId=${userData.uId}`}
         onLoadSuccess={onDocumentLoadSuccess}
         className="documentViewer__document"
       >
@@ -27,6 +44,15 @@ function DocumentViewer() {
       <a href="http://localhost:7000/report?id=2000-03-16456132&reportName=1622447862606-Interrupt%20Cycle.pdf" download>
         <div className="documentViewer__download">Download</div>
       </a>
+
+      <div className="documentViewer__reports">
+        <ul>
+          {Object.keys(uploadData).map((key)=>{
+           return( 
+           <li key={key}>{uploadData[key].text}</li>
+          )})}
+        </ul>
+      </div>
     </div>
   );
 }

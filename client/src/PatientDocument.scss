@@ -57,6 +57,9 @@
             text-align: center;
             tbody{
                 background-color: lightblue;
+                tr{
+                    cursor: pointer;
+                }
             }
             thead{
                 text-align: center;

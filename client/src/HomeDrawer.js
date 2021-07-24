@@ -17,7 +17,12 @@ function HomeDrawer(props) {
                         history.push("/home")
                     }}
                 >Profile</li>
-                <li>List</li>
+                <li
+                    onClick={()=>{
+                        document.querySelector(".homeDrawer").classList.remove("active")
+                        history.push("/home/lastVisited")
+                    }}
+                >List</li>
                 {doctor ?
                     (<li onClick={() => {
                         document.querySelector(".homeDrawer").classList.remove("active")

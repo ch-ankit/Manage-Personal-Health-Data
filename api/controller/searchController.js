@@ -15,7 +15,7 @@ exports.getSearchedData = async (req, res, next) => {
     .then((result) => {
       var data = result.records.map((el) => {
         var returnData = {};
-        returnData.filename = el._fields[0];
+        returnData.filename = `${el._fields[0]}.pdf`;
         returnData.date = el._fields[1];
         returnData.hospitalName = el._fields[2];
         returnData.reportTitle = el._fields[3];
@@ -43,7 +43,7 @@ exports.getPrescriptions = async (req, res, next) => {
       console.log(result.records.length);
       var data = result.records.map((el) => {
         var returnData = {};
-        returnData.filename = el._fields[0];
+        returnData.filename = `${el._fields[0]}.pdf`;
         returnData.date = el._fields[1];
         returnData.prescriptions = el._fields[2];
         return returnData;

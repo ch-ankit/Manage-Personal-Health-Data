@@ -1,5 +1,5 @@
 ###
-GET http://localhost:7000/report?reportName=covidcard.pdf&id=20000101-794155&masterId=1626764008937
+GET http://localhost:7000/report?reportName=104.pdf&id=20000101-794155&masterId=1627040983832
 ###
 GET http://localhost:7000/record?recordName=1627039725380.pdf&patientId=20000101-794155
 ###
@@ -48,7 +48,7 @@ post http://localhost:7000/login/patient
 content-type: application/json
 
 {
-    "id":"20000101-794155",
+    "id":"20000707-513569",
     "password":"user123"
 }
 
@@ -57,7 +57,7 @@ post http://localhost:7000/password
 content-type: application/json
 
 {
-    "id":"20000101-794155",
+    "id":"20000707-513569",
     "password":"user123"
 }
 
@@ -170,3 +170,5 @@ content-type: application/json
 
 ###
 GET http://localhost:7000/report/toupload?id=20000101-794155&masterIdentifier=1626501663741
+###
+GET http://localhost:7000/report/checkreport?id=20000101-794155&masterId=1627040983832&reportId=104

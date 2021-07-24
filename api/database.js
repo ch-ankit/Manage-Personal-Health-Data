@@ -19,7 +19,7 @@ var params = {
 };
 session
   .run(
-    `MATCH(n:Patient{value:"20000101-794155"})-[r:medicalRecord{}]->(n1:masterIdentifier{value:"1626764008937"})-[:hasReport{}]-(m:reportdentifier{value:"104"})-[r1:basedOn]->() return r1`
+    `MATCH(n:Patient{value:"20000101-794155"})-[r:medicalRecord{}]->(n1:masterIdentifier{value:"1626764008937"})-[:hasReport{}]-(m:reportIdentifier{value:"104"})-[r1:basedOn]->() return r1`
   )
   .then((result) => {
     if (result.records[0]) {

@@ -41,7 +41,7 @@ exports.checkReport = async (req, res, next) => {
   var session = driver.session();
   session
     .run(
-      `MATCH(n:Patient{value:"${req.query.id}"})-[r:medicalRecord{}]->(n1:masterIdentifier{value:"${req.query.masterId}"})-[:hasReport{}]-(m:reportdentifier{value:"${req.query.reportId}"})-[r1:basedOn]->() return r1`
+      `MATCH(n:Patient{value:"${req.query.id}"})-[r:medicalRecord{}]->(n1:masterIdentifier{value:"${req.query.masterId}"})-[:hasReport{}]-(m:reportIdentifier{value:"${req.query.reportId}"})-[r1:basedOn]->() return r1`
     )
     .then((result) => {
       if (result.records[0]) {
@@ -60,6 +60,7 @@ exports.addReport = async (req, res, next) => {
     var reportId;
     var reportFileName;
     upload(req, res, function (err) {
+      console.log(req.body);
       patientId = req.body.id;
       masterId = req.body.masterId;
       reportId = req.body.reportId;
@@ -185,7 +186,7 @@ exports.addReport = async (req, res, next) => {
                   reportData = reportData + text;
                   //console.log(reportData);
                   reportData.replace(/\r\n/g, " ");
-                  medicalData.masterIdentifierValue = `${masterId}.pdf`;
+                  medicalData.masterIdentifierValue = masterId;
                   medicalData.deviceReference =
                     /Device Reference:\s(.*?)Medical/i.exec(reportData)[1];
                   medicalData.reportIdentifierValue = reportId;
@@ -276,7 +277,10 @@ const upload = multer({ storage: storage }).array("file");
 async function historyTodatabase(reportObj, next) {
   var session = driver.session();
   var params = reportObj;
-  var query = `MATCH(n:Patient{value:$subjectIdentifierValue})-[r:medicalRecord{}]->(n1:masterIdentifier{value:$masterIdentifierValue})-[:hasReport{}]-(m:reportdentifier{value:$reportIdentifierValue})
+  console.log(params.subjectIdentifierValue);
+  console.log(params.masterIdentifierValue);
+  console.log(params.reportIdentifierValue);
+  var query = `MATCH(n:Patient{value:$subjectIdentifierValue})-[r:medicalRecord{}]->(n1:masterIdentifier                  {value:$masterIdentifierValue})-[:hasReport{}]-(m:reportIdentifier{value:$reportIdentifierValue})
               MERGE(m)-[:basedOn]->(q:basedOn{reference:$basedOnReference,type:$basedOnType,display:$basedOnDisplay})
               MERGE(q)-[:basedOnIdentifies{use:$basedOnIdentifierUse,system:$basedOnIdentifierSystem,value:$basedOnIdentifiervalue}]->(:coding{system:$basedOnIdentifierCodingSystem,code:$basedOnIdentifierCodingCode})
               MERGE(m)-[:partOfIdentifier{system:$partOfIdentifierSystem,value:$partOfIdentifierValue}]->(:partOf{referrence:$partOfReference,type:$partOfType,display:$partOfDisplay})
@@ -300,11 +304,12 @@ async function historyTodatabase(reportObj, next) {
               MERGE(m)-[:component{}]->(a:component{})-[:compnentCoding{text:$componentCodeText}]->(:componentCode{system:$componentCodeCodingSystem,code:$componentCodeCodingCode})
               MERGE(a)-[:componentDataAbsentReason{text:$componentDataAbsentReasonText}]->(:dataAbsentcoding{system:$componentDataAbsentReasonCodingSystem,code:$componentDataAbsentReasonCodingCode})
               MERGE(a)-[:componentInterpretation{text:$componentInterpretationText}]->(:coding{system:$componentInterpretationCodingSystem,code:$componentInterpretationCodingCode})
+              return n
               `;
   session
     .run(query, params)
-    .then(() => {
-      console.log("data uploaded");
+    .then((result) => {
+      console.log(result.records);
       console.log({ message: "data upload sucessfull" });
     })
     .catch((err) => next(err));

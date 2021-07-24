@@ -37,6 +37,22 @@ exports.getReport = async (req, res, next) => {
   }
 };
 
+exports.checkReport = async (req, res, next) => {
+  var session = driver.session();
+  session
+    .run(
+      `MATCH(n:Patient{value:${req.query.id}})-[r:medicalRecord{}]->(n1:masterIdentifier{value:${req.query.masterId}})-[:hasReport{}]-(m:reportdentifier{value:${req.query.reportId}})-[r1:basedOn]->() return r1`
+    )
+    .then((result) => {
+      if (result.records) {
+        res.send({ message: "report available" });
+      } else {
+        res.send({ message: "report not available" });
+      }
+    })
+    .catch((err) => next(err));
+};
+
 exports.addReport = async (req, res, next) => {
   try {
     var patientId;

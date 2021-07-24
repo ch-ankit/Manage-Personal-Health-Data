@@ -9,4 +9,6 @@ router
 
 router.route("/toupload").get(medicalReportController.getTouploadReport);
 
+router.route("/checkreport").get(medicalReportController.checkReport);
+
 module.exports = router;

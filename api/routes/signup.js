@@ -5,6 +5,7 @@ var personalDataController = require("./../controller/personalDataController");
 
 router.route("/patient").post(signupController.patientSignup);
 router.route("/doctor").post(signupController.doctorSignup);
+router.route("/getcontact").get(personalDataController.getData);
 router.route("/addcontact").post(personalDataController.addContact);
 
 module.exports = router;

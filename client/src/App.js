@@ -19,6 +19,7 @@ const SignUpDoc=lazy(()=>import('./SignUpDoc'));
 const ListPage=lazy(()=>import('./ListPage'));
 const ReportUpload=lazy(()=>import('./ReportUpload'));
 const ReportView=lazy(()=>import('./ReportView'));
+const ShareDocuments=lazy(()=>import("./ShareDocuments"));
 function App() {
   return (
     <div className="app" >
@@ -44,6 +45,8 @@ function App() {
               <Route path="/home/uploadReport" component={ReportUpload} />
               <Route path="/home/uploadRecord" component={Report} />
               <Route path="/home/reportView" component={ReportView} />
+              <Route path="/home/shareDocuments" component={ShareDocuments} />
+
             </Switch>
           </Route>
           <Route path="/Doctor">

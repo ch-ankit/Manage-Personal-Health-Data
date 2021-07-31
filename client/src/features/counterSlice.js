@@ -7,7 +7,8 @@ export const userSlice = createSlice({
     doctor:JSON.parse(window.localStorage.getItem('doctor')),
     darkMode:false,
     documentName:JSON.parse(window.localStorage.getItem('documentName')),
-    report:JSON.parse(window.localStorage.getItem('report'))
+    report:JSON.parse(window.localStorage.getItem('report')),
+    shareDocuments:JSON.parse(window.localStorage.getItem('shareDocuments')) ?? [],
 
   },
   reducers: {
@@ -45,10 +46,26 @@ export const userSlice = createSlice({
       state.report=action.payload;
       const data=JSON.stringify(action.payload);
       window.localStorage.setItem('report',data);
-    }
+    },
+  shareDocs:(state,action)=>{
+    state.shareDocuments=[...state.shareDocuments, action.payload];
+    const data=JSON.stringify([...state.shareDocuments,action.payload]);
+    window.localStorage.setItem('shareDocuments',data);
+  },
+  deleteShareDocs:(state,action)=>{
+    let data=state.shareDocuments;
+    data.pop(action.payload);
+    state.shareDocuments=data;
+    const data1=JSON.stringify(data);
+    window.localStorage.setItem('shareDocuments',data1);
+  },
+  removeShareDocs:(state)=>{
+      state.doctor=[];
+      window.localStorage.setItem('shareDocuments',[]);
+  }
   }
 });
 
-export const { loginDoc,loginUser,logoutDoctor ,logoutUser, darkmode,documentGet, reportGet } = userSlice.actions;
+export const { loginDoc,loginUser,logoutDoctor ,logoutUser, darkmode,documentGet, reportGet, shareDocs, removeShareDocs,deleteShareDocs } = userSlice.actions;
 export const userEmail=(state)=>state.user.value
 export default userSlice.reducer;

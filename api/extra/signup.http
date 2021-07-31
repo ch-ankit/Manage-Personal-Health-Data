@@ -77,22 +77,22 @@ POST http://localhost:7000/signup/doctor
 content-type: application/json
 
 {
-"id":"777333",
-"lastName":"khatri",
-"firstName":"Babin",
+"id":"111111",
+"lastName":"Khatiwada",
+"firstName":"Ankit",
 "middleName":"",
-"prefix":"Er",
+"prefix":"Dr",
 "suffix":"PHD",
 "mobileNo":"9876543210",
-"email":"presentator7@gmail.com",
+"email":"akgunner6@gmail.com",
 "gender":"Male",
 "dob":"2000-01-01",
-"city":"Gothatar",
-"district":"Kathmandu",
+"city":"Bhaktapur",
+"district":"Bhaktapur",
 "state":"Bagmati",
 "country":"Nepal",
 "houseNo":"6139",
-"streetName":"Kageshwori",
+"streetName":"Gattaghar",
 "postalCode":"4567",
 "qualificationCodeSystem":"trial",
 "qualificationCodeCode":"trial",
@@ -112,8 +112,8 @@ post http://localhost:7000/password/doctor
 content-type: application/json
 
 {
-    "id":"777333",
-    "password":"secretLuffy"
+    "id":"111111",
+    "password":"user123"
 }
 
 ###
@@ -175,4 +175,4 @@ GET http://localhost:7000/report/checkreport?id=20000101-794155&masterId=1627040
 GET http://localhost:7000/search/doctor
 
 ###
-GET https://www.drugs.com/paracetamol.html
+GET https://www.drugs.com/tears-again.html

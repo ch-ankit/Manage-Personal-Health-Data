@@ -2255,3 +2255,4 @@ LOINC #,Short Name,Long Common Name,CLASS,Rank
 10177-4,Hx of Respiratory disorders,Hx of Respiratory disorders,Lab,5000
 10180-8, Hx of Throat+Neck disorders, Hx of Throat+Neck disorders,Lab,5000
 10155-0,Hx of Allergies,Hx of Allergies,Lab,5000
+74774-1,"Glucose [Mass/Volume] in Serum, Plasma or Blood","Glucose [Mass/Volume] in Serum, Plasma or Blood",Lab,5000

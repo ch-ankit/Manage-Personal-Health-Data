@@ -19,6 +19,7 @@
     "neo4j-driver": "^4.2.3",
     "nodemailer": "^6.6.1",
     "pdf2json": "^1.2.3",
-    "pdfreader": "^1.2.10"
+    "pdfreader": "^1.2.10",
+    "socket.io": "^4.1.3"
   }
 }

@@ -999,7 +999,12 @@ function mapRecordType(typeName) {
         { code: "6661001", name: "King-Steelquist hindquarter operation" },
         { code: "6665005", name: "Restoration, crown, porcelain fused to noble metal" },
         { code: "6668007", name: "Fibrinogen assay, quantitative" },
-        { code: "6670003", name: "Closure of external fistula of trachea" }
+        { code: "6670003", name: "Closure of external fistula of trachea" },
+        { code: "6670005", name: "Acute Gastritis" },
+        { code: "6670006", name: "Blood Sugar Fluctuation" },
+        { code: "6670007", name: "Fluctuating Blood Pressure" },
+        { code: "6670008", name: "Breathing difficulty" },
+
     ]
     const givenReportName = new RegExp(typeName.toLowerCase().trim())
     var returnCode

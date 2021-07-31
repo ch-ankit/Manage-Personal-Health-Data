@@ -1,0 +1,37 @@
+.emergencyContact{
+    width: 50%;
+    border: 1px solid lightgreen;
+    margin-left: 5%;
+    display: flex;
+    input{
+        margin-right: 1rem;
+        margin-top: 1.5rem;
+        border-radius: 200em;
+        outline: 0;
+        border: 1px solid lightgreen;
+        text-align: center;
+    }
+    &__gender{
+        margin-top: 1.5rem;
+        select{
+            border: 1px solid lightgreen;
+            background-color: transparent;
+        }
+    }
+    &__workPlace{
+        width: 100%;
+    }   
+    button{
+        margin-top: 1.25rem;
+        width: 50%;
+        margin-bottom: 2em;
+        background-color:rgba(152, 233, 152, 0.4);
+        outline: 0;
+        border: 1px solid lightgreen;
+        cursor: pointer;
+
+        &:hover{
+            background-color:rgba(152, 233, 152, 0.8) ;
+        }
+    }
+}

@@ -17,4 +17,10 @@
             transform: scale(103%);
         }
     }
+    h1{
+        width: 100%;
+        text-align: center;
+        color: transparent;
+        -webkit-text-stroke: 1px darkgreen;
+    }
 }

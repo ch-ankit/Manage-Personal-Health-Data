@@ -56,9 +56,13 @@
             border: 1px solid lightgreen;
             text-align: center;
             tbody{
-                background-color: lightblue;
                 tr{
+                    background-color: lightblue;
                     cursor: pointer;
+
+                    &:hover{
+                        background-color: rgb(146, 207, 228);
+                    }
                 }
             }
             thead{

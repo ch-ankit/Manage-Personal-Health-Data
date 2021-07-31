@@ -22,6 +22,7 @@ function ListPage() {
     },[])
     return (
         <div className="listPage">
+            <h1>Recent Documents</h1>
             {Object.keys(listData).map((key)=>{
                 return(
                     <div key={key} className="listPage__list" onClick={()=>{

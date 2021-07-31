@@ -42,7 +42,7 @@ function App() {
               <Route path="/home/lastVisited" component={ListPage}/>
               <Route path="/home/documentViewer" component={DocumentViewer} />
               <Route path="/home/uploadReport" component={ReportUpload} />
-              <Route path="/home/report" component={Report} />
+              <Route path="/home/uploadRecord" component={Report} />
               <Route path="/home/reportView" component={ReportView} />
             </Switch>
           </Route>

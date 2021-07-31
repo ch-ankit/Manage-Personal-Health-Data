@@ -22,7 +22,7 @@ function HomeDrawer(props) {
                         document.querySelector(".homeDrawer").classList.remove("active")
                         history.push("/home/lastVisited")
                     }}
-                >List</li>
+                >Recent Documents</li>
                 {doctor ?
                     (<li onClick={() => {
                         document.querySelector(".homeDrawer").classList.remove("active")
@@ -38,8 +38,8 @@ function HomeDrawer(props) {
 
                 <li onClick={() => {
                     document.querySelector(".homeDrawer").classList.remove("active")
-                    history.push('/home/report')
-                }}>Reports</li>
+                    history.push('/home/uploadRecord')
+                }}>Upload Records</li>
                 <li onClick={() => {
                     dispatch(logoutUser())
                     dispatch(logoutDoctor())

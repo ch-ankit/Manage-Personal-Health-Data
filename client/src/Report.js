@@ -1,10 +1,13 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import "./Report.scss";
+import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
 
 function Report() {
+  const [numPages, setNumPages] = useState(null);
   const form = useRef(null);
   const userData = useSelector((state) => state.user.value);
+  const [file,setFile]=useState([]);
 
   const handleUpload = async (e) => {
     e.preventDefault();
@@ -25,16 +28,30 @@ function Report() {
     console.log(response);
   };
   console.log(userData.uId);
+  function onDocumentLoadSuccess({ numPages }) {
+    setNumPages(numPages);
+  }
   return (
     <div className="report">
       <div className="report__upload">
-        <h1>Upload your report</h1>
+        <h1>Upload your record</h1>
         <form ref={form} onSubmit={handleUpload} encType="multipart/form-data">
           <input value={userData?.uId} name="id" style={{ display: "none" }} />
-          <input type="file" name="file" multiple />
+          <input type="file" onChange={(e)=>setFile(e.target.files)} name="file" multiple />
           <button type="submit">Upload</button>
         </form>
       </div>
+      <Document
+        file={file[0]}
+        onLoadSuccess={onDocumentLoadSuccess}
+        className="report__document"
+      >
+        {Array.apply(null, Array(numPages))
+          .map((x, i) => i + 1)
+          .map((page) => (
+            <Page pageNumber={page} className="report__page" />
+          ))}
+      </Document>
       {/* <div className="newreport__upload">
         <h1>Upload your Medical report</h1>
         <form

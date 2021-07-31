@@ -8,9 +8,9 @@ exports.shareFile = async (req, res, next) => {
                 MERGE(n1)-[r2:hasAcess{recordId:m.value,patientId:n.value,timeStamp:${(
                   Date.now() / 60000 +
                   parseInt(req.body.accessTime)
-                ).toString()},acessedDate:"${Date()}",accessTime:"${
+                ).toString()},sharedDate:"${Date()}",accessTime:"${
     req.body.accessTime
-  }",terminated:0}]->(m)
+  }",terminated:0,accessedDate:""}]->(m)
                 return n.value,r.value,m.value,r2.timeStamp,r2.acessedDate
                 `;
   session
@@ -44,7 +44,23 @@ exports.getSharedFile = async (req, res, next) => {
     })
     .then((result) => {
       if (result.records[0] != undefined) {
-        console.log(result.records);
+        var session = driver.session();
+        session
+          .run(
+            `MATCH (n:Patient{value:$patientId})-[r:medicalRecord{}]->(m:masterIdentifier{value:$masterId})
+                     MATCH(n1:Practitioner{value:$doctorId})
+                     MATCH(n1)-[r2:hasAcess{}]->(m)
+                     SET r2.accessedDate = "${Date()}"
+                     return r2
+                     `,
+            {
+              patientId: result.records[0]._fields[0],
+              masterId: result.records[0]._fields[1],
+              doctorId: result.records[0]._fields[2],
+            }
+          )
+          .then()
+          .catch((err) => next(err));
         res.send({
           message: `${result.records[0]._fields[2]} has  access to ${
             result.records[0]._fields[0]
@@ -54,7 +70,7 @@ exports.getSharedFile = async (req, res, next) => {
         });
       } else {
         res.send({
-          message: `access has not been granted or has been provokeds `,
+          message: `access has not been granted or has been provoked `,
         });
       }
     })

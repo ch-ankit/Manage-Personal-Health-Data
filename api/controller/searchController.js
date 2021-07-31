@@ -54,6 +54,30 @@ exports.getPrescriptions = async (req, res, next) => {
     .catch((err) => next(err));
 };
 
+exports.doctorSearch = async (req, res, next) => {
+  var session = driver.session();
+  var query = `MATCH (n:Practitioner{})-[r:identifies{}]->(m:doctor{active:True})
+  MATCH(n)-[r1:hasName{}]->(m1:name{})
+  MERGE(n)-[r2:photo]->(m2:photo{})
+  MERGE(n)-[r3:qualification{}]->(:qualification{}) return n.value,m.gender,m1,m2.url,r3.display,r3.text`;
+  session
+    .run(query)
+    .then((result) => {
+      var returnData = {};
+      var nameObj = result.records[0]._fields[2].properties;
+      returnData.doctorId = result.records[0]._fields[0];
+      returnData.gender = result.records[0]._fields[1];
+      returnData.photo = result.records[0]._fields[3];
+      returnData.qualification = result.records[0]._fields[4];
+      returnData.name = `${nameObj.prefix}.${nameObj.given[0]} ${
+        nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
+      }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
+      res.send(returnData);
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
 // req = {
 //   query: {
 //     patientId: "20000101-857026",

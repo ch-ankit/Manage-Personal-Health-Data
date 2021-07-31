@@ -7,6 +7,7 @@ router.route("/").get(searchController.getSearchedData);
 // .patch(searchController.changeReport);
 
 router.route("/medicine").get(searchController.getPrescriptions);
+router.route("/doctor").get(searchController.doctorSearch);
 // .post(searchController.addReport)
 // .patch(searchController.changeReport);
 

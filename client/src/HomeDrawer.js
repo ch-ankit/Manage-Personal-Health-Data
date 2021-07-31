@@ -33,7 +33,7 @@ function HomeDrawer(props) {
                     (<li onClick={() => {
                         document.querySelector(".homeDrawer").classList.remove("active")
                         history.push('/home/documents')
-                    }}>Patient Documents</li>)
+                    }}>My Documents</li>)
                 }
 
                 <li onClick={() => {

@@ -80,7 +80,7 @@ exports.addContact = async (req, res, next) => {
   session
     .run(query, params)
     .then(() => {
-      res.send("contact added sucessfully");
+      res.send({ message: "contact added sucessfully" });
     })
     .catch((err) => console.log(err));
 };

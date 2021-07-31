@@ -1,0 +1,14 @@
+###
+GET http://localhost:7000/share?id=20000707-513569&doctorId=777333&masterId=1627121446880
+
+###
+POST http://localhost:7000/share
+content-type:application/json
+
+{
+    "id":"20000707-513569",
+    "doctorId":"777333",
+    "masterId":"1627121446880",
+    "accessTime":"30"
+
+}

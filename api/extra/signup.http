@@ -170,3 +170,9 @@ content-type: application/json
 GET http://localhost:7000/report/toupload?id=20000707-513569&masterIdentifier=1627121446880
 ###
 GET http://localhost:7000/report/checkreport?id=20000101-794155&masterId=1627040983832&reportId=104
+
+###
+GET http://localhost:7000/search/doctor
+
+###
+GET https://www.drugs.com/paracetamol.html

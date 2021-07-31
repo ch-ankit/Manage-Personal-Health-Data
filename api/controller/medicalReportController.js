@@ -280,7 +280,7 @@ async function historyTodatabase(reportObj, next) {
   console.log(params.subjectIdentifierValue);
   console.log(params.masterIdentifierValue);
   console.log(params.reportIdentifierValue);
-  var query = `MATCH(n:Patient{value:$subjectIdentifierValue})-[r:medicalRecord{}]->(n1:masterIdentifier                  {value:$masterIdentifierValue})-[:hasReport{}]-(m:reportIdentifier{value:$reportIdentifierValue})
+  var query = `MATCH(n:Patient{value:$subjectIdentifierValue})-[r:medicalRecord{}]->(n1:masterIdentifier{value:$masterIdentifierValue})-[:hasReport{}]-(m:reportIdentifier{value:$reportIdentifierValue})
               MERGE(m)-[:basedOn]->(q:basedOn{reference:$basedOnReference,type:$basedOnType,display:$basedOnDisplay})
               MERGE(q)-[:basedOnIdentifies{use:$basedOnIdentifierUse,system:$basedOnIdentifierSystem,value:$basedOnIdentifiervalue}]->(:coding{system:$basedOnIdentifierCodingSystem,code:$basedOnIdentifierCodingCode})
               MERGE(m)-[:partOfIdentifier{system:$partOfIdentifierSystem,value:$partOfIdentifierValue}]->(:partOf{referrence:$partOfReference,type:$partOfType,display:$partOfDisplay})

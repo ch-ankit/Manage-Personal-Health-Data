@@ -2,23 +2,30 @@ const driver = require("./../database");
 
 exports.getData = async (req, res, next) => {
   const session = driver.session();
-  const query = `MATCH (n:people{id:$id}) return n`;
-  const params = {
-    id: `${req.body.id}`,
-  };
-  var data = [];
+  const query = `MATCH(n:Patient{value:"${req.query.id}"})-[r:contact]->(m:relationship)-[:coding]->(:coding)
+  MATCH(m)-[r1:name]->(m1:telecom)
+  MATCH(m)-[r2:address]->(m2:organiztion) return r.gender,m.text,r1.given,r1.family,m1.value,r2.text,r2.postalCode,r2.line,m2.display`;
   session
-    .run(query, params)
-    .then((results) => {
-      results.records.forEach((record) => {
-        record._fields.forEach((el) => {
-          data.push(el.properties);
-        });
+    .run(query)
+    .then((result) => {
+      console.log(result.records[0]._fields[0]);
+      var data = result.records.map((el) => {
+        var returnData = {};
+        returnData.gender = el._fields[0];
+        returnData.text = el._fields[1];
+        returnData.given = el._fields[2];
+        returnData.family = el._fields[3];
+        returnData.contactNo = el._fields[4];
+        returnData.text = el._fields[5];
+        returnData.postalCode = el._fields[6];
+        returnData.line = el._fields[7];
+        returnData.display = el._fields[8];
+        return returnData;
       });
       return data;
     })
     .then((data) => res.send(data))
-    .catch((err) => console.log(err));
+    .catch((err) => next(err));
 };
 
 exports.addContact = async (req, res, next) => {
@@ -31,18 +38,18 @@ exports.addContact = async (req, res, next) => {
             code: "E",
           },
         ],
-        text: `"${req.body.relationship}"`,
+        text: `${req.body.relationship}`,
       },
     ],
     name: {
       use: "official",
-      family: `"${req.body.lastName}"`,
-      given: [`"${req.body.firstName}"`, `"${req.body.middleName}"`],
+      family: `${req.body.lastName}`,
+      given: [`${req.body.firstName}`, `${req.body.middleName}`],
     },
     telecom: [
       {
         system: "phone",
-        value: `"${req.body.phoneNo}"`,
+        value: `${req.body.phoneNo}`,
         use: "mobile",
         rank: 1,
       },
@@ -50,18 +57,18 @@ exports.addContact = async (req, res, next) => {
     address: {
       use: "home",
       type: "postal/physical/both",
-      text: `"${req.body.city},${req.body.district},${req.body.state},${req.body.country}"`,
-      line: [`"${req.body.streetName}"`],
-      city: `"${req.body.city}"`,
-      district: `"${req.body.district}"`,
-      state: `"${req.body.state}"`,
-      country: `"${req.body.country}"`,
-      postalCode: `"${req.body.postalCode}"`,
+      text: `${req.body.city},${req.body.district},${req.body.state},${req.body.country}`,
+      line: [`${req.body.streetName}`],
+      city: `${req.body.city}`,
+      district: `${req.body.district}`,
+      state: `${req.body.state}`,
+      country: `${req.body.country}`,
+      postalCode: `${req.body.postalCode}`,
     },
-    gender: `"${req.body.gender}"`,
+    gender: `${req.body.gender}`,
     organization: {
-      reference: "Organization/1",
-      display: `"${req.body.workplace}"`,
+      reference: "Organization",
+      display: `${req.body.workplace}`,
     },
   };
   const session = driver.session();
@@ -73,7 +80,20 @@ exports.addContact = async (req, res, next) => {
   session
     .run(query, params)
     .then(() => {
-      res.send("contact added sucessfully");
+      res.send({ message: "contact added sucessfully" });
     })
     .catch((err) => console.log(err));
+};
+
+exports.updatePersonalData = async (req, res, next) => {
+  var session = driver.session();
+  var query = `MATCH(n:Patient{value:$identifierValue})
+               MERGE(n)-[:identifies{}]->(m:patient{resourceType:$resourceType,active:$active,gender:$gender,birthDate:$birthDate,deceasedBoolean:$deceasedBoolean,multipleBirthBoolean:$multipleBirthBoolean,multipleBirthInteger:$multipleBirthInteger})
+               MERGE(n)-[a:hasName{use:$nameUse}]->(o:name{given:$given,family:$nameFamily,prefix:$prefix,suffix:$suffix})
+               MERGE(n)-[:telecom{system:$telecom1System}]->(q:phone{use:$telecom1Use,value:$telecom1Value,rank:$telecom1rank})
+               MERGE(n)-[:telecom{system:$telecom2System}]->(q1:phone{use:$telecom2Use,value:$telecom2Value,rank:$telecom2rank})
+               MERGE(n)-[:address{use:$addressUse}]->(r:addressUse{type:$addressType,text:$addressText,line:$line,city:$city,district:$district,country:$country,state:$state,postalCode:$postalCode})
+               MERGE(n)-[:maritialStatus{text:$maritalStatustext}]->(:coding{code:$maritalStatusCodingCode,system:$maritalStatusCodingSystem})
+               MERGE(n)-[:photo]->(:photo{contentType:$photoContentType,url:$photoUrl,creation:$photoCreation})
+               MERGE(n)-[:communication{preferred:$communicationprefered,text:$communicationLanguagetext}]->(:coding{system:$communicationLanguageCodingSystem,code:$communicationLanguageCodingCode})`;
 };

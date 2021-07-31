@@ -63,17 +63,21 @@ exports.doctorSearch = async (req, res, next) => {
   session
     .run(query)
     .then((result) => {
-      var returnData = {};
-      var nameObj = result.records[0]._fields[2].properties;
-      returnData.doctorId = result.records[0]._fields[0];
-      returnData.gender = result.records[0]._fields[1];
-      returnData.photo = result.records[0]._fields[3];
-      returnData.qualification = result.records[0]._fields[4];
-      returnData.name = `${nameObj.prefix}.${nameObj.given[0]} ${
-        nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
-      }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
-      res.send(returnData);
+      var data = result.records.map((el) => {
+        var returnData = {};
+        returnData.doctorId = el._fields[0];
+        returnData.gender = el._fields[1];
+        returnData.photo = el._fields[3];
+        returnData.qualifiction = el._fields[4];
+        var nameObj = el._fields[2].properties;
+        returnData.name = `${nameObj.prefix}.${nameObj.given[0]} ${
+          nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
+        }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
+        return returnData;
+      });
+      return data;
     })
+    .then((returnData) => res.send(returnData))
     .catch((err) => {
       next(err);
     });

@@ -44,9 +44,7 @@ function DocumentViewer() {
             <Page pageNumber={page} className="documentViewer__page" />
           ))}
       </Document>
-      <a href="http://localhost:7000/report?id=2000-03-16456132&reportName=1622447862606-Interrupt%20Cycle.pdf" download>
-        <div className="documentViewer__download">Download</div>
-      </a>
+        <div className="documentViewer__download">Share</div>
 
       <div className="documentViewer__reports">
         <ul>

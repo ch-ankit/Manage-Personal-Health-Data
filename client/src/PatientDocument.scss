@@ -53,13 +53,12 @@
         table{
             width: 80%;
             background-color: white;
-            border: 1px solid lightgreen;
             text-align: center;
             tbody{
                 tr{
                     background-color: lightblue;
                     cursor: pointer;
-
+                    height: 3em;
                     &:hover{
                         background-color: rgb(146, 207, 228);
                     }
@@ -73,7 +72,55 @@
             }
         }
     }
-   
+    &s__dataList{
+    }
+    &s__shareIcon{
+        position: absolute;
+        .shareIcon{
+            width:1.5em;
+            height: 2.8em;
+            margin-left: 5px;
+            box-shadow: 0 0 10px rgba(70, 65, 65,0.5);
+        }
+        &:hover{
+            background-color: rgba(182, 179, 179, 0.6);
+        }
+    }
+    &__alert{
+        position: absolute;
+        background-color: white;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 2em;
+        border: 1px solid lightgreen;
+        border-top: 0;
+        display: none;
+        h3{
+            width: 100%;
+            margin-bottom: 1em;
+        }
+        div{
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+
+            button{
+                background-color: white;
+                outline:none;
+                padding: 0.5em;
+                border: 1px solid lightgreen;
+                box-shadow: 0 0 15px rgba(122, 119, 119,0.5);
+                cursor: pointer;
+
+                &:hover{
+                    background-color: lightgrey;
+                }
+            }
+        }
+        &.active{
+            display: block;
+        }
+    }
 }
 
 @media screen and (max-width:600px) {

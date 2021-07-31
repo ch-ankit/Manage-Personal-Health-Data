@@ -3,7 +3,8 @@ import {useDispatch, useSelector} from 'react-redux'
 import "./PatientDocument.scss"
 import {SearchIcon} from '@heroicons/react/solid'
 import { useHistory } from 'react-router'
-import { documentGet } from './features/counterSlice'
+import { documentGet, shareDocs } from './features/counterSlice'
+import {ShareIcon} from "@heroicons/react/solid"
 function PatientDocuments() {
     const [searchText,setSearchText] = useState('');
     const [category, setCategory]=useState('')
@@ -30,6 +31,21 @@ function PatientDocuments() {
     },[]);
     return (
         <div className="patientDocument">
+            <div className="patientDocument__alert">
+                <h3>Files added to the sharing list</h3>
+                <div>
+                    <button
+                    onClick={()=>{
+                        history.push("/home/shareDocuments")
+                    }}
+                    >Share Documents</button>
+                    <button
+                    onClick={()=>{
+                        document.querySelector(".patientDocument__alert").classList.remove('active')
+                    }}
+                    >Ok</button>
+                </div>
+            </div>
             {console.log(temporaryData)}
             <div className="patientDocument__content">
                 <div className="patientDocument__documents">
@@ -185,7 +201,6 @@ function PatientDocuments() {
                         <table>
                             <thead>
                                 <tr>
-                                    <td>Id</td>
                                     <td>Record Type</td>
                                     <td>Created Date</td>
                                     <td>Symptoms</td>
@@ -197,17 +212,36 @@ function PatientDocuments() {
                             {console.log(temporaryData)}
                                 {Object.keys(temporaryData).map((key)=>{
                                      return(
-                                        <tr key={key} onClick={()=>{
+                                        <tr className="patientDocuments__dataList" key={key}  >
+                                            <td onClick={()=>{
                                             dispatch(documentGet(temporaryData[key].filename));
                                             history.push('documentviewer'
-                                            )}} >
-                                            <td>{temporaryData[key].date}</td>
-                                            <td>{temporaryData[key].reportTitle}</td>
-                                            <td>{temporaryData[key].date}</td>
-                                            <td>{temporaryData[key].symptoms}</td>
-                                            <td>{temporaryData[key].category}</td>
-                                            <td>{temporaryData[key].hospitalName}</td>
-                                        </tr>)
+                                            )}}>{temporaryData[key].reportTitle}</td>
+                                            <td onClick={()=>{
+                                            dispatch(documentGet(temporaryData[key].filename));
+                                            history.push('documentviewer'
+                                            )}}>{temporaryData[key].date}</td>
+                                            <td onClick={()=>{
+                                            dispatch(documentGet(temporaryData[key].filename));
+                                            history.push('documentviewer'
+                                            )}}>{temporaryData[key].symptoms}</td>
+                                            <td onClick={()=>{
+                                            dispatch(documentGet(temporaryData[key].filename));
+                                            history.push('documentviewer'
+                                            )}}>{temporaryData[key].category}</td>
+                                            <td onClick={()=>{
+                                            dispatch(documentGet(temporaryData[key].filename));
+                                            history.push('documentviewer'
+                                            )}}>{temporaryData[key].hospitalName}</td>
+                                            <td className="patientDocuments__shareIcon"
+                                            onClick={()=>{
+                                                dispatch(shareDocs(temporaryData[key]));
+                                                document.querySelector('.patientDocument__alert').classList.toggle("active");
+                                            }}
+                                            ><ShareIcon className="shareIcon" /> </td>
+                                        </tr>
+                                    
+                                        )
                                 })}
                             </tbody>
                         </table>

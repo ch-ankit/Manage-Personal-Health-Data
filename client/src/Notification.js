@@ -1,33 +1,45 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux'
 import { io } from 'socket.io-client'
 import "./HomeNav.scss"
 import { darkmode, logoutUser, logoutDoctor } from './features/counterSlice';
+
 function Notification() {
-    const [update, setUpdate] = useState('')
-    const socket = io("http://localhost:7000", {
-        path: '/notification/',
-    })
-    useEffect(() => {
-        console.log('hello')
-    }, [update])
-    socket.on('connection', () => {
-        console.log('connected')
-    })
-    const params = {
-        senderId: 12345
-    }
-    socket.emit('joinNotifications', params, () => { })
-    socket.on('recieveNotifications', (request) => {
-        setUpdate(request)
-    })
+    const [connectedUsers, setConnectedUsers] = useState('')
+    const [intendedDoctor, setIntendedDoctor] = useState('')
+    const [sentPatientName, setSentPatientName] = useState('')
+    const [notifier, setNotifier] = useState('')
+    const socket = useRef()
     const history = useHistory();
     const dispatch = useDispatch()
     const docData = useSelector(state => state.user.doctor)
     const userData = useSelector(state => state.user.value) ?? docData;
     let darkMode = useSelector((state) => state.user.darkMode)
     const [, setDark] = useState(false)
+
+    useEffect(() => {
+        socket.current = io("http://localhost:7000", {
+            path: '/notification/',
+        })
+    })
+    useEffect(() => {
+        if (docData) {
+            socket.current.emit('addUser', docData.uId)
+            socket.current.on('getUsers', (users) => setConnectedUsers(users))
+        } else {
+            socket.current.emit('addUser', userData.uId)
+            socket.current.on('getUsers', (users) => setConnectedUsers(users))
+        }
+    }, [docData, userData])
+
+    useEffect(() => {
+        socket.current.on('pushNotification', (parameters) => {
+            setIntendedDoctor(parameters.doctorId)
+        })
+    })
+    console.log(notifier)
+
     useEffect(() => {
         const changeBackGround = () => {
             if (document.querySelector('.circle') != null) {
@@ -39,10 +51,18 @@ function Notification() {
         return changeBackGround;
     }
     );
-    const manageClick = () => {
-        socket.emit('sendNotifications', {
-            message: `You clicked on the AAAA`
-        }, () => { })
+
+    const handlelClick = () => {
+        const params = {
+            patientName: 'Babin',
+            patientId: '777333'
+        }
+        socket.current.on('connect', () => {
+
+        })
+        socket.current.emit('shareDocs', params, () => {
+            console.log('Shared from client')
+        })
     }
     return (
         <div className="homeNav">
@@ -62,7 +82,10 @@ function Notification() {
                 </div>
                 Dark
             </div>
-            <div onClick={manageClick}>AAAA</div>
+            {
+                docData.uId === intendedDoctor ? <div>Socket is working</div> : ''
+            }
+            <button onClick={handlelClick}>Share</button>
             <div className="homeNav__right" onClick={() => {
                 document.querySelector('.homeNav__onClick').classList.toggle('active')
             }}>

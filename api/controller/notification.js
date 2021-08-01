@@ -1,6 +1,6 @@
-exports.io = (io) => {
+exports.io = (io, name, doctorId) => {
     io.on('connection', (socket) => {
-        console.log(socket)
+        console.log(`${name} shared their records to ${doctorId}`)
         socket.on('joinNotifications', (params, cb) => {
             console.log(params)
             socket.join(params.sender)

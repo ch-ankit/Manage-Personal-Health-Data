@@ -85,6 +85,70 @@ exports.addContact = async (req, res, next) => {
     .catch((err) => console.log(err));
 };
 
+exports.requestedDocument = async (req, res, next) => {
+  var session = session.driver();
+  var query = `MATCH(n:Patient{value:$patientId}-[:medicalRecord]->(m:masterIdentifier{})-[:content]->(o)
+               MATCH(n1:Practitioner)-[r2:hasName]->(m2)
+               MATCH(n1)-[:photo]->(m3)
+               MATCH(n1)-[r3:hasRequested]->(m)
+               WHERE r3.status="pending"
+               RETURN n1.value,m.value,o.title,r3.Date,m2,m3.url
+              `;
+  var params = {
+    patientId: req.query.patientId,
+  };
+  session
+    .run(query, params)
+    .then((result) => {
+      var data = result.records.map((el) => {
+        var returnData = {};
+        returnData.doctortId = el._fields[0];
+        returnData.mastertId = el._fields[1];
+        returnData.title = el._fields[2];
+        returnData.requestedDate = el._fields[3];
+        returnData.photo = el._fields[5];
+        var nameObj = el._fields[4].properties;
+        returnData.doctorName = `${nameObj.prefix}.${nameObj.given[0]} ${
+          nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
+        }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
+        return returnData;
+      });
+      return data;
+    })
+    .then((data) => res.send(data))
+    .catch((err) => next(err));
+};
+
+exports.giveAcess = async (req, res, next) => {
+  var session = session.driver();
+  var query;
+  if (req.body.status == "granted") {
+    query = `MATCH(n:Patient{value:$patientId}-[:medicalRecord]->(m:masterIdentifier{value:$masterId})
+               MATCH(n1:Practitioner{value:$doctorId})
+               MATCH(n1)-[r3:hasRequested]->(m)
+               MATCH(n1)-[r4:hasAcess]->(m)
+               SET r3.status="granted,r4.terminated=0,r4.timeStamp=${
+                 Date.now() + accessTime
+               }
+              `;
+  } else {
+    query = `MATCH(n:Patient{value:$patientId}-[:medicalRecord]->(m:masterIdentifier{value:$masterId})
+               MATCH(n1:Practitioner{value:$doctorId})
+               MATCH(n1)-[r3:hasRequested]->(m)
+               SET r3.status="rejected"
+              `;
+  }
+  var params = {
+    patientId: req.body.patientId,
+    doctorId: req.body.doctorId,
+    acessTime: req.body.acessTime,
+    masterId: req.body.masterId,
+  };
+  session
+    .run(query, params)
+    .then(() => res.send({ message: "acess re-granted" }))
+    .catch((err) => next(err));
+};
 exports.updatePersonalData = async (req, res, next) => {
   var session = driver.session();
   var query = `MATCH(n:Patient{value:$identifierValue})

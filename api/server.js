@@ -28,11 +28,23 @@ io.on('connection', (socket) => {
     addUsers(userId, socket.id)
     io.emit('getUsers', socketUsers)
   })
-  //send and get notification
+  socket.on('checkUser', (params) => {
+    const data = socketUsers.filter(el => el.userId == params.doctorId)
+    console.log(params, 'This is params')
+    console.log(socketUsers, "These are socket users")
+    console.log(data, 'This is data')
+    if (data) {
+      io.to(data[0].socketId).emit('verifiedUser', params)
+    } else {
+      io.emit('docotrOffline', params)
+    }
+  })
+  // send and get notification
   socket.on('disconnect', () => {
     console.log('A user disconnected')
     removeUsers(socket.id)
     io.emit('getUsers', socketUsers)
   })
 })
+
 app.set('socketServer', io)

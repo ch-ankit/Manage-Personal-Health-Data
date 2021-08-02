@@ -29,7 +29,7 @@ exports.shareFile = async (req, res, next) => {
       return name
 
     }).then((name) => {
-      io.emit('pushNotification', ({ doctorId: req.body.doctorId, patientName: name }))
+      io.emit('pushNotificationDoctor', ({ doctorId: req.body.doctorId, patientName: name }))
       res.send({
         message: "access granted",
       });

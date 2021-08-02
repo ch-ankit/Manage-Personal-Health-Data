@@ -98,3 +98,31 @@ exports.notifications = async (req, res, next) => {
     })
     .catch((err) => next(err));
 };
+
+exports.toAddList = async (req, res, next) => {
+  var session = driver.session();
+  var query = `MATCH (n:Patient{})-[r:knows{}]->(m:Practitioner{value:"${req.query.doctorId}"})
+               MATCH(n)-[r1:hasName]->(m1)
+               MATCH(n)-[r2:photo]->(m2:photo)
+               WHERE r.status="pending" RETURN n.value,m1,m2.url
+               `;
+  session
+    .run(query, {})
+    .then((result) => {
+      var data = result.records.map((el) => {
+        var returnData = {};
+        returnData.pateintId = el._fields[0];
+        returnData.photo = el._fields[2];
+        var nameObj = el._fields[1].properties;
+        returnData.name = `${nameObj.prefix}.${nameObj.given[0]} ${
+          nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
+        }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
+        return returnData;
+      });
+      return data;
+    })
+    .then((data) => res.send(data))
+    .catch((err) => {
+      next(err);
+    });
+};

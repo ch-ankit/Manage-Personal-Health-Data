@@ -29,3 +29,21 @@ content-type:application/json
     "doctorId":"777333",
     "masterId":"1627213034952"
 }
+
+###
+POST http://localhost:7000/share/addDoctor
+content-type:application/json
+
+{
+    "patientId":"20000707-513569",
+    "doctorId":"777333"
+}
+###
+POST http://localhost:7000/share/addPatient
+content-type:application/json
+
+{
+    "patientId":"20000707-513569",
+    "doctorId":"777333",
+    "status":"accepted"
+}

@@ -1,6 +1,50 @@
 const driver = require("./../database");
 var path = require("path");
 
+exports.patientKnowsDoctor = async (req, res, next) => {
+  var session = driver.session();
+  var params = {
+    patientId: req.body.patientId,
+    doctorId: req.body.doctorId,
+  };
+  session
+    .run(
+      `MATCH(n:Patient{value:$patientId})
+       MATCH(m:Practitioner{value:$doctorId})
+       MERGE(n)-[r:knows{status:"pending",since:"not defined"}]->(m)
+      `,
+      params
+    )
+    .then(() => {
+      res.send({ message: "Doctor added known list" });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+exports.doctorAcceptsPatient = async (req, res, next) => {
+  var session = driver.session();
+  var query;
+  if (req.body.status == "accepted") {
+    query = `MATCH (n:Patient{value:"${
+      req.body.patientId
+    }"})-[r:knows{}]->(m:Practitioner{value:"${
+      req.body.doctorId
+    }"}) SET r.status="accepted",r.since="${Date()}"`;
+  } else {
+    query = `MATCH (n:Patient{value:"${req.body.patientId}"})-[r:knows{}]->(m:Practitioner{value:"${req.body.doctorId}"}) SET r.status="rejected"`;
+  }
+  session
+    .run(query)
+    .then(() => {
+      res.send({ message: "Response recorded" });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
 exports.shareFile = async (req, res, next) => {
   var session = driver.session();
   const io = req.app.get("socketServer");

@@ -3,15 +3,17 @@ var path = require("path");
 
 exports.shareFile = async (req, res, next) => {
   var session = driver.session();
+  const io = req.app.get('socketServer')
+  // console.log(io)
   var query = `MATCH (n:Patient{value:$patientId})-[r:medicalRecord{}]->(m:masterIdentifier{value:$masterId})
-                MATCH(n1:Practitioner{value:$doctorId})
-                MERGE(n1)-[r2:hasAcess{recordId:m.value,patientId:n.value,timeStamp:${(
-                  Date.now() / 60000 +
-                  parseInt(req.body.accessTime)
-                ).toString()},sharedDate:"${Date()}",accessTime:"${
-    req.body.accessTime
-  }",terminated:0,accessedDate:""}]->(m)
-                return n.value,r.value,m.value,r2.timeStamp,r2.acessedDate
+               MATCH(n)-[r1:hasName]->(m1:name)              
+               MATCH(n2:Practitioner{value:$doctorId})
+               MERGE(n2)-[r2:hasAcess{recordId:m.value,patientId:n.value,timeStamp:${(
+      Date.now() / 60000 +
+      parseInt(req.body.accessTime)
+    ).toString()},sharedDate:"${Date()}",accessTime:"${req.body.accessTime
+    }",terminated:0,accessedDate:""}]->(m)
+                return n.value,r.value,m.value,r2.timeStamp,r2.acessedDate,m1
                 `;
   session
     .run(query, {
@@ -20,12 +22,19 @@ exports.shareFile = async (req, res, next) => {
       masterId: req.body.masterId,
     })
     .then((result) => {
-      console.log(Date.now() / 60000, result.records[0]._fields[3]);
+      var nameObj = result.records[0]._fields[5].properties;
+      var name = `${nameObj.prefix}.${nameObj.given[0]} ${nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
+        }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`
+        }`;
+      return name
+
+    }).then((name) => {
+      io.emit('pushNotification', ({ doctorId: req.body.doctorId, patientName: name }))
       res.send({
         message: "access granted",
       });
     })
-    .catch((err) => next(err));
+    .catch((err) => console.log(err));
 };
 
 exports.getSharedFile = async (req, res, next) => {
@@ -62,11 +71,9 @@ exports.getSharedFile = async (req, res, next) => {
           .then()
           .catch((err) => next(err));
         res.send({
-          message: `${result.records[0]._fields[2]} has  access to ${
-            result.records[0]._fields[0]
-          }'s document: ${result.records[0]._fields[1]} for ${
-            result.records[0]._fields[3] - Date.now() / 60000
-          }`,
+          message: `${result.records[0]._fields[2]} has  access to ${result.records[0]._fields[0]
+            }'s document: ${result.records[0]._fields[1]} for ${result.records[0]._fields[3] - Date.now() / 60000
+            }`,
         });
       } else {
         res.send({

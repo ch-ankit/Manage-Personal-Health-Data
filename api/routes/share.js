@@ -8,9 +8,11 @@ router
   .get(shareController.getSharedFile);
 
 router.route("/recentdocuments").get(shareController.sharedDocuments);
+
 router
   .route("/recentdocumentshistory")
   .get(shareController.sharedDocumentsHistory);
+
 router.route("/terminate").post(shareController.terminateShare);
 
 module.exports = router;

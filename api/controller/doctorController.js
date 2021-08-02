@@ -74,3 +74,27 @@ exports.recentDocuments = async (req, res, next) => {
     })
     .catch((err) => next(err));
 };
+
+exports.notifications = async (req, res, next) => {
+  var session = driver.session();
+  session
+    .run(
+      `MATCH(n:Practitioner{value:"${req.query.doctorId}"})-[:hasNotification]->(m:notification) RETURN m.patientName,m.documentId,m.time,m.doctorId,m.markAsRead`
+    )
+    .then((result) => {
+      var data = result.records.map((el) => {
+        var returnData = {};
+        returnData.patientName = el._fields[0];
+        returnData.documentId = el._fields[1];
+        returnData.time = el._fields[2];
+        returnData.doctorId = el._fields[3];
+        returnData.markAsRead = el._fields[4];
+        return returnData;
+      });
+      return data;
+    })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => next(err));
+};

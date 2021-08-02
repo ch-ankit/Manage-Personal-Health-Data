@@ -38,7 +38,21 @@ exports.shareFile = async (req, res, next) => {
           users = users.filter(el => req.body.doctorId == el.userId)
           if (users[0]) {
             console.log(users)
-            io.to(users[0].socketId).emit('pushNotificationDoctor', ({ doctorId: req.body.doctorId, patientName: name }))
+            var date = new Date()
+            var hours = date.getHours();
+            var minutes = date.getMinutes();
+            var ampm = hours >= 12 ? 'pm' : 'am';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // the hour '0' should be '12'
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            var strTime = hours + ':' + minutes + ' ' + ampm;
+            console.log(strTime)
+            io.to(users[0].socketId).emit('pushNotificationDoctor', ({ doctorId: req.body.doctorId, patientName: name, time: strTime, documentId: req.body.masterId }))
+            var session = driver.session()
+            session.run(`MATCH(n:Practitioner{value:${req.body.doctorId}}),
+            MERGE(n)-[:hasNotification]->(:notification{doctorId:${req.body.doctorId}, patientName:${name}, time:${strTime},documentId:${req.body.masterId},markAsRead:"false"})`, {})
+              .then(() => { console.log("notification added to database") })
+              .catch(err => next(err))
           } else {
             console.log('Sorry Socket id did not match with connected users')
           }

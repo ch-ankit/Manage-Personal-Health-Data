@@ -10,7 +10,7 @@ function HomeNav() {
     const [connectedUsers, setConnectedUsers] = useState('')
     const [intendedDoctor, setIntendedDoctor] = useState('')
     const [sentPatientName, setSentPatientName] = useState('')
-    const [notifier, setNotifier] = useState('')
+    const [notifier, setNotifier] = useState([])
     const socket = useRef()
     const history = useHistory();
     const dispatch = useDispatch()
@@ -40,7 +40,7 @@ function HomeNav() {
         socket.current.on('pushNotificationDoctor', (parameters) => {
             console.log('Run from push nots')
             setCount((prevState) => prevState + 1)
-            setNotifier(parameters)
+            setNotifier((prevState) => [...prevState, parameters])
             setIntendedDoctor(parameters.doctorId)
             setSentPatientName(parameters.patientName)
             // socket.current.emit('checkUser', parameters)
@@ -53,7 +53,7 @@ function HomeNav() {
         // socket.current.on('doctorOffline', (parameters) => {
         //     socket.emit('handleOffline', parameters)
         // })
-    })
+    }, [])
     console.log(notifier, intendedDoctor, sentPatientName, count)
 
     useEffect(() => {
@@ -67,6 +67,10 @@ function HomeNav() {
         return changeBackGround;
     }
     );
+    var displayNotifications
+    if (notifier) {
+        displayNotifications = Object.keys(notifier).map(el => <li>{notifier[el].patientName} shared a document with you</li>)
+    }
     return (
         <div className="homeNav">
             <h1>MHPD</h1>  {/* title of the project */}
@@ -86,7 +90,14 @@ function HomeNav() {
                 Dark
             </div>
             <div>
-                <BellIcon className={count === 0 ? "homeNav__bellIconNoNots" : "homeNav__bellIconNots"} /> {count === 0 ? '' : count}
+                <BellIcon className={count === 0 ? "homeNav__bellIconNoNots" : "homeNav__bellIconNots"} onClick={() => {
+                    document.querySelector('.homeNav__bellIconOnClick').classList.toggle('active')
+                }} /> {count === 0 ? '' : count}
+                <div className="">
+                    <ul>
+                        {notifier ? displayNotifications : ''}
+                    </ul>
+                </div>
             </div>
             <div className="homeNav__right" onClick={() => {
                 document.querySelector('.homeNav__onClick').classList.toggle('active')
@@ -103,6 +114,7 @@ function HomeNav() {
                             dispatch(logoutDoctor())
                             darkMode && dispatch(darkmode())
                             history.push('/')
+                            window.location.reload()
                         }}>Log Out</li>
                     </ul>
                 </div>

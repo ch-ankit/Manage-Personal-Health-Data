@@ -6,6 +6,14 @@ PORT = process.env.PORT || 7000;
 
 const server = app.listen(PORT, () => {
   console.log(`server started at localhost:${PORT}`);
+  var session = driver.session();
+  session
+    .run(`MATCH(n:Socketuser) DELETE n`)
+    .then(() => {
+      console.log("Users Removed");
+    })
+    .catch((err) => console.log(err));
+
 });
 const io = socketIO(server, {
   path: "/notification/",

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import "./ShareDocuments.scss"
 import {TrashIcon} from "@heroicons/react/outline"
-import { deleteShareDocs } from './features/counterSlice';
+import { deleteShareDocs, removeShareDocs } from './features/counterSlice';
 function ShareDocuments() {
     const documentsList=useSelector(state=>state.user.shareDocuments);
     const userData=useSelector(state=>state.user.value)
@@ -57,7 +57,9 @@ function ShareDocuments() {
         const data=await response.json()
         console.log(data)
         
-        })
+        });
+        dispatch(removeShareDocs());
+        document.querySelector(".shareDocuments__popup").classList.remove("active");
         
     }
     return (

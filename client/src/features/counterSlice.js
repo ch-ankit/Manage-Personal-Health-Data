@@ -60,7 +60,7 @@ export const userSlice = createSlice({
     window.localStorage.setItem('shareDocuments',data1);
   },
   removeShareDocs:(state)=>{
-      state.doctor=[];
+      state.shareDocuments=[];
       window.localStorage.setItem('shareDocuments',[]);
   }
   }

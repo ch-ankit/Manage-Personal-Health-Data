@@ -34,9 +34,11 @@ function Notification() {
     }, [docData, userData])
 
     useEffect(() => {
-        socket.current.on('pushNotification', (parameters) => {
+        socket.current.on('pushNotificationDoctor', (parameters) => {
+            setNotifier(parameters)
             setIntendedDoctor(parameters.doctorId)
         })
+
     })
     console.log(notifier)
 
@@ -82,9 +84,6 @@ function Notification() {
                 </div>
                 Dark
             </div>
-            {
-                docData.uId === intendedDoctor ? <div>Socket is working</div> : ''
-            }
             <button onClick={handlelClick}>Share</button>
             <div className="homeNav__right" onClick={() => {
                 document.querySelector('.homeNav__onClick').classList.toggle('active')

@@ -1,33 +1,51 @@
-.homeNav{
+.homeNav {
     width: 100%;
     display: flex;
-    justify-content:space-between;
+    justify-content: space-between;
     background-color: white;
     border-bottom: 1px solid lightgreen;
     box-shadow: 0px 0px 15px rgb(77, 226, 77);
-    h1{
-        margin-left: 1.4em;       
+    h1 {
+        margin-left: 1.4em;
     }
 
-    &__right{
+    &__right {
         display: flex;
         position: relative;
-        width:fit-content;
+        width: fit-content;
         justify-content: space-evenly;
         align-items: center;
         border: 1px solid lightgreen;
         border-radius: 100em;
         cursor: pointer;
-        p{
+        p {
             padding: 0 0.5em;
         }
-        .downArrow{
-            border:5px solid transparent;
-            border-top-color:black ;
+        .downArrow {
+            border: 5px solid transparent;
+            border-top-color: black;
             margin-top: 0.4em;
         }
     }
-    &__onClick{
+    &__bellIconNots {
+        width: 1.5em;
+        height: 2.8em;
+        color: red;
+        &:hover {
+            background-color: rgba(182, 179, 179, 0.6);
+            cursor: pointer;
+        }
+    }
+    &__bellIconNoNots {
+        width: 1.5em;
+        height: 2.8em;
+        border-color: red;
+        &:hover {
+            background-color: rgba(182, 179, 179, 0.6);
+            cursor: pointer;
+        }
+    }
+    &__onClick {
         position: absolute;
         background-color: white;
         top: 100%;
@@ -35,39 +53,39 @@
         height: 5em;
         display: none;
         z-index: 100;
-        ul{
+        ul {
             height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: space-evenly;
             align-items: center;
 
-            li{
+            li {
                 text-align: center;
                 width: 100%;
                 list-style: none;
-                &:hover{
+                &:hover {
                     background-color: lightcyan;
                 }
             }
         }
 
-        &.active{
+        &.active {
             display: block;
         }
     }
 
-    &__icon{
+    &__icon {
         width: 2.5rem;
         height: 2.5rem;
         border-radius: 50%;
         border: 1px solid blue;
     }
-    .iconDark{
+    .iconDark {
         mix-blend-mode: exclusion;
     }
 
-    .darkMode{
+    .darkMode {
         position: fixed;
         width: 100%;
         height: 100vh;
@@ -77,30 +95,28 @@
         mix-blend-mode: difference;
         display: block;
 
-        &.active{
+        &.active {
             background-color: rgb(240, 238, 238);
-            mix-blend-mode:difference;
+            mix-blend-mode: difference;
             display: block;
         }
     }
-    .toggleButton{
-        width:3em;
+    .toggleButton {
+        width: 3em;
         height: 2em;
         background-color: black;
         border-radius: 10em;
 
-        .circle{
+        .circle {
             width: 50%;
             height: 100%;
             background-color: green;
             border-radius: 50%;
-        
-            &.active{
+
+            &.active {
                 background-color: aqua;
                 margin-left: auto;
-
             }
         }
     }
-    
 }

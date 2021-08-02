@@ -34,11 +34,15 @@ exports.shareFile = async (req, res, next) => {
         .run(`MATCH (n:Socketuser) return n;`)
         .then((result) => {
           var users = result.records.map(el => el._fields[0].properties)
-          console.log("user added");
           return users
         }).then((users) => {
-          users.filter(el => el.userId == req.body.doctorId)
-          io.to(users[0].socketId).emit('pushNotificationDoctor', ({ doctorId: req.body.doctorId, patientName: name }))
+          users = users.filter(el => req.body.doctorId == el.userId)
+          if (users[0]) {
+            console.log(users)
+            io.to(users[0].socketId).emit('pushNotificationDoctor', ({ doctorId: req.body.doctorId, patientName: name }))
+          } else {
+            console.log('Sorry Socket id did not match with connected users')
+          }
         })
         .catch((err) => console.log(err));
       res.send({

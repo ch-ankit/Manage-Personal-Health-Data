@@ -29,7 +29,18 @@ exports.shareFile = async (req, res, next) => {
       return name
 
     }).then((name) => {
-      io.emit('pushNotificationDoctor', ({ doctorId: req.body.doctorId, patientName: name }))
+      var session = driver.session();
+      session
+        .run(`MATCH (n:Socketuser) return n;`)
+        .then((result) => {
+          var users = result.records.map(el => el._fields[0].properties)
+          console.log("user added");
+          return users
+        }).then((users) => {
+          users.filter(el => el.userId == req.body.doctorId)
+          io.to(users[0].socketId).emit('pushNotificationDoctor', ({ doctorId: req.body.doctorId, patientName: name }))
+        })
+        .catch((err) => console.log(err));
       res.send({
         message: "access granted",
       });

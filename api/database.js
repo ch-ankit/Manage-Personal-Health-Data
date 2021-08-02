@@ -19,11 +19,13 @@ var params = {
 };
 session
   .run(
-    `MATCH(n:Patient{value:"20000101-794155"})-[r:medicalRecord{}]->(n1:masterIdentifier{value:"1626764008937"})-[:hasReport{}]-(m:reportIdentifier{value:"104"})-[r1:basedOn]->() return r1`
+    `MATCH(n:Socketuser) return n`
   )
   .then((result) => {
     if (result.records[0]) {
-      console.log({ message: "report available" });
+      var users = result.records.map(el => el._fields[0].properties)
+      console.log(users)
+      // console.log(result.records[1]._fields);
     } else {
       console.log({ message: "report not available" });
     }

@@ -1,6 +1,7 @@
 ###
 GET http://localhost:7000/share?id=20000707-513569&doctorId=777333&masterId=1627121446880
 
+
 ###
 POST http://localhost:7000/share
 content-type:application/json
@@ -9,6 +10,22 @@ content-type:application/json
     "id":"20000707-513569",
     "doctorId":"777333",
     "masterId":"1627121446880",
-    "accessTime":"30"
+    "accessTime":"2880"
 
+}
+
+###
+GET http://localhost:7000/share/recentdocuments?patientId=20000707-513569
+
+###
+GET http://localhost:7000/share/recentdocumentshistory?patientId=20000707-513569
+
+###
+POST http://localhost:7000/share/terminate
+content-type:application/json
+
+{
+    "id":"20000101-592524",
+    "doctorId":"777333",
+    "masterId":"1627213034952"
 }

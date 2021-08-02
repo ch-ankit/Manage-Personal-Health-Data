@@ -52,6 +52,7 @@ function DoctorLanding() {
                         </div>
                     </div>
                     <div className="doctorLanding__profile">
+                        <h2>Profile</h2>
                         <div className="doctorLanding__docImage">
                             <img src={docData.photo} alt="Doctor" />
                         </div>

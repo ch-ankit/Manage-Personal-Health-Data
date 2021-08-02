@@ -46,9 +46,9 @@ exports.recentPatient = async (req, res, next) => {
 
 exports.recentDocuments = async (req, res, next) => {
   var session = driver.session();
-  var query = `MATCH(n:Patient{value:$patientId})-[r:medicalRecord]->(m:masterIdentifier)
+  var query = `MATCH(n:Patient{value:$patientId})-[r:medicalRecord]->(m:masterIdentifier)-[:content]->(o:attachment)
                MATCH(n1:Practitioner{value:$doctorId})-[r1:hasAcess]->(m)
-               RETURN n.value,n1.value,m.value,r1.terminated,r1.timeStamp,r1.sharedDate ORDER BY r1.timeStamp-toInteger(r1.accessTime) DESC limit 20
+               RETURN n.value,n1.value,m.value,r1.terminated,r1.timeStamp,r1.sharedDate, o.title ORDER BY r1.timeStamp-toInteger(r1.accessTime) DESC limit 20
               `;
   session
     .run(query, {
@@ -64,6 +64,7 @@ exports.recentDocuments = async (req, res, next) => {
         returnData.terminationStatus = el._fields[3].low;
         returnData.timeStamp = el._fields[4];
         returnData.sharedDate = el._fields[5];
+        returnData.title = el._fields[6];
         return returnData;
       });
       return data;

@@ -21,6 +21,7 @@ const ListPage = lazy(() => import('./ListPage'));
 const ReportUpload = lazy(() => import('./ReportUpload'));
 const ReportView = lazy(() => import('./ReportView'));
 const ShareDocuments = lazy(() => import("./ShareDocuments"));
+const RecentPatientDocuments=lazy(()=>import("./RecentPatientDocuments"));
 function App() {
   return (
     <div className="app" >
@@ -57,6 +58,10 @@ function App() {
                 <Route exact path="/Doctor">
                   <DoctorLanding />
                 </Route>
+                <Route path="/Doctor/patientDocuments" component={RecentPatientDocuments} />
+                <Route path="/Doctor/documentViewer" component={DocumentViewer} />
+                <Route path="/Doctor/reportView" component={ReportView} />
+
               </Switch>
             </Route>
             <Route path="/passwordSet/doctor" render={(routeProps) => <PasswordSet doctor={true} {...routeProps} />} />

@@ -4,6 +4,7 @@ import "./ReportView.scss"
 import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
 function ReportView() {
     const report=useSelector(state=>state.user.report);
+    const patientData=useSelector(state=>state.user.recentPatient);
     const userData=useSelector(state=>state.user.value);
     const [numPages, setNumPages] = useState(null);
 
@@ -14,7 +15,7 @@ function ReportView() {
         <div className="reportView">
             {console.log(report.value)}
             <Document
-            file={`http://localhost:7000/report?masterId=${report.filename}&id=${userData.uId}&reportName=${report.value}.pdf`}
+            file={`http://localhost:7000/report?masterId=${report.filename}&id=${userData?.uId ?? patientData?.value}&reportName=${report.value}.pdf`}
             onLoadSuccess={onDocumentLoadSuccess}
             className="reportView__document"
             >

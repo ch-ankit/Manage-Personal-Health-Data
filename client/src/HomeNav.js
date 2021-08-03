@@ -3,14 +3,17 @@ import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux'
 import { io } from 'socket.io-client'
 import { BellIcon } from "@heroicons/react/outline"
+import { UsersIcon } from "@heroicons/react/outline"
 import "./HomeNav.scss"
 import { darkmode, logoutUser, logoutDoctor } from './features/counterSlice';
-function HomeNav() {
-    const [count, setCount] = useState(0)
+function HomeNav(props) {
+    const [countNotifications, setCountNotifications] = useState(0)
+    const [countFriendReqs, setCountFriendReqs] = useState(0)
     const [connectedUsers, setConnectedUsers] = useState('')
     const [intendedDoctor, setIntendedDoctor] = useState('')
     const [sentPatientName, setSentPatientName] = useState('')
     const [notifier, setNotifier] = useState([])
+    const [friendNotifier, setFriendNotifier] = useState([])
     const socket = useRef()
     const history = useHistory();
     const dispatch = useDispatch()
@@ -39,11 +42,15 @@ function HomeNav() {
     useEffect(() => {
         socket.current.on('pushNotificationDoctor', (parameters) => {
             console.log('Run from push nots')
-            setCount((prevState) => prevState + 1)
+            setCountNotifications((prevState) => prevState + 1)
             setNotifier((prevState) => [...prevState, parameters])
             setIntendedDoctor(parameters.doctorId)
             setSentPatientName(parameters.patientName)
             // socket.current.emit('checkUser', parameters)
+        })
+        socket.current.on('pushNotificationDoctorAdd', (parameters) => {
+            setCountFriendReqs((prevState) => prevState + 1)
+            setFriendNotifier((prevState) => [...prevState, parameters])
         })
         // socket.current.on('verifiedUser', (parameters) => {
         //     setNotifier(parameters)
@@ -54,7 +61,7 @@ function HomeNav() {
         //     socket.emit('handleOffline', parameters)
         // })
     }, [])
-    console.log(notifier, intendedDoctor, sentPatientName, count)
+    console.log(friendNotifier, intendedDoctor, sentPatientName, countNotifications)
 
     useEffect(() => {
         const changeBackGround = () => {
@@ -65,11 +72,14 @@ function HomeNav() {
             }
         }
         return changeBackGround;
-    }
-    );
+    }, []);
     var displayNotifications
+    var displayFriendNotifications
     if (notifier) {
         displayNotifications = Object.keys(notifier).map(el => <li>{notifier[el].patientName} shared a document with you</li>)
+    }
+    if (friendNotifier) {
+        displayFriendNotifications = Object.keys(friendNotifier).map(el => <li>{friendNotifier[el].patientName} shared a document with you</li>)
     }
     return (
         <div className="homeNav">
@@ -89,8 +99,14 @@ function HomeNav() {
                 </div>
                 Dark
             </div>
+            {
+                props.doctor &&
+                (<div>
+                    <div><UsersIcon className={countFriendReqs === 0 ? "homeNav__userIconNoNots" : "homeNav__userIconNots"} />{countFriendReqs === 0 ? '' : countFriendReqs}</div>
+                </div>)
+            }
             <div>
-                <BellIcon className={count === 0 ? "homeNav__bellIconNoNots" : "homeNav__bellIconNots"} onClick={() => {
+                <div><BellIcon className={countNotifications === 0 ? "homeNav__bellIconNoNots" : "homeNav__bellIconNots"} onClick={() => {
                     fetch('http://localhost:7000/share', {
                         method: 'POST',
                         headers: {
@@ -103,11 +119,12 @@ function HomeNav() {
                             accessTime: "2880"
                         })
                     })
-                }} /> {count === 0 ? '' : count}
-                <div className="">
-                    <ul>
-                        {notifier ? displayNotifications : ''}
-                    </ul>
+                }} /> {countNotifications === 0 ? '' : countNotifications}
+                    <div className="">
+                        <ul>
+                            {notifier ? displayNotifications : ''}
+                        </ul>
+                    </div>
                 </div>
             </div>
             <div className="homeNav__right" onClick={() => {

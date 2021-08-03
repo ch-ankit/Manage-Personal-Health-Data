@@ -59,13 +59,13 @@ io.on('connection', (socket) => {
   socket.on('addUser', userId => {
     console.log(userId)
     addUsers(userId, socket.id)
-    io.emit('getUsers', socketUsers)
+    io.volatile.emit('getUsers', socketUsers)
   })
   // send and get notification
   socket.volatile.on('disconnect', () => {
     console.log('A user disconnected')
     removeUsers(socket.id)
-    io.emit('getUsers', socketUsers)
+    io.volatile.emit('getUsers', socketUsers)
   })
 })
 

@@ -28,7 +28,25 @@
             margin-top: 0.4em;
         }
     }
-    
+    &__userIconNots {
+        width: 1.5em;
+        height: 1.8em;
+        color: red;
+        &:hover {
+            background-color: rgba(182, 179, 179, 0.6);
+            cursor: pointer;
+        }
+    }
+    &__userIconNoNots {
+        width: 1.5em;
+        height: 1.8em;
+        border-color: red;
+        &:hover {
+            background-color: rgba(182, 179, 179, 0.6);
+            cursor: pointer;
+        }
+    }
+
     &__bellIconNots {
         width: 1.5em;
         height: 1.8em;

@@ -1,6 +1,7 @@
 import React, { lazy } from 'react'
 import { Suspense } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import AddDoctor from './AddDoctor';
 import DoctorLanding from './DoctorLanding';
 import Notification from './Notification';
 const About = lazy(() => import('./About'));
@@ -21,8 +22,8 @@ const ListPage = lazy(() => import('./ListPage'));
 const ReportUpload = lazy(() => import('./ReportUpload'));
 const ReportView = lazy(() => import('./ReportView'));
 const ShareDocuments = lazy(() => import("./ShareDocuments"));
-const RecentPatientDocuments=lazy(()=>import("./RecentPatientDocuments"));
-const SharedDocuments=lazy(()=>import("./SharedDocuments"));
+const RecentPatientDocuments = lazy(() => import("./RecentPatientDocuments"));
+const SharedDocuments = lazy(() => import("./SharedDocuments"));
 function App() {
   return (
     <div className="app" >
@@ -50,11 +51,11 @@ function App() {
                 <Route path="/home/reportView" component={ReportView} />
                 <Route path="/home/shareDocuments" component={ShareDocuments} />
                 <Route path="/home/sharedDocuments" component={SharedDocuments} />
-
+                <Route path="/home/addDoc" render={(routeProps) => <AddDoctor {...routeProps} />} />
               </Switch>
             </Route>
             <Route path="/Doctor">
-              <HomeNav />
+              <HomeNav doctor={true} />
               <HomeDrawer doctor={true} />
               <Switch>
                 <Route exact path="/Doctor">

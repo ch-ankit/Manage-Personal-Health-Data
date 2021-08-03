@@ -105,8 +105,8 @@ function HomeNav(props) {
                     <div><UsersIcon className={countFriendReqs === 0 ? "homeNav__userIconNoNots" : "homeNav__userIconNots"} />{countFriendReqs === 0 ? '' : countFriendReqs}</div>
                 </div>)
             }
-            <div>
-                <div><BellIcon className={countNotifications === 0 ? "homeNav__bellIconNoNots" : "homeNav__bellIconNots"} onClick={() => {
+            <div className="homeNav__notify">
+                <BellIcon className={countNotifications === 0 ? "homeNav__bellIconNoNots" : "homeNav__bellIconNots"} onClick={() => {
                     fetch('http://localhost:7000/share', {
                         method: 'POST',
                         headers: {
@@ -120,11 +120,10 @@ function HomeNav(props) {
                         })
                     })
                 }} /> {countNotifications === 0 ? '' : countNotifications}
-                    <div className="">
-                        <ul>
-                            {notifier ? displayNotifications : ''}
-                        </ul>
-                    </div>
+                <div className="homeNav__notifications">
+                    <ul>
+                        {notifier ? displayNotifications : ''}
+                    </ul>
                 </div>
             </div>
             <div className="homeNav__right" onClick={() => {

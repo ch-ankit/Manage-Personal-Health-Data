@@ -91,7 +91,18 @@ function HomeNav() {
             </div>
             <div>
                 <BellIcon className={count === 0 ? "homeNav__bellIconNoNots" : "homeNav__bellIconNots"} onClick={() => {
-                    document.querySelector('.homeNav__bellIconOnClick').classList.toggle('active')
+                    fetch('http://localhost:7000/share', {
+                        method: 'POST',
+                        headers: {
+                            "Content-type": 'application/json'
+                        },
+                        body: JSON.stringify({
+                            id: "20000707-513569",
+                            doctorId: "777333",
+                            masterId: "1627121446880",
+                            accessTime: "2880"
+                        })
+                    })
                 }} /> {count === 0 ? '' : count}
                 <div className="">
                     <ul>

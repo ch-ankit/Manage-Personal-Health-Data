@@ -62,7 +62,7 @@ io.on('connection', (socket) => {
     io.emit('getUsers', socketUsers)
   })
   // send and get notification
-  socket.on('disconnect', () => {
+  socket.volatile.on('disconnect', () => {
     console.log('A user disconnected')
     removeUsers(socket.id)
     io.emit('getUsers', socketUsers)

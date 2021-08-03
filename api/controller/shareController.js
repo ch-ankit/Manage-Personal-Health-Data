@@ -27,11 +27,9 @@ exports.doctorAcceptsPatient = async (req, res, next) => {
   var session = driver.session();
   var query;
   if (req.body.status == "accepted") {
-    query = `MATCH (n:Patient{value:"${
-      req.body.patientId
-    }"})-[r:knows{}]->(m:Practitioner{value:"${
-      req.body.doctorId
-    }"}) SET r.status="accepted",r.since="${Date()}"`;
+    query = `MATCH (n:Patient{value:"${req.body.patientId
+      }"})-[r:knows{}]->(m:Practitioner{value:"${req.body.doctorId
+      }"}) SET r.status="accepted",r.since="${Date()}"`;
   } else {
     query = `MATCH (n:Patient{value:"${req.body.patientId}"})-[r:knows{}]->(m:Practitioner{value:"${req.body.doctorId}"}) SET r.status="rejected"`;
   }
@@ -53,11 +51,10 @@ exports.shareFile = async (req, res, next) => {
                MATCH(n)-[r1:hasName]->(m1:name)              
                MATCH(n2:Practitioner{value:$doctorId})
                MERGE(n2)-[r2:hasAcess{recordId:m.value,patientId:n.value,timeStamp:${(
-                 Date.now() / 60000 +
-                 parseInt(req.body.accessTime)
-               ).toString()},sharedDate:"${Date()}",accessTime:"${
-    req.body.accessTime
-  }",terminated:0,accessedDate:""}]->(m)
+      Date.now() / 60000 +
+      parseInt(req.body.accessTime)
+    ).toString()},sharedDate:"${Date()}",accessTime:"${req.body.accessTime
+    }",terminated:0,accessedDate:""}]->(m)
                 return n.value,r.value,m.value,r2.timeStamp,r2.acessedDate,m1
                 `;
   session
@@ -68,9 +65,8 @@ exports.shareFile = async (req, res, next) => {
     })
     .then((result) => {
       var nameObj = result.records[0]._fields[5].properties;
-      var name = `${nameObj.prefix}.${nameObj.given[0]} ${
-        nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
-      }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
+      var name = `${nameObj.prefix}.${nameObj.given[0]} ${nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
+        }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
       return name;
     })
     .then((name) => {
@@ -82,18 +78,18 @@ exports.shareFile = async (req, res, next) => {
           return users;
         })
         .then((users) => {
+          var date = new Date();
+          var hours = date.getHours();
+          var minutes = date.getMinutes();
+          var ampm = hours >= 12 ? "pm" : "am";
+          hours = hours % 12;
+          hours = hours ? hours : 12; // the hour '0' should be '12'
+          minutes = minutes < 10 ? "0" + minutes : minutes;
+          var strTime = hours + ":" + minutes + " " + ampm;
+          console.log(strTime);
           users = users.filter((el) => req.body.doctorId == el.userId);
           if (users[0]) {
             console.log(users);
-            var date = new Date();
-            var hours = date.getHours();
-            var minutes = date.getMinutes();
-            var ampm = hours >= 12 ? "pm" : "am";
-            hours = hours % 12;
-            hours = hours ? hours : 12; // the hour '0' should be '12'
-            minutes = minutes < 10 ? "0" + minutes : minutes;
-            var strTime = hours + ":" + minutes + " " + ampm;
-            console.log(strTime);
             io.to(users[0].socketId).emit("pushNotificationDoctor", {
               doctorId: req.body.doctorId,
               patientName: name,
@@ -112,7 +108,18 @@ exports.shareFile = async (req, res, next) => {
               })
               .catch((err) => next(err));
           } else {
-            console.log("Sorry Socket id did not match with connected users");
+            console.log("Sorry Socket id did not match with connected users so backed up to database");
+            var session = driver.session();
+            session
+              .run(
+                `MATCH(n:Practitioner{value:"${req.body.doctorId}"})
+            MERGE(n)-[:hasNotification]->(:notification{doctorId:"${req.body.doctorId}", patientName:"${name}", time:"${strTime}",documentId:"${req.body.masterId}",markAsRead:"false"})`,
+                {}
+              )
+              .then(() => {
+                console.log("notification added to database");
+              })
+              .catch((err) => next(err));
           }
         })
         .catch((err) => console.log(err));
@@ -157,11 +164,9 @@ exports.getSharedFile = async (req, res, next) => {
           .then()
           .catch((err) => next(err));
         res.send({
-          message: `${result.records[0]._fields[2]} has  access to ${
-            result.records[0]._fields[0]
-          }'s document: ${result.records[0]._fields[1]} for ${
-            result.records[0]._fields[3] - Date.now() / 60000
-          }`,
+          message: `${result.records[0]._fields[2]} has  access to ${result.records[0]._fields[0]
+            }'s document: ${result.records[0]._fields[1]} for ${result.records[0]._fields[3] - Date.now() / 60000
+            }`,
         });
       } else {
         res.send({
@@ -192,9 +197,8 @@ exports.sharedDocuments = async (req, res, next) => {
         returnData.timeStamp = el._fields[4];
         returnData.doctorId = el._fields[5];
         var nameObj = el._fields[3].properties;
-        returnData.name = `${nameObj.prefix}.${nameObj.given[0]} ${
-          nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
-        }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
+        returnData.name = `${nameObj.prefix}.${nameObj.given[0]} ${nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
+          }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
         return returnData;
       });
       return data;
@@ -226,9 +230,8 @@ exports.sharedDocumentsHistory = async (req, res, next) => {
         returnData.timeStamp = el._fields[4];
         returnData.timeStamp = el._fields[5];
         var nameObj = el._fields[3].properties;
-        returnData.name = `${nameObj.prefix}.${nameObj.given[0]} ${
-          nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
-        }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
+        returnData.name = `${nameObj.prefix}.${nameObj.given[0]} ${nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
+          }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
         return returnData;
       });
       return data;

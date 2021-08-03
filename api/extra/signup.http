@@ -112,8 +112,8 @@ post http://localhost:7000/password/doctor
 content-type: application/json
 
 {
-    "id":"111111",
-    "password":"user123"
+    "id":"777333",
+    "password":"secretLuffy"
 }
 
 ###

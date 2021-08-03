@@ -1,3 +1,4 @@
+const { session } = require("neo4j-driver");
 const driver = require("./../database");
 
 exports.recentPatient = async (req, res, next) => {
@@ -58,7 +59,7 @@ exports.recentDocuments = async (req, res, next) => {
     .then((result) => {
       var data = result.records.map((el) => {
         var returnData = {};
-        returnData.pateintId = el._fields[0];
+        returnData.patientId = el._fields[0];
         returnData.doctorId = el._fields[1];
         returnData.documentId = el._fields[2];
         returnData.terminationStatus = el._fields[3].low;
@@ -72,5 +73,76 @@ exports.recentDocuments = async (req, res, next) => {
     .then((data) => {
       res.send(data);
     })
+    .catch((err) => next(err));
+};
+
+exports.notifications = async (req, res, next) => {
+  var session = driver.session();
+  session
+    .run(
+      `MATCH(n:Practitioner{value:"${req.query.doctorId}"})-[:hasNotification]->(m:notification) RETURN m.patientName,m.documentId,m.time,m.doctorId,m.markAsRead`
+    )
+    .then((result) => {
+      var data = result.records.map((el) => {
+        var returnData = {};
+        returnData.patientName = el._fields[0];
+        returnData.documentId = el._fields[1];
+        returnData.time = el._fields[2];
+        returnData.doctorId = el._fields[3];
+        returnData.markAsRead = el._fields[4];
+        return returnData;
+      });
+      return data;
+    })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => next(err));
+};
+
+exports.toAddList = async (req, res, next) => {
+  var session = driver.session();
+  var query = `MATCH (n:Patient{})-[r:knows{}]->(m:Practitioner{value:"${req.query.doctorId}"})
+               MATCH(n)-[r1:hasName]->(m1)
+               MATCH(n)-[r2:photo]->(m2:photo)
+               WHERE r.status="pending" RETURN n.value,m1,m2.url
+               `;
+  session
+    .run(query, {})
+    .then((result) => {
+      var data = result.records.map((el) => {
+        var returnData = {};
+        returnData.patientId = el._fields[0];
+        returnData.photo = el._fields[2];
+        var nameObj = el._fields[1].properties;
+        returnData.name = `${nameObj.prefix}.${nameObj.given[0]} ${
+          nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
+        }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
+        return returnData;
+      });
+      return data;
+    })
+    .then((data) => res.send(data))
+    .catch((err) => {
+      next(err);
+    });
+};
+
+exports.requestDocument = async (req, res, next) => {
+  var session = session.driver();
+  var query = `MATCH(n:Patient{value:$patientId}-[:medicalRecord]->(m:masterIdentifier{value:$masterId})
+               MATCH(n1:Practitioner{value:$doctorId})-[r1:hasAcess]->(m) WHERE r1.terminated=1 OR r1.timeStamp<${
+                 Date.now() / 60000
+               }
+               MERGE(n1)-[:hasRequested{masterId:$masterId,requestedTime:"${Date()}",status:"pending"}]->(m)
+              `;
+  var params = {
+    patientId: req.body.patientId,
+    masterId: req.body.masterId,
+    doctorId: req.body.doctorId,
+  };
+  session
+    .run(query, params)
+    .then(() => res.send({ message: "Request Added" }))
     .catch((err) => next(err));
 };

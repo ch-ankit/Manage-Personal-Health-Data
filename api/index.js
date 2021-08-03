@@ -13,7 +13,7 @@ const medicalRecordRouter = require("./routes/medicalRecord");
 const searchRouter = require("./routes/search");
 const lastVisitedRouter = require("./routes/lastVisited");
 const shareRouter = require("./routes/share");
-const doctorRouter = require("./routes/recentPatient");
+const doctorRouter = require("./routes/doctor");
 
 require("dotenv").config({ path: "./config.env" });
 app.use(cors());

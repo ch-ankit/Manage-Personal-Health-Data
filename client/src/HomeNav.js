@@ -89,7 +89,7 @@ function HomeNav() {
                 </div>
                 Dark
             </div>
-            <div>
+            <div className="homeNav__notify">
                 <BellIcon className={count === 0 ? "homeNav__bellIconNoNots" : "homeNav__bellIconNots"} onClick={() => {
                     fetch('http://localhost:7000/share', {
                         method: 'POST',
@@ -102,9 +102,10 @@ function HomeNav() {
                             masterId: "1627121446880",
                             accessTime: "2880"
                         })
-                    })
+                    });
+                    document.querySelector(".homeNav__notifications").classList.toggle("active")
                 }} /> {count === 0 ? '' : count}
-                <div className="">
+                <div className="homeNav__notifications">
                     <ul>
                         {notifier ? displayNotifications : ''}
                     </ul>

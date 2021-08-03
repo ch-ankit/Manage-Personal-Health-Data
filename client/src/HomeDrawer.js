@@ -35,7 +35,14 @@ function HomeDrawer(props) {
                         history.push('/home/documents')
                     }}>My Documents</li>)
                 }
-
+                 <li onClick={() => {
+                    document.querySelector(".homeDrawer").classList.remove("active")
+                    history.push('/home/shareDocuments')
+                }}>To be Shared</li>
+                 <li onClick={() => {
+                    document.querySelector(".homeDrawer").classList.remove("active")
+                    history.push('/home/sharedDocuments')
+                }}>Shared Documents</li>
                 <li onClick={() => {
                     document.querySelector(".homeDrawer").classList.remove("active")
                     history.push('/home/uploadRecord')

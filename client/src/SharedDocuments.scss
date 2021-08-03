@@ -3,7 +3,12 @@
     height: 94.5vh;
     overflow-y:scroll ;
     background-color: white;
-
+    padding-top: 1em;
+    h1{
+        width: 100%;
+        text-align: center;
+        margin-bottom:1em ;
+    }
     &__list{
         width:80%;
         margin: 0 auto;

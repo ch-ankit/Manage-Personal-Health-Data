@@ -5,6 +5,7 @@ import {TrashIcon} from "@heroicons/react/outline"
 import { deleteShareDocs, removeShareDocs } from './features/counterSlice';
 function ShareDocuments() {
     const documentsList=useSelector(state=>state.user.shareDocuments);
+    console.log(documentsList)
     const userData=useSelector(state=>state.user.value)
     const dispatch=useDispatch();
     const [dummy, setdummy] = useState(false);
@@ -66,7 +67,7 @@ function ShareDocuments() {
         <div className="shareDocuments">
             <h1>List of Documents to be shared</h1>
             {Object.keys(documentsList).map((key)=>{
-                return(<div className="shareDocuments__list">
+                return(<div key={key} className="shareDocuments__list">
                     <p>{documentsList[key].category}</p>
                     <p>{documentsList[key].date}</p>
                     <p>{documentsList[key].hospitalName}</p>
@@ -131,7 +132,7 @@ function ShareDocuments() {
                 <div className="shareDocuments__searchedData">
                     {Object.keys(temporaryData).map((key)=>{
                         return (
-                            <div className="shareDocuments__doctorInfo">
+                            <div key={key} className="shareDocuments__doctorInfo">
                                 <div className="shareDocuments__imgBox">
                                     <img src={temporaryData[key].photo} alt="Doctor Photo" className="shareDocuments__doctorImage" />
                                 </div>

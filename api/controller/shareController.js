@@ -9,35 +9,54 @@ exports.patientKnowsDoctor = async (req, res, next) => {
     doctorId: req.body.doctorId,
   };
   session
-    .run(
-      `MATCH(n:Patient{value:$patientId})-[:hasName]->(m)
-       MATCH(n1:Practitioner{value:$doctorId})
-       MERGE(n)-[r:knows{status:"pending",since:"not defined"}]->(n1)
-       RETURN m
-      `,
-      params
-    )
+    .run(`MATCH (n:Patient)-[:knows]->(m:Practitioner) WHERE n.value=$patientId AND m.value=$doctorId return n;`, params)
     .then((result) => {
-      var nameObj = result.records[0]._fields[0].properties;
-      var name = `${nameObj.prefix}.${nameObj.given[0]} ${nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
-        }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
+      var alreadyKnowsUser;
+      result.records[0] && (alreadyKnowsUser = result.records[0]._fields[0].properties)
+      return alreadyKnowsUser;
+    })
+    .then((alreadyKnowsUser) => {
       var session = driver.session();
-      session
-        .run(`MATCH (n:Socketuser) return n;`)
-        .then((result) => {
-          console.log(result.records)
-          var users = result.records.map((el) => el._fields[0].properties);
-          console.log(users)
-          return { users, name };
-        })
-        .then(obj => {
-          console.log(obj.users, obj.name)
-          var users = obj.users.filter((el) => req.body.doctorId == el.userId);
-          if (users[0]) {
-            io.to(users[0].socketId).volatile.emit('pushNotificationDoctorAdd', { patientName: name, patientId: req.body.patientId })
-          }
-          res.send({ message: "Doctor added known list" });
-        })
+      var params = {
+        patientId: req.body.patientId,
+        doctorId: req.body.doctorId,
+      };
+      if (!alreadyKnowsUser) {
+        session
+          .run(
+            `MATCH(n:Patient{value:$patientId})-[:hasName]->(m)
+                 MATCH(n1:Practitioner{value:$doctorId})
+                 MERGE(n)-[r:knows{status:"pending",since:"not defined"}]->(n1)
+                 RETURN m
+                `,
+            params
+          )
+          .then((result) => {
+            var nameObj = result.records[0]._fields[0].properties;
+            var name = `${nameObj.prefix}.${nameObj.given[0]} ${nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
+              }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
+            var session = driver.session();
+            session
+              .run(`MATCH (n:Socketuser) return n;`)
+              .then((result) => {
+                console.log(result.records)
+                var users = result.records.map((el) => el._fields[0].properties);
+                console.log(users)
+                return { users, name };
+              })
+              .then(obj => {
+                console.log(obj.users, obj.name)
+                var users = obj.users.filter((el) => req.body.doctorId == el.userId);
+                if (users[0]) {
+                  io.to(users[0].socketId).volatile.emit('pushNotificationDoctorAdd', { patientName: name, patientId: req.body.patientId })
+                }
+                res.send({ message: "Doctor added known list" });
+              })
+          })
+      } else {
+        console.log('Join request already sent')
+      }
+
     })
     .catch((err) => {
       next(err);

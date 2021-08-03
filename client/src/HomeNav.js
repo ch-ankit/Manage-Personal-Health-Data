@@ -79,7 +79,7 @@ function HomeNav(props) {
         displayNotifications = Object.keys(notifier).map(el => <li>{notifier[el].patientName} shared a document with you</li>)
     }
     if (friendNotifier) {
-        displayFriendNotifications = Object.keys(friendNotifier).map(el => <li>{friendNotifier[el].patientName} shared a document with you</li>)
+        displayFriendNotifications = Object.keys(friendNotifier).map(el => <li>{friendNotifier[el].patientName} sent you a Connect Request</li>)
     }
     return (
         <div className="homeNav">
@@ -99,13 +99,16 @@ function HomeNav(props) {
                 </div>
                 Dark
             </div>
-            {
-                props.doctor &&
-                (<div>
-                    <div><UsersIcon className={countFriendReqs === 0 ? "homeNav__userIconNoNots" : "homeNav__userIconNots"} />{countFriendReqs === 0 ? '' : countFriendReqs}</div>
-                </div>)
-            }
+
             <div className="homeNav__notify">
+                {
+                    props.doctor &&
+                    (
+                        <div><UsersIcon className={countFriendReqs === 0 ? "homeNav__userIconNoNots" : "homeNav__userIconNots"} onClick={() => {
+                            document.querySelector(".homeNav__friendnotifications").classList.toggle("active")
+                        }} />{countFriendReqs === 0 ? '' : countFriendReqs}</div>
+                    )
+                }
                 <BellIcon className={countNotifications === 0 ? "homeNav__bellIconNoNots" : "homeNav__bellIconNots"} onClick={() => {
                     fetch('http://localhost:7000/share', {
                         method: 'POST',
@@ -119,7 +122,13 @@ function HomeNav(props) {
                             accessTime: "2880"
                         })
                     })
+                    document.querySelector(".homeNav__notifications").classList.toggle("active")
                 }} /> {countNotifications === 0 ? '' : countNotifications}
+                <div className="homeNav__friendnotifications">
+                    <ul>
+                        {friendNotifier ? displayFriendNotifications : ''}
+                    </ul>
+                </div>
                 <div className="homeNav__notifications">
                     <ul>
                         {notifier ? displayNotifications : ''}

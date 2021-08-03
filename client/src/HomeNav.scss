@@ -66,27 +66,47 @@
             cursor: pointer;
         }
     }
-    &__notify{
+    &__notify {
+        display: flex;
         position: relative;
         height: 100%;
         bottom: 10;
     }
-    &__notifications{
+    &__friendnotifications {
         background-color: aqua;
         position: absolute;
         height: 10em;
         overflow-y: scroll;
-        top:100%;
+        top: 100%;
         display: none;
         z-index: 101;
-        ul{
+        ul {
             width: 10em;
-            li{
+            li {
                 list-style: none;
             }
         }
 
-        &.active{
+        &.active {
+            display: block;
+        }
+    }
+    &__notifications {
+        background-color: aqua;
+        position: absolute;
+        height: 10em;
+        overflow-y: scroll;
+        top: 100%;
+        display: none;
+        z-index: 101;
+        ul {
+            width: 10em;
+            li {
+                list-style: none;
+            }
+        }
+
+        &.active {
             display: block;
         }
     }

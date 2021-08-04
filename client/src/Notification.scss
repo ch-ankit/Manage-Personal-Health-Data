@@ -1,10 +1,19 @@
 .notification {
+    display: flex;
+    flex-direction: column;
+    p {
+        display: flex;
+        margin-right: 4rem;
+        &:hover {
+            cursor: pointer;
+        }
+    }
     a {
         text-decoration: none;
         color: black;
     }
     &__display {
-        width: 50%;
+        width: 100%;
         height: 2em;
         display: flex;
         align-items: center;

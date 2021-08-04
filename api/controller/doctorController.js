@@ -128,6 +128,19 @@ exports.toAddList = async (req, res, next) => {
     });
 };
 
+exports.addPatient = async (req, res, next) => {
+  var session = driver.session();
+  var query = `MATCH (n:Patient{value:"${req.body.doctorId}"})-[r:knows{}]->(m:Practitioner{value:"${req.body.doctorId}"})
+               SET r.status="${req.body.status}"
+               `;
+  session
+    .run(query, {})
+    .then(() => res.send({ message: "Patient Added to known list" }))
+    .catch((err) => {
+      next(err);
+    });
+};
+
 exports.requestDocument = async (req, res, next) => {
   var session = session.driver();
   var query = `MATCH(n:Patient{value:$patientId}-[:medicalRecord]->(m:masterIdentifier{value:$masterId})

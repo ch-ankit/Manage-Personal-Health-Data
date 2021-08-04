@@ -100,6 +100,18 @@ exports.notifications = async (req, res, next) => {
     .catch((err) => next(err));
 };
 
+exports.alterNotifications = async (req, res, next) => {
+  var session = driver.session();
+  session
+    .run(
+      `MATCH(n:Practitioner{value:"${req.body.doctorId}"})-[:hasNotification]->(m:notification) SET m.markAsRead="true"`
+    )
+    .then((data) => {
+      res.send({ message: "ALL notifications marked as read" });
+    })
+    .catch((err) => next(err));
+};
+
 exports.toAddList = async (req, res, next) => {
   var session = driver.session();
   var query = `MATCH (n:Patient{})-[r:knows{}]->(m:Practitioner{value:"${req.query.doctorId}"})

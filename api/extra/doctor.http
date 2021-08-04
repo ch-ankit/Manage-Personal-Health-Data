@@ -1,0 +1,19 @@
+###
+GET http://localhost:7000/doctor/recentpatient?doctorId=777333
+
+###
+GET http://localhost:7000/doctor/recentdocuments?doctorId=777333&patientId=20000707-513569
+
+###
+GET http://localhost:7000/doctor/getnotification?doctorId=777333
+
+###
+POST http://localhost:7000/doctor/getnotification?doctorId=777333
+content-type: application/json
+
+{
+    "doctorId":"777333"
+}
+
+###
+GET http://localhost:7000/doctor/addlist?doctorId=777333

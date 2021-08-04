@@ -10,7 +10,8 @@
         align-items: center;
         margin: 0 auto;
         justify-content: center;
-        background-color: aqua;
+        box-shadow: 0 0 15px lightgreen;
+        border-radius: 100em;
     }
 
     &__imgBox{
@@ -41,6 +42,9 @@
         &:hover{
             background-color: rgba(155, 241, 155,0.4);
         }
+    }
+    .patientPhoto__dark{
+        mix-blend-mode: exclusion;
     }
     &__timeUpList{
         background-color: rgba(145, 143, 143,0.5);

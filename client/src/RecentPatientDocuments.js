@@ -25,7 +25,7 @@ function ReccentPatientDocuments() {
         <div className="recentPatientDocuments">
             <div className="recentPatientDocuments__patientDetail">
                 <div className="recentPatientDocuments__imgBox">
-                    <img src={patientData.photo}/>
+                    <img src={patientData.photo} className={`patientPhoto ${"patientPhoto__dark"}`} />
                 </div>
                 <h3>{patientData.name}</h3>
             </div>

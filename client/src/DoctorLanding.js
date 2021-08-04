@@ -22,6 +22,7 @@ function DoctorLanding() {
         }
         return getRecentPatients()
     }, [])
+    console.log(darkMode)
    return (
         <div className='doctorLanding'>
             <div className="doctorLanding__greeting">
@@ -30,8 +31,8 @@ function DoctorLanding() {
             <div className="doctorLanding__list">
                 <div className="doctorLanding__content">
                     <div className="doctorLanding__recentPatients">
-                        <div className={`doctorLanding__imgBox ${darkMode && "doctorLanding__imgDark"}`}>
-                                <img src={DoctorImage} alt="" className='doctorImage'/>
+                        <div className="doctorLanding__imgBox">
+                                <img src={DoctorImage} alt="" className={`doctorImage  ${darkMode && "doctorLanding__imgDark"}`}/>
                         </div>
                         <div className="doctorLanding__patients">
                             <h2>Recent Patients</h2>
@@ -44,7 +45,7 @@ function DoctorLanding() {
                                     }}
                                     >
                                         <div className="doctorLanding__patientImage">
-                                        <img src={recentPatient[key].photo} alt="Patient Photo" />
+                                        <img src={recentPatient[key].photo} alt="Patient Photo" className={`doctorLanding__patientPhoto  ${darkMode && "doctorLanding__imgDark"} `} />
                                         </div>
                                         {recentPatient[key].name}
                                     </div>
@@ -55,7 +56,7 @@ function DoctorLanding() {
                     <div className="doctorLanding__profile">
                         <h2>Profile</h2>
                         <div className="doctorLanding__docImage">
-                            <img src={docData.photo} alt="Doctor" />
+                            <img src={docData.photo} alt="Doctor" className={`doctorLanding__doctorPhoto  ${darkMode && "doctorLanding__imgDark"}`} />
                         </div>
 
                         <h3>Dr. {docData.firstName} {docData.lastName}</h3>

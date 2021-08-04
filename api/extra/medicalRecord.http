@@ -1,0 +1,2 @@
+###
+GET http://localhost:7000/record?recordName=1627121446880.pdf&patientId=20000707-513569

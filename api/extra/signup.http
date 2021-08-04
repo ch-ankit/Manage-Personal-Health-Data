@@ -1,7 +1,3 @@
-
-###
-GET http://localhost:7000/record?recordName=1627039725380.pdf&patientId=20000101-794155
-
 ###
 POST http://localhost:7000/signup/patient
 content-type: application/json

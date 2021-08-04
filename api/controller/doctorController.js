@@ -80,7 +80,10 @@ exports.notifications = async (req, res, next) => {
   var session = driver.session();
   session
     .run(
-      `MATCH(n:Practitioner{value:"${req.query.doctorId}"})-[:hasNotification]->(m:notification) RETURN m.patientName,m.documentId,m.time,m.doctorId,m.markAsRead`
+      `MATCH(n:Practitioner{value:"${req.query.doctorId}"})-[:hasNotification]->(m:notification)
+      MATCH(n1:Patient{value:m.patientId})-[:photo]->(m1)
+      MATCH(n2:masterIdentifier{value:m.documentId})-[:content]->(m2)
+      RETURN m.patientName,m.documentId,m.time,m.doctorId,m.markAsRead,m.patientId,m1.url,m2.title`
     )
     .then((result) => {
       var data = result.records.map((el) => {
@@ -90,6 +93,9 @@ exports.notifications = async (req, res, next) => {
         returnData.time = el._fields[2];
         returnData.doctorId = el._fields[3];
         returnData.markAsRead = el._fields[4];
+        returnData.patientId = el._fields[5];
+        returnData.photo = el._fields[6];
+        returnData.title = el._fields[7];
         return returnData;
       });
       return data;

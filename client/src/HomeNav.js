@@ -65,10 +65,24 @@ function HomeNav(props) {
 
     useEffect(() => {
         async function getNotifications() {
-            const response = await fetch('')
+            const url = props.doctor ? `http://localhost:7000/doctor/getnotification?doctorId=${docData?.uId}` :
+                ""// `http://localhost:7000/patient/getnotification?patientId=${userData?.uId}`
+            const response = await fetch(url, {
+                method: 'GET'
+            })
+            const data = await response.json()
+            var unread = [];
+            data.forEach(el => {
+                if (el.markAsRead === "false") {
+                    unread.push(el)
+                }
+            }
+            )
+            setCountNotifications(unread.length)
+            setNotifier(unread)
         }
         return getNotifications()
-    })
+    }, [])
 
     useEffect(() => {
         async function getFriendRequests() {
@@ -79,7 +93,7 @@ function HomeNav(props) {
     console.log(friendNotifier, intendedDoctor, sentPatientName, countNotifications)
 
     useEffect(() => {
-        function changeBackGround(){
+        function changeBackGround() {
             if (document.querySelector('.circle') != null) {
                 darkMode && document.querySelector('.circle').classList.toggle('active');
                 darkMode && document.querySelector('.darkMode').classList.toggle('active');

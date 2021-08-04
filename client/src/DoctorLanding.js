@@ -5,47 +5,48 @@ import './DoctorLanding.scss'
 import { loginUser, recentPatients } from './features/counterSlice';
 import DoctorImage from './images/doctorPointing.jpg'
 function DoctorLanding() {
-    const docData=useSelector(state => state.user.doctor);
+    const docData = useSelector(state => state.user.doctor);
     const [recentPatient, setrecentPatient] = useState([]);
     let darkMode = useSelector((state) => state.user.darkMode)
-    const dispatch=useDispatch()
-    const history=useHistory();
+    const dispatch = useDispatch()
+    const history = useHistory();
     console.log(docData)
     useEffect(() => {
-        async function getRecentPatients(){
-            const response=await fetch(`http://localhost:7000/doctor/recentpatient?doctorId=${docData.uId}`,{
-                method:"GET"
+        async function getRecentPatients() {
+            const response = await fetch(`http://localhost:7000/doctor/recentpatient?doctorId=${docData.uId}`, {
+                method: "GET"
             });
-            const data=await response.json();
+            const data = await response.json();
             console.log(data)
             setrecentPatient(data);
         }
         return getRecentPatients()
     }, [])
     console.log(darkMode)
-   return (
+    return (
         <div className='doctorLanding'>
             <div className="doctorLanding__greeting">
-                <h1>Welcome Doctor {docData.firstName +" " + docData.lastName}</h1>
+                <h1>Welcome Doctor {docData.firstName + " " + docData.lastName}</h1>
             </div>
             <div className="doctorLanding__list">
                 <div className="doctorLanding__content">
                     <div className="doctorLanding__recentPatients">
                         <div className="doctorLanding__imgBox">
-                                <img src={DoctorImage} alt="" className={`doctorImage  ${darkMode && "doctorLanding__imgDark"}`}/>
+                            <img src={DoctorImage} alt="" className={`doctorImage  ${darkMode && "doctorLanding__imgDark"}`} />
                         </div>
                         <div className="doctorLanding__patients">
                             <h2>Recent Patients</h2>
-                            {Object.keys(recentPatient).map((key)=>{
-                                return(
+                            {Object.keys(recentPatient).map((key) => {
+                                return (
                                     <div key={key} className="doctorLanding__recentPatient"
-                                    onClick={()=>{
-                                        history.push("/Doctor/patientDocuments")
-                                        dispatch(recentPatients(recentPatient[key]));
-                                    }}
+                                        onClick={() => {
+                                            console.log(recentPatient[key])
+                                            history.push("/Doctor/patientDocuments")
+                                            dispatch(recentPatients(recentPatient[key]));
+                                        }}
                                     >
                                         <div className="doctorLanding__patientImage">
-                                        <img src={recentPatient[key].photo} alt="Patient Photo" className={`doctorLanding__patientPhoto  ${darkMode && "doctorLanding__imgDark"} `} />
+                                            <img src={recentPatient[key].photo} alt="Patient Photo" className={`doctorLanding__patientPhoto  ${darkMode && "doctorLanding__imgDark"} `} />
                                         </div>
                                         {recentPatient[key].name}
                                     </div>

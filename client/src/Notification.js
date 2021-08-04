@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { documentGet } from './features/counterSlice';
+import { documentGet, patientDataDoctorNotification } from './features/counterSlice';
 import './Notification.scss'
 
 function Notification(props) {
     const [notification, setNotification] = useState('')
+    let darkMode = useSelector((state) => state.user.darkMode)
     const dispatch = useDispatch()
     const docData = useSelector(state => state.user.doctor)
     const userData = useSelector(state => state.user.value);
@@ -36,10 +37,23 @@ function Notification(props) {
         })
         const { message } = await response.json()
         alert(message)
+        window.location.reload()
     }
     var displayNotifications
     if (notification) {
-        displayNotifications = Object.keys(notification).map(el => <Link style={{ width: "100%" }} onClick={() => dispatch(documentGet(notification[el].documentId.concat(".pdf")))} key={el} to="/Doctor/documentViewer" > <div style={{ border: notification[el].markAsRead && "1px solid gray" }} className="notification__display">{notification[el].patientName} has shared a file with you</div></Link >)
+        displayNotifications = Object.keys(notification).map(el => {
+            return <Link style={{ width: "100%" }} onClick={() => {
+                dispatch(patientDataDoctorNotification(notification[el].patientId))
+                dispatch(documentGet(notification[el].documentId.concat(".pdf")))
+            }} key={el} to="/Doctor/documentViewer" >
+                <div className={`${notification[el].markAsRead === "false" ? "notification__display" : "notification__displayRed"}`}>
+                    <div style={{ width: "3em", height: "3em" }}>
+                        <img src={notification[el].photo} alt="Patient DP" className={`notification__patientPhoto  ${darkMode && "notification__imgDark"}`} />
+                    </div>
+                    {notification[el].patientName} has shared a {notification[el].title} record with you
+                </div>
+            </Link >
+        })
     }
     return (
         <div className='notification' style={{ backgroundColor: 'white', height: '100%', width: '100%' }}>

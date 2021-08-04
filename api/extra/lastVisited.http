@@ -1,0 +1,2 @@
+###
+GET http://localhost:7000/lastVisited?patientId=20000101-794155

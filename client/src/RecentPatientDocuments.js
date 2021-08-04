@@ -8,6 +8,7 @@ function ReccentPatientDocuments() {
     const docData=useSelector(state => state.user.doctor);
     const [documents, setdocuments] = useState([]);
     const dispatch=useDispatch()
+    let darkMode = useSelector((state) => state.user.darkMode)
     const history=useHistory();
     useEffect(() => {
         async function getDocuments(){

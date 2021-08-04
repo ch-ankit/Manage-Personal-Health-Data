@@ -7,6 +7,7 @@ import DoctorImage from './images/doctorPointing.jpg'
 function DoctorLanding() {
     const docData=useSelector(state => state.user.doctor);
     const [recentPatient, setrecentPatient] = useState([]);
+    let darkMode = useSelector((state) => state.user.darkMode)
     const dispatch=useDispatch()
     const history=useHistory();
     console.log(docData)
@@ -29,7 +30,7 @@ function DoctorLanding() {
             <div className="doctorLanding__list">
                 <div className="doctorLanding__content">
                     <div className="doctorLanding__recentPatients">
-                        <div className="doctorLanding__imgBox">
+                        <div className={`doctorLanding__imgBox ${darkMode && "doctorLanding__imgDark"}`}>
                                 <img src={DoctorImage} alt="" className='doctorImage'/>
                         </div>
                         <div className="doctorLanding__patients">

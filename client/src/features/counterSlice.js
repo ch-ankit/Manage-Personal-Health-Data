@@ -8,7 +8,7 @@ export const userSlice = createSlice({
     darkMode: false,
     documentName: JSON.parse(window.localStorage.getItem('documentName')),
     report: JSON.parse(window.localStorage.getItem('report')),
-    shareDocuments: window.localStorage.getItem('shareDocuments') === null ? [] : JSON.parse(window.localStorage.getItem('shareDocuments')),
+    shareDocuments: window.localStorage.getItem('shareDocuments') === "" ? [] : JSON.parse(window.localStorage.getItem('shareDocuments')),
     recentPatient: JSON.parse(window.localStorage.getItem('recentPatient'))
   },
   reducers: {
@@ -48,6 +48,7 @@ export const userSlice = createSlice({
       window.localStorage.setItem('report', data);
     },
     shareDocs: (state, action) => {
+      console.log(state.shareDocuments)
       state.shareDocuments = [...state.shareDocuments, action.payload];
       const data = JSON.stringify([...state.shareDocuments, action.payload]);
       window.localStorage.setItem('shareDocuments', data);
@@ -61,7 +62,7 @@ export const userSlice = createSlice({
     },
     removeShareDocs: (state) => {
       state.shareDocuments = [];
-      window.localStorage.setItem('shareDocuments', null);
+      window.localStorage.setItem('shareDocuments', []);
     },
     recentPatients: (state, action) => {
       state.recentPatient = action.payload;

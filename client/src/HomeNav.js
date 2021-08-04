@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
+import { Link } from 'react-router-dom'
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux'
 import { io } from 'socket.io-client'
@@ -30,12 +31,12 @@ function HomeNav(props) {
 
     useEffect(() => {
         if (docData) {
-            socket.current.emit('addUser', docData.uId)
-            socket.current.on('getUsers', (users) => setConnectedUsers(users))
+            socket.current.emit('addUser', docData?.uId)
+            // socket.current.on('getUsers', (users) => setConnectedUsers(users))
         } else {
             console.log('From use Effect user')
-            socket.current.emit('addUser', userData.uId)
-            socket.current.on('getUsers', (users) => setConnectedUsers(users))
+            socket.current.emit('addUser', userData?.uId)
+            // socket.current.on('getUsers', (users) => setConnectedUsers(users))
         }
     }, [docData, userData])
 
@@ -61,6 +62,20 @@ function HomeNav(props) {
         //     socket.emit('handleOffline', parameters)
         // })
     }, [])
+
+    useEffect(() => {
+        async function getNotifications() {
+            const response = await fetch('')
+        }
+        return getNotifications()
+    })
+
+    useEffect(() => {
+        async function getFriendRequests() {
+            const response = await fetch('')
+        }
+        return getFriendRequests()
+    })
     console.log(friendNotifier, intendedDoctor, sentPatientName, countNotifications)
 
     useEffect(() => {
@@ -73,13 +88,14 @@ function HomeNav(props) {
         }
         return changeBackGround();
     }, []);
+
     var displayNotifications
     var displayFriendNotifications
     if (notifier) {
-        displayNotifications = Object.keys(notifier).map(el => <li>{notifier[el].patientName} shared a document with you</li>)
+        displayNotifications = Object.keys(notifier).map(el => <Link to={props.doctor ? "/Doctor/notifications" : "/home/notifications"}><li>{notifier[el].patientName} shared a document with you</li></Link>)
     }
     if (friendNotifier) {
-        displayFriendNotifications = Object.keys(friendNotifier).map(el => <li>{friendNotifier[el].patientName} sent you a Connect Request</li>)
+        displayFriendNotifications = Object.keys(friendNotifier).map(el => <Link to={props.doctor ? "/Doctor/friendList" : "/home/friendList"}><li>{friendNotifier[el].patientName} sent you a Connect Request</li></Link>)
     }
     return (
         <div className="homeNav">

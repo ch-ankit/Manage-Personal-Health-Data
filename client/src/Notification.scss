@@ -1,0 +1,29 @@
+.notification {
+    display: flex;
+    flex-direction: column;
+    p {
+        display: flex;
+        margin-right: 4rem;
+        &:hover {
+            cursor: pointer;
+        }
+    }
+    a {
+        text-decoration: none;
+        color: black;
+    }
+    &__display {
+        width: 100%;
+        height: 2em;
+        display: flex;
+        align-items: center;
+        margin: 1em 0;
+        border: 1px solid lightgreen;
+        justify-content: space-evenly;
+        cursor: pointer;
+
+        &:hover {
+            background-color: rgba(155, 241, 155, 0.4);
+        }
+    }
+}

@@ -3,7 +3,8 @@ import { Suspense } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import AddDoctor from './AddDoctor';
 import DoctorLanding from './DoctorLanding';
-import Notification from './Notification';
+const FriendList = lazy(() => import('./FriendList'));
+const Notification = lazy(() => import('./Notification'));
 const About = lazy(() => import('./About'));
 const Chose = lazy(() => import('./Chose'));
 const DocumentViewer = lazy(() => import('./DocumentViewer'));
@@ -52,6 +53,7 @@ function App() {
                 <Route path="/home/shareDocuments" component={ShareDocuments} />
                 <Route path="/home/sharedDocuments" component={SharedDocuments} />
                 <Route path="/home/addDoc" render={(routeProps) => <AddDoctor {...routeProps} />} />
+                <Route path="/home/notifications" doctor={false} component={Notification} />
               </Switch>
             </Route>
             <Route path="/Doctor">
@@ -64,7 +66,8 @@ function App() {
                 <Route path="/Doctor/patientDocuments" component={RecentPatientDocuments} />
                 <Route path="/Doctor/documentViewer" component={DocumentViewer} />
                 <Route path="/Doctor/reportView" component={ReportView} />
-
+                <Route path="/Doctor/notifications" render={() => <Notification doctor={true} />} />
+                <Route path="/Doctor/friendList" component={FriendList} />
               </Switch>
             </Route>
             <Route path="/passwordSet/doctor" render={(routeProps) => <PasswordSet doctor={true} {...routeProps} />} />

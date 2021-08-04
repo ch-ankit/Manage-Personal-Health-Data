@@ -64,14 +64,14 @@ function HomeNav(props) {
     console.log(friendNotifier, intendedDoctor, sentPatientName, countNotifications)
 
     useEffect(() => {
-        const changeBackGround = () => {
+        function changeBackGround(){
             if (document.querySelector('.circle') != null) {
                 darkMode && document.querySelector('.circle').classList.toggle('active');
                 darkMode && document.querySelector('.darkMode').classList.toggle('active');
                 darkMode ? setDark(true) : setDark(false);
             }
         }
-        return changeBackGround;
+        return changeBackGround();
     }, []);
     var displayNotifications
     var displayFriendNotifications

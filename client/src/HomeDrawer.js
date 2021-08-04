@@ -56,6 +56,10 @@ function HomeDrawer(props) {
                     document.querySelector(".homeDrawer").classList.remove("active")
                     history.push('/home/uploadRecord')
                 }}>Upload Records</li>
+                <li>
+                <a
+                    href="https://dokchat.herokuapp.com/"
+                >Chat</a></li>
                 <li onClick={() => {
                     dispatch(logoutUser())
                     dispatch(logoutDoctor())

@@ -5,4 +5,6 @@ router
   .route("/requestedDocument")
   .get(personalDataController.requestedDocument);
 
+router.route("/notifications").get(personalDataController.notifications);
+
 module.exports = router;

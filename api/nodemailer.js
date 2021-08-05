@@ -11,8 +11,8 @@ exports.sendMail = (recieverMail, mailText, next) => {
   var mailOptions = {
     from: "MPHD",
     to: recieverMail,
-    subject: "",
-    text: mailText,
+    subject: "Verification of your MPHD account",
+    html: mailText,
   };
 
   transporter.sendMail(mailOptions, (error) => {

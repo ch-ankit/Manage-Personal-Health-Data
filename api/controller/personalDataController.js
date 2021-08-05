@@ -119,6 +119,34 @@ exports.requestedDocument = async (req, res, next) => {
     .catch((err) => next(err));
 };
 
+exports.notifications = async (req, res, next) => {
+  var session = driver.session();
+  session
+    .run(
+      `MATCH (n:Patient{value:"${req.body.patientId}"})-[r:hasNotification{}]->(m:notificaton)
+       RETUrN r.viewed,m.doctorId,m.status,m.doctorName
+      `
+    )
+    .then((result) => {
+      var data = result.records.map((el) => {
+        var returnData = {};
+        returnData.viewed = el._fields[0];
+        returnData.doctortId = el._fields[1];
+        returnData.status = el._fields[2];
+        var nameObj = el._fields[3].properties;
+        returnData.doctorName = `${nameObj.prefix}.${nameObj.given[0]} ${
+          nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
+        }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
+        return returnData;
+      });
+      return data;
+    })
+    .then((data) => res.send(data))
+    .catch((err) => {
+      next(err);
+    });
+};
+
 exports.giveAcess = async (req, res, next) => {
   var session = session.driver();
   var query;

@@ -149,6 +149,7 @@ exports.giveAcess = async (req, res, next) => {
     .then(() => res.send({ message: "acess re-granted" }))
     .catch((err) => next(err));
 };
+
 exports.updatePersonalData = async (req, res, next) => {
   var session = driver.session();
   var query = `MATCH(n:Patient{value:$identifierValue})

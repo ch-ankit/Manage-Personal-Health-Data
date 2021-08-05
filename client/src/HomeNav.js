@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
+import { Link } from 'react-router-dom'
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux'
 import { io } from 'socket.io-client'
@@ -30,12 +31,12 @@ function HomeNav(props) {
 
     useEffect(() => {
         if (docData) {
-            socket.current.emit('addUser', docData.uId)
-            socket.current.on('getUsers', (users) => setConnectedUsers(users))
+            socket.current.emit('addUser', docData?.uId)
+            // socket.current.on('getUsers', (users) => setConnectedUsers(users))
         } else {
             console.log('From use Effect user')
-            socket.current.emit('addUser', userData.uId)
-            socket.current.on('getUsers', (users) => setConnectedUsers(users))
+            socket.current.emit('addUser', userData?.uId)
+            // socket.current.on('getUsers', (users) => setConnectedUsers(users))
         }
     }, [docData, userData])
 
@@ -61,10 +62,38 @@ function HomeNav(props) {
         //     socket.emit('handleOffline', parameters)
         // })
     }, [])
+
+    useEffect(() => {
+        async function getNotifications() {
+            const url = props.doctor ? `http://localhost:7000/doctor/getnotification?doctorId=${docData?.uId}` :
+                ""// `http://localhost:7000/patient/getnotification?patientId=${userData?.uId}`
+            const response = await fetch(url, {
+                method: 'GET'
+            })
+            const data = await response.json()
+            var unread = [];
+            data.forEach(el => {
+                if (el.markAsRead === "false") {
+                    unread.push(el)
+                }
+            }
+            )
+            setCountNotifications(unread.length)
+            setNotifier(unread)
+        }
+        return getNotifications()
+    }, [])
+
+    useEffect(() => {
+        async function getFriendRequests() {
+            const response = await fetch('')
+        }
+        return getFriendRequests()
+    })
     console.log(friendNotifier, intendedDoctor, sentPatientName, countNotifications)
 
     useEffect(() => {
-        function changeBackGround(){
+        function changeBackGround() {
             if (document.querySelector('.circle') != null) {
                 darkMode && document.querySelector('.circle').classList.toggle('active');
                 darkMode && document.querySelector('.darkMode').classList.toggle('active');
@@ -73,13 +102,14 @@ function HomeNav(props) {
         }
         return changeBackGround();
     }, []);
+
     var displayNotifications
     var displayFriendNotifications
     if (notifier) {
-        displayNotifications = Object.keys(notifier).map(el => <li>{notifier[el].patientName} shared a document with you</li>)
+        displayNotifications = Object.keys(notifier).map(el => <Link to={props.doctor ? "/Doctor/notifications" : "/home/notifications"}><li>{notifier[el].patientName} shared a document with you</li></Link>)
     }
     if (friendNotifier) {
-        displayFriendNotifications = Object.keys(friendNotifier).map(el => <li>{friendNotifier[el].patientName} sent you a Connect Request</li>)
+        displayFriendNotifications = Object.keys(friendNotifier).map(el => <Link to={props.doctor ? "/Doctor/friendList" : "/home/friendList"}><li>{friendNotifier[el].patientName} sent you a Connect Request</li></Link>)
     }
     return (
         <div className="homeNav">

@@ -1,18 +1,4 @@
 ###
-GET http://localhost:7000/report?reportName=104.pdf&id=20000101-794155&masterId=1627040983832
-###
-GET http://localhost:7000/record?recordName=1627039725380.pdf&patientId=20000101-794155
-###
-GET http://localhost:7000/report/toupload?masterIdentifier=1626764008937&id=20000101-794155
-
-###
-POST http://localhost:7000/report
-content-type: application/json
-
-{
-    "id":"01010"
-}
-###
 POST http://localhost:7000/signup/patient
 content-type: application/json
 
@@ -44,35 +30,6 @@ content-type: application/json
 }
 
 ###
-post http://localhost:7000/login/patient
-content-type: application/json
-
-{
-    "id":"20000707-513569",
-    "password":"user123"
-}
-
-###
-post http://localhost:7000/password
-content-type: application/json
-
-{
-    "id":"20000707-513569",
-    "password":"user123"
-}
-
-###
-patch http://localhost:7000/password
-content-type: application/json
-
-{
-    "id":"20000101-359062",
-    "oldPassword":"user123",
-    "newPassword":"user333"
-}
-
-###
-
 POST http://localhost:7000/signup/doctor
 content-type: application/json
 
@@ -108,42 +65,6 @@ content-type: application/json
 }
 
 ###
-post http://localhost:7000/password/doctor
-content-type: application/json
-
-{
-    "id":"777333",
-    "password":"secretLuffy"
-}
-
-###
-patch http://localhost:7000/password/doctor
-content-type: application/json
-
-{
-    "id":"777333",
-    "oldPassword":"secretLuffy",
-    "newPassword":"secretLuffy3"
-}
-
-###
-post http://localhost:7000/login/doctor
-content-type: application/json
-
-{
-    "id":"777333",
-    "password":"secretLuffy"
-}
-
-###
-GET http://localhost:7000/search?patientId=20000101-794155
-
-###
-GET http://localhost:7000/search/medicine?patientId=20000101-794155
-###
-GET http://localhost:7000/lastVisited?patientId=20000101-794155
-
-###
 GET http://localhost:7000/signup/getcontact?id=20000707-513569
 ###
 POST http://localhost:7000/signup/addcontact
@@ -166,13 +87,7 @@ content-type: application/json
     "id":"20000707-513569"
 }
 
-###
-GET http://localhost:7000/report/toupload?id=20000707-513569&masterIdentifier=1627121446880
-###
-GET http://localhost:7000/report/checkreport?id=20000101-794155&masterId=1627040983832&reportId=104
 
-###
-GET http://localhost:7000/search/doctor
 
-###
-GET https://www.drugs.com/tears-again.html
+
+

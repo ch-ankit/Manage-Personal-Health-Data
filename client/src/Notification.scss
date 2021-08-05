@@ -1,0 +1,52 @@
+.notification {
+    display: flex;
+    flex-direction: column;
+    p {
+        display: flex;
+        margin-right: 4rem;
+        &:hover {
+            cursor: pointer;
+        }
+    }
+    a {
+        text-decoration: none;
+        color: black;
+    }
+    &__display {
+        width: 100%;
+        height: em;
+        display: flex;
+        align-items: center;
+        margin: 1em 0;
+        border: 1px solid lightgreen;
+        justify-content: space-evenly;
+        cursor: pointer;
+
+        &:hover {
+            background-color: rgba(155, 241, 155, 0.4);
+        }
+    }
+    &__displayRed {
+        width: 100%;
+        height: 3em;
+        display: flex;
+        align-items: center;
+        margin: 1em 0;
+        border: 1px solid gray;
+        justify-content: space-evenly;
+        cursor: pointer;
+
+        &:hover {
+            background-color: rgba(155, 241, 155, 0.4);
+        }
+    }
+    &__patientPhoto {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        font-size: 0.7em;
+    }
+    &__imgDark {
+        mix-blend-mode: exclusion;
+    }
+}

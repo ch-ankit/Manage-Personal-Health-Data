@@ -57,15 +57,11 @@ function PersonalDetail() {
                         <h4>Contact</h4>
                         <div className="personalDetail__contact1">
                             <p>Address: {userData?.addressbothcity}</p>          {/* display the address of the user */}
-                            <p>Country: {(userData?.addresspermanentcountry) ?? (userData?.addressbothcountry)}</p>               {/* display the country name */}
-                            <p>Emergency Contact: {userData?.emergencyContactName}</p>   {/* dsplay emergency contact name */}
-                            <p>Home Phone:12343445</p>          {/* display home phone number of user */}
+                            <p>Country: {(userData?.addresspermanentcountry) ?? (userData?.addressbothcountry)}</p> 
                             <p>Mobile Phone: {userData?.phone}</p>     {/* display mobile number of user */}
                         </div>
                         <div className="personalDetail__contact2">
                             <p>Zip Code: {userData?.addressbothpostalCode}</p>              {/* display the zip code */}
-                            <p>Mother's Name:Mother</p>         {/* display mother's name */}
-                            <p>Emergency Phone: 9861444780</p>  {/* display emergency phone number */}
                             <p>Email: {userData?.email}</p>   {/* display user email */}
                         </div>
                     </div>

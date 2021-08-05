@@ -4,6 +4,7 @@
     margin-bottom: 2em;
     background-color: white;
     border: 1px solid lightgreen;
+    padding: 1.5% 1%;
     &__content{
         grid-template-rows: repeat(2,1fr);
     }
@@ -30,6 +31,11 @@
             border:1px solid lightgreen;
             outline: none;
             margin-right: 1em;
+            cursor: pointer;
+            background-color: transparent;
+            &:hover{
+                background-color: rgba(152, 240, 152,0.5);
+            }
         }
     }
     &__who{

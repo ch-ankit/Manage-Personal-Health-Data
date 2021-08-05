@@ -1,6 +1,6 @@
 import React from 'react'
 import PersonalDetail from './PersonalDetail'
-import EmergencyContact from './EmergencyContact'
+import EmergencyContactView from './EmergencyContactView'
 import "./HomePage.scss"
 
 function HomePage() {
@@ -8,7 +8,7 @@ function HomePage() {
         <div className="homePage">
             <div className="homePage__content">
                 <PersonalDetail />
-                <EmergencyContact />
+                <EmergencyContactView />
             </div>
         </div>
     )

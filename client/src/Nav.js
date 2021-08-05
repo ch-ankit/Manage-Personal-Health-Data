@@ -5,7 +5,7 @@ function Nav() {
     const history=useHistory()
     return (
         <header>
-            <h1>MHPD</h1>
+            <h1>MPHD</h1>
             <input type="checkbox" id="checking" />
             <label htmlFor="checking">|||</label>
             <nav>

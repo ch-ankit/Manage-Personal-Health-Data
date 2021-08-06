@@ -12,7 +12,6 @@ const HomeDrawer = lazy(() => import('./HomeDrawer'));
 const HomeNav = lazy(() => import('./HomeNav'));
 const HomePage = lazy(() => import('./HomePage'));
 const LandingPage = lazy(() => import('./LandingPage'));
-const LandingPageDoc = lazy(() => import('./LandingPageDoc'));
 const PageNotFound = lazy(() => import('./PageNotFound'));
 const PasswordSet = lazy(() => import('./PasswordSet'));
 const PatientDocuments = lazy(() => import('./PatientDocuments'))
@@ -72,11 +71,6 @@ function App() {
             </Route>
             <Route path="/passwordSet/doctor" render={(routeProps) => <PasswordSet doctor={true} {...routeProps} />} />
             <Route path="/passwordSet" render={(routeProps) => <PasswordSet doctor={false} {...routeProps} />} />
-            <Route path="/doc/home">
-              {/* <HomeNav /> */}
-              <HomeDrawer doctor={true} />
-              <LandingPageDoc />
-            </Route>
             <Route path="/doc" component={SignUpDoc} />
             <Route path="/test" render={() => <Notification />} />
             <Route path="/*" component={PageNotFound} />

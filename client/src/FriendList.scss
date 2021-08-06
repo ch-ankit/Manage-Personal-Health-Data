@@ -9,10 +9,6 @@
         margin: 1em 0;
         border: 1px solid lightgreen;
         justify-content: space-evenly;
-        cursor: pointer;
-        &:hover {
-            background-color: rgba(155, 241, 155, 0.4);
-        }
     }
     &__patientPhoto {
         width: 100%;
@@ -23,18 +19,12 @@
     &__userIconAdd {
         width: 1.5em;
         height: 1.8em;
-        &:hover {
-            background-color: rgba(182, 179, 179, 0.6);
-            cursor: pointer;
-        }
+        color: lightcoral;
     }
     &__userRemoveIcon {
         width: 1.5em;
         height: 1.8em;
-        &:hover {
-            background-color: rgba(182, 179, 179, 0.6);
-            cursor: pointer;
-        }
+        color: lightgoldenrodyellow;
     }
     &__position {
         display: flex;

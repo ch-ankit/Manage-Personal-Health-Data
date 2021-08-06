@@ -86,10 +86,16 @@ function HomeNav(props) {
 
     useEffect(() => {
         async function getFriendRequests() {
-            const response = await fetch('')
+            const response = await fetch(`http://localhost:7000/doctor/addlist?doctorId=${docData?.uId}`, {
+                method: 'GET'
+            })
+            const data = await response.json()
+            console.log(data)
+            setCountFriendReqs(data?.length)
+            setFriendNotifier(data)
         }
         return getFriendRequests()
-    })
+    }, [])
     console.log(friendNotifier, intendedDoctor, sentPatientName, countNotifications)
 
     useEffect(() => {
@@ -106,10 +112,20 @@ function HomeNav(props) {
     var displayNotifications
     var displayFriendNotifications
     if (notifier) {
-        displayNotifications = Object.keys(notifier).map(el => <Link to={props.doctor ? "/Doctor/notifications" : "/home/notifications"}><li>{notifier[el].patientName} shared a document with you</li></Link>)
+        displayNotifications = Object.keys(notifier).map(el =>
+            <Link key={el} to={props.doctor ? "/Doctor/notifications" : "/home/notifications"}>
+                <div style={{ display: 'flex', backgroundColor: 'white', border: '1px solid lightgreen' }}>
+                    <img className="homeNav__notifications__displayPic" src={notifier[el].photo} alt="Patient Display" />
+                    <li>{notifier[el].patientName} shared a document with you</li>
+                </div>
+            </Link>
+        )
     }
     if (friendNotifier) {
-        displayFriendNotifications = Object.keys(friendNotifier).map(el => <Link to={props.doctor ? "/Doctor/friendList" : "/home/friendList"}><li>{friendNotifier[el].patientName} sent you a Connect Request</li></Link>)
+        displayFriendNotifications = Object.keys(friendNotifier).map(el =>
+            <Link key={el} to={props.doctor ? "/Doctor/friendList" : "/home/friendList"}>
+                <li>{friendNotifier[el].name} sent you a Connect Request</li>
+            </Link>)
     }
     return (
         <div className="homeNav">
@@ -140,18 +156,6 @@ function HomeNav(props) {
                     )
                 }
                 <BellIcon className={countNotifications === 0 ? "homeNav__bellIconNoNots" : "homeNav__bellIconNots"} onClick={() => {
-                    fetch('http://localhost:7000/share', {
-                        method: 'POST',
-                        headers: {
-                            "Content-type": 'application/json'
-                        },
-                        body: JSON.stringify({
-                            id: "20000707-513569",
-                            doctorId: "777333",
-                            masterId: "1627121446880",
-                            accessTime: "2880"
-                        })
-                    })
                     document.querySelector(".homeNav__notifications").classList.toggle("active")
                 }} /> {countNotifications === 0 ? '' : countNotifications}
                 <div className="homeNav__friendnotifications">
@@ -160,9 +164,11 @@ function HomeNav(props) {
                     </ul>
                 </div>
                 <div className="homeNav__notifications">
+                    <div style={{ color: 'white', padding: '0.5rem', fontWeight: 'bold', position: 'relative' }}>Notifications</div>
                     <ul>
                         {notifier ? displayNotifications : ''}
                     </ul>
+                    <div style={{ position: 'absolute', bottom: '0', color: 'white', fontWeight: 'bold' }}>See all Notifications...</div>
                 </div>
             </div>
             <div className="homeNav__right" onClick={() => {

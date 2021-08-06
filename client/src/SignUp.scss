@@ -77,6 +77,15 @@
         button[type="submit"] {
             width: 80%;
             margin: 1em 0;
+            height: 2em;
+            cursor: pointer;
+            border-radius:100em;
+            outline: none;
+            background-color: white;
+
+            &:hover{
+                background-color: rgba(145, 231, 145,0.5);
+            }
         }
     }
     &__emergency {

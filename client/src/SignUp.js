@@ -118,7 +118,7 @@ function SignUp() {
             <Nav />
             <form id="SignUpForm" onSubmit={handleSubmit}>
                 <h1>Sign Up</h1>
-                <div className="signUp__customSelect" style={{ display: `${customPrefix ? 'none' : 'flex'}` }}>
+                <div className="signUp__customSelect" style={{ display: `${customPrefix ? 'none' : 'flex'}`,width:"80%" }}>
                     <select ref={prefix} defaultChecked="Prefix" id="prefix" >
                         <option value="Prefix" hidden > Please Select your Prefix</option>
                         <option value="Mr."> Mr.</option>
@@ -137,7 +137,7 @@ function SignUp() {
                 <input ref={firstName} type="text" id="name" placeholder="First Name" required />
                 <input ref={middleName} type="text" id="name" placeholder="Middle Name" />
                 <input ref={lastName} type="text" id="name" placeholder="Last Name" required />
-                <div className="signUp__customSelect" style={{ display: `${customSuffix ? 'none' : 'flex'}` }}>
+                <div className="signUp__customSelect" style={{ display: `${customSuffix ? 'none' : 'flex'}`,width:"80%" }}>
                     <select ref={suffix} defaultChecked="Suffix" id="suffix" required>
                         <option value="Suffix" hidden > Please Select your Suffix</option>
                         <option value="Phd."> Phd.</option>
@@ -157,7 +157,7 @@ function SignUp() {
                 <input ref={state} type="text" id="address" placeholder="State" required />
                 <input ref={country} type="text" id="address" placeholder="Country" required />
                 <input ref={email} type="email" id="email" placeholder="Email" required />
-                <div className="signUp__customSelect">
+                <div className="signUp__customSelect" style={{width:'80%'}}>
                     <select ref={language} defaultChecked="Language" id="language" required>
                         <option value="Language" hidden > Please Select preferred Language</option>
                         {languageMap}
@@ -181,8 +181,8 @@ function SignUp() {
                             <input ref={birthOrder} type='text' placeholder="Birth Order" />
                         </div> : ''
                 }
-                <div className="signUp__radio">
-                    <h5>Marital Status:</h5>
+                <div className="signUp__radio" style={{display:"flex",flexDirection:"column",width:"80%"}}>
+                    <h5 style={{alignSelf:"flex-start",padding:"0.5em 0"}}>Marital Status:</h5>
                     <div className="signUp__customSelect">
                         <select ref={maritalStatusCode} defaultChecked="Marital Status" id="Marital Status" required>
                             <option value="Marital Status" hidden > Please Select you status</option>
@@ -205,7 +205,6 @@ function SignUp() {
                 <input ref={mobileNo} type="text" id="contactInfo" placeholder="Mobile Number" required />
                 <input type="file" accept="image/*" id="image" alt="Profile photo" onChange={handleChange} required />
                 <img src={viewFile} style={{ height: '81px', width: '256px' }} alt="Uploaded" />
-                <input ref={occupation} id="Occupation" type="text" placeholder="Occupation" required />
                 <div className="signUp__select">
                     <h4>Gender</h4>
                     <div className="signUp__customSelect">
@@ -216,13 +215,6 @@ function SignUp() {
                             <option value="Other">Other</option>
                         </select>
                     </div>
-                </div>
-                <div className="signUp__emergency">
-                    <h4>Emergency contact</h4>
-                    <hr />
-                    <input ref={emergencyContactName} id="emergencyContactName" type="text" placeholder="Name" required />
-                    <input ref={emergencyContactNo} type="text" id="emergencyContactInfo" placeholder="Contact info" required />
-                    <input ref={emergencyContactRltn} type="text" id='relation' placeholder="Relation" required />
                 </div>
                 <button type="submit" id='submit' form="SignUpForm">Sign Up</button>
             </form>

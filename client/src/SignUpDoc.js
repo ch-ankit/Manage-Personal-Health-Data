@@ -171,11 +171,18 @@ function SignUp() {
                 <input ref={postalCode} type="text" id="postalCode" placeholder="Postal Code" required />
 
                 <input ref={email} type="email" id="email" placeholder="Email" required />
-                <input ref={dob} type="date" onChange={() => { console.log(dob.current.value) }} id="dob" placeholder="Date of Birth" required />
+                <div className="signUpDoc__dob">
+                    <label>D.O.B</label>
+                    <input ref={dob} type="date" onChange={() => { console.log(dob.current.value) }} id="dob" placeholder="Date of Birth" required />
+                </div>
                 <input ref={mobileNo} type="text" id="mobileNo" placeholder="Contact Number" required />
 
                 <input ref={id} type="text" id="id" placeholder="NMC Registration Number" required />
-                <input ref={periodStart} type="date" id="id" placeholder="NMC Registered Date" required />
+                <div className="signUpDoc__nmcDate">
+                    <label>NMC Registered Date</label>
+                    <input ref={periodStart} type="date" id="nmcDate" placeholder="NMC Registered Date" required />
+                </div>
+                
                 <div className="signUp__select">
                     <div className="signUp__customSelect">
                         <select ref={language} defaultChecked="Language" id="language" required>

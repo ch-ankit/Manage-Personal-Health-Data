@@ -5,6 +5,9 @@
     background-color: white;
     border: 1px solid lightgreen;
     padding: 1.5% 1%;
+    p{
+        margin-bottom: 1em;
+    }
     &__content{
         grid-template-rows: repeat(2,1fr);
     }

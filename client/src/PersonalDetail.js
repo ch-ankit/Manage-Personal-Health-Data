@@ -36,7 +36,7 @@ function PersonalDetail() {
 
             <div className="personalDetail__content">
                 <div className="personalDetail__button">
-                    <h2>Profile Demographics</h2>
+                    <h2 style={{marginTop:"0.7em"}}>Profile Demographics</h2>
                     <button onClick={() => {
                         document.querySelector('.personalDetail__popup').classList.toggle('active')
                     }}>Change</button>

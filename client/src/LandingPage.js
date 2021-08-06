@@ -123,7 +123,7 @@ function LandingPage() {
             
             <div className="landingPage__content" >
                 <h1>Manage Personal Health Data</h1>
-                <p>Where you can access the history of patient</p>
+                <p>Digitalizing your health data</p>
             </div>
             <form className="landingPage__loginUser" onSubmit={logInUser}>
                 <h1>Log In User</h1>

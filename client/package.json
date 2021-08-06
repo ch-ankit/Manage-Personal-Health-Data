@@ -12,6 +12,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
+    "bootstrap": "^5.1.0",
     "firebase": "^8.6.2",
     "neo4j-driver": "^4.3.0",
     "node-sass": "^5.0.0",

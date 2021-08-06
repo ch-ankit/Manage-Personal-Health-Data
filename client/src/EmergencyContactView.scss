@@ -3,6 +3,9 @@
     margin: 0 auto;
     border: 1px solid lightgreen;
     padding: 1.5% 1%;
+    p{
+        margin-bottom: 1em;
+    }
     &__button{
         display: flex;
         justify-content: space-between;

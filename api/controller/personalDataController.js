@@ -1,6 +1,6 @@
 const driver = require("./../database");
 
-exports.getData = async (req, res, next) => {
+exports.getContact = async (req, res, next) => {
   const session = driver.session();
   const query = `MATCH(n:Patient{value:"${req.query.id}"})-[r:contact]->(m:relationship)-[:coding]->(:coding)
   MATCH(m)-[r1:name]->(m1:telecom)
@@ -8,21 +8,24 @@ exports.getData = async (req, res, next) => {
   session
     .run(query)
     .then((result) => {
-      console.log(result.records[0]._fields[0]);
-      var data = result.records.map((el) => {
-        var returnData = {};
-        returnData.gender = el._fields[0];
-        returnData.text = el._fields[1];
-        returnData.given = el._fields[2];
-        returnData.family = el._fields[3];
-        returnData.contactNo = el._fields[4];
-        returnData.text = el._fields[5];
-        returnData.postalCode = el._fields[6];
-        returnData.line = el._fields[7];
-        returnData.display = el._fields[8];
-        return returnData;
-      });
-      return data;
+      if (result.records[0]) {
+        var data = result.records.map((el) => {
+          var returnData = {};
+          returnData.gender = el._fields[0];
+          returnData.text = el._fields[1];
+          returnData.given = el._fields[2];
+          returnData.family = el._fields[3];
+          returnData.contactNo = el._fields[4];
+          returnData.text = el._fields[5];
+          returnData.postalCode = el._fields[6];
+          returnData.line = el._fields[7];
+          returnData.display = el._fields[8];
+          return returnData;
+        });
+        return data;
+      } else {
+        return { message: "emergency contact not added" };
+      }
     })
     .then((data) => res.send(data))
     .catch((err) => next(err));

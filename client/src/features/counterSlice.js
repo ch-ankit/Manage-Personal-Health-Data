@@ -31,6 +31,8 @@ export const userSlice = createSlice({
     },
     logoutDoctor: (state) => {
       state.doctor = null;
+      state.recentPatient=null;
+      window.localStorage.setItem("recentPatient", null);
       window.localStorage.setItem('doctor', null);
     },
     darkmode: (state) => {

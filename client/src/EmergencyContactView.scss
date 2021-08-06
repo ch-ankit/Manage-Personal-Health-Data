@@ -1,0 +1,71 @@
+.emergencyContactView{
+    width: 90%;
+    margin: 0 auto;
+    border: 1px solid lightgreen;
+    padding: 1.5% 1%;
+    &__button{
+        display: flex;
+        justify-content: space-between;
+
+        h2{
+            width: fit-content;
+        }
+        button{
+            height: 3em;
+            width: 4.5em;
+            border-radius: 100em;
+            border:1px solid lightgreen;
+            outline: none;
+            margin-right: 1em;
+            cursor: pointer;
+            background-color: transparent;
+            &:hover{
+                background-color: rgba(152, 240, 152,0.5);
+            }
+        }
+    }
+    &__who{
+        margin-top: 1em;
+        display: grid;
+        grid-template-columns: repeat(3,1fr);
+        grid-column-gap:1.3em;
+
+        h4{
+            padding-left:1em;
+        }
+    }
+    &__contact{
+        margin-top: 1em;
+        display: grid;
+        grid-template-columns: repeat(3,1fr);
+        grid-column-gap:1.3em;
+        h4{
+            padding-left:1em;
+        }
+    }
+
+    &__addContact{
+        width:100%;
+        position: absolute;
+        background-color: white;
+        left: 0;
+        justify-content: space-evenly;
+        align-items: center;
+        display: none;
+        top: 8%;
+
+        h1{
+            position: fixed;
+            top: 8%;
+            right:2em;
+
+            &:hover{
+                color:red;
+            }
+        }
+        &.active{
+            display: flex;
+        }
+    }
+
+}

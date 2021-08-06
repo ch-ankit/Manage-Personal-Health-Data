@@ -13,6 +13,9 @@
         box-shadow: 0 0 15px lightgreen;
         border-radius: 100em;
     }
+    .dark__patientPhoto{
+        mix-blend-mode: exclusion;
+    }
 
     &__imgBox{
         width: 6em;

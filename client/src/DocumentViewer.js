@@ -45,7 +45,8 @@ function DocumentViewer() {
             <Page pageNumber={page} className="documentViewer__page" />
           ))}
       </Document>
-      <div className="documentViewer__download">Share</div>
+      {console.log(patientData)}
+      <div className={`documentViewer__share ${patientData && "documentViewer__shareNone"}`}>Share</div>
 
       <div className="documentViewer__reports">
         <ul>

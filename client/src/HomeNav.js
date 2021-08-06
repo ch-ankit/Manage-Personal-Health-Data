@@ -113,7 +113,7 @@ function HomeNav(props) {
     }
     return (
         <div className="homeNav">
-            <h1>MHPD</h1>  {/* title of the project */}
+            <h1>MPHD</h1>  {/* title of the project */}
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 Light
                 <div className="toggleButton" onClick={() => {

@@ -1,0 +1,43 @@
+.friendlist {
+    display: flex;
+    flex-direction: column;
+    &__requests {
+        width: 100%;
+        height: em;
+        display: flex;
+        align-items: center;
+        margin: 1em 0;
+        border: 1px solid lightgreen;
+        justify-content: space-evenly;
+        cursor: pointer;
+        &:hover {
+            background-color: rgba(155, 241, 155, 0.4);
+        }
+    }
+    &__patientPhoto {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        font-size: 0.7em;
+    }
+    &__userIconAdd {
+        width: 1.5em;
+        height: 1.8em;
+        &:hover {
+            background-color: rgba(182, 179, 179, 0.6);
+            cursor: pointer;
+        }
+    }
+    &__userRemoveIcon {
+        width: 1.5em;
+        height: 1.8em;
+        &:hover {
+            background-color: rgba(182, 179, 179, 0.6);
+            cursor: pointer;
+        }
+    }
+    &__position {
+        display: flex;
+        align-items: center;
+    }
+}

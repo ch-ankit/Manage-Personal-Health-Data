@@ -6,10 +6,10 @@ const driver = neo4j.driver(
   neo4j.auth.basic("neo4j", "yJ76GNUav3QAQDKOiwR4aMdCwgnWxurIty_6WH-g7aU"),
   {}
 );
-const query = `
-MATCH(n:Patient{value:$patientId})-[r:medicalRecord]->(m:masterIdentifier{value:$recordName}) SET r.lastVisited = "ulalumpalu"`;
+const query = ` MATCH(n:Patient) RETURN n.value`;
 
 const session = driver.session({ database: "neo4j" });
+
 var params = {
   recordName: "1627040983832",
   patientId: "20000101-794155",
@@ -18,17 +18,11 @@ var params = {
   reportIdentifierValue: "104",
 };
 session
-  .run(
-    `MATCH(n:Socketuser) return n`
-  )
+  .run(query)
   .then((result) => {
-    if (result.records[0]) {
-      var users = result.records.map(el => el._fields[0].properties)
-      console.log(users)
-      // console.log(result.records[1]._fields);
-    } else {
-      console.log({ message: "report not available" });
-    }
+    result.records.forEach((el) => {
+      console.log(el._fields);
+    });
   })
   .catch((err) => console.log(err));
 module.exports = driver;

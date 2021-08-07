@@ -14,6 +14,7 @@ const searchRouter = require("./routes/search");
 const lastVisitedRouter = require("./routes/lastVisited");
 const shareRouter = require("./routes/share");
 const doctorRouter = require("./routes/doctor");
+const personalRouter = require("./routes/personal");
 
 require("dotenv").config({ path: "./config.env" });
 app.use(cors());
@@ -34,6 +35,7 @@ app.use("/search", searchRouter);
 app.use("/lastVisited", lastVisitedRouter);
 app.use("/share", shareRouter);
 app.use("/doctor", doctorRouter);
+app.use("/perosnal", personalRouter);
 
 app.use((req, res, next) => {
   const err = new Error("Not Found");

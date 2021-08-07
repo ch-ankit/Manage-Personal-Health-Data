@@ -8,5 +8,7 @@ router
 router.route("/notifications").get(personalDataController.notifications);
 router.route("/friendlist").get(personalDataController.friendList);
 router.route("/update").post(personalDataController.updatePersonalData);
+router.route("/checkPassword").post(personalDataController.checkPassword);
+
 
 module.exports = router;

@@ -32,7 +32,8 @@ function PersonalDetail() {
     const [multipleBirthBoolean, setMultipleBirthBoolean] = useState(false)
     const maritalStatusCode=useRef(null)
     const [viewFile, setViewFile] = useState(userData.photo);
-    const [photo, setPhoto] = useState('')
+    const [photo, setPhoto] = useState('');
+    const password=useRef(null);
 
 
 
@@ -356,6 +357,13 @@ function PersonalDetail() {
                         </div>
                     </div> */}
                     <button type="submit" form="personalDetailForm">Change</button>
+                </form>
+                <form>
+                    <input type="password" placeholder="Password" ref={password}/>
+                    <div className="personalDetail__popup2Buttons">
+                        <button>Close</button>
+                        <button type="submit">Confirm</button>
+                    </div>
                 </form>
             </div>
         </div>

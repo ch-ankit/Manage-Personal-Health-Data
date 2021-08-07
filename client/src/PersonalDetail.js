@@ -9,7 +9,6 @@ function PersonalDetail() {
     const userData = useSelector((state) => state.user.value);
     const darkMode = useSelector((state) => state.user.darkMode);
     const history = useHistory();
-    const address = useRef(null)
     const city = useRef(null)
     const district = useRef(null)
     const state = useRef(null)
@@ -33,7 +32,7 @@ function PersonalDetail() {
     const [multipleBirthBoolean, setMultipleBirthBoolean] = useState(false)
     const maritalStatusCode=useRef(null)
     const [viewFile, setViewFile] = useState(userData.photo);
-    const [photo, setPhoto] = useState('');
+    const [photo, setPhoto] = useState(userData.photo);
     const password=useRef(null);
     const dispatch=useDispatch();
 
@@ -54,9 +53,10 @@ function PersonalDetail() {
         }
     }
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const uploadTask = storage.ref(`images/${photo.name}`).put(photo);
+    const handleSubmit = async () => {
+        const system = language.current.value.split('-')
+        if(photo.name){
+            const uploadTask = storage.ref(`images/${photo.name ?? "patientPhoto"}`).put(photo);
         uploadTask.on(
             "state_changed",
             (snapshot) => {
@@ -68,10 +68,9 @@ function PersonalDetail() {
             () => {
                 storage
                     .ref("images")
-                    .child(photo.name)
+                    .child(photo.name ?? "patientPhoto")
                     .getDownloadURL()
                     .then(async (url) => {
-                        const system = language.current.value.split('-')
                         console.log(url);
                         console.log(maritalStatus)
                         const response = await fetch('http://localhost:7000/personal/update', {
@@ -112,6 +111,42 @@ function PersonalDetail() {
             }
         );
 
+        }else{
+            const response = await fetch('http://localhost:7000/personal/update', {
+                            method: 'POST',
+                            headers: {
+                                'Content-type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                patientId:userData.uId,
+                                city: city.current.value,
+                                district: district.current.value,
+                                state: state.current.value,
+                                country: country.current.value,
+                                mobileNo: mobileNo.current.value,
+                                houseNo: houseNo.current.value,
+                                streetName: streetName.current.value,
+                                dob: dob.current.value,
+                                gender: gender.current.value,
+                                language: system[0],
+                                languageCode: system[1],
+                                maritialStatus: maritalStatus,
+                                maritialStatusCode: maritalStatusCode.current.value,
+                                multipleBirthBoolean: multipleBirthBoolean,
+                                birthOrder: multipleBirthBoolean ? birthOrder.current.value : 1,
+                                firstName: firstName.current.value,
+                                middleName: middleName.current.value,
+                                lastName: lastName.current.value,
+                                prefix: prefix.current.value,
+                                suffix: suffix.current.value,
+                                postalCode: postalCode.current.value,
+                                photo: photo
+                            })
+                        })
+                        setViewFile('')
+                        console.log(await response.json())
+        }
+        
         const response = await fetch("http://localhost:7000/login/patient", {
                 method: "POST",
                 headers: {
@@ -154,6 +189,9 @@ function PersonalDetail() {
             console.log(data);
             console.log(patientData)
             dispatch(loginUser(patientData));
+            document.querySelector(".personalDetail__popup.active")?.classList.remove("active")
+            document.querySelector(".personalDetail__popUp2.active")?.classList.remove("active")
+
 
     }
     const languageMap = Object.keys(languages).map(el => <option key={el} value={`${languages[el].name}-${languages[el].code}`} > {languages[el].name}</ option>)
@@ -218,7 +256,11 @@ function PersonalDetail() {
                 </div>
             </div>
             <div className="personalDetail__popup">
-                <form id="personalDetailForm" onSubmit={handleSubmit}>
+                <form id="personalDetailForm" onSubmit={(e)=>{
+                    e.preventDefault()
+                    document.querySelector(".personalDetail__popUp2").classList.toggle("active");
+                    window.scrollTo({top:0, behavior:"smooth"})
+                }}>
                     <h1>
                         <span>Change you personal Detail</span>
                         <span onClick={() => {
@@ -427,7 +469,9 @@ function PersonalDetail() {
                     <h1>Enter your password</h1>
                     <input type="password" placeholder="Password" ref={password} required/>
                     <div className="personalDetail__popUp2Buttons">
-                        <button>Close</button>
+                        <button onClick={()=>{
+                            document.querySelector(".personalDetail__popUp2.active").classList.remove("active")
+                        }}>Close</button>
                         <button type="submit" className="personalDetail__confirm">Confirm</button>
                     </div>
                 </form>

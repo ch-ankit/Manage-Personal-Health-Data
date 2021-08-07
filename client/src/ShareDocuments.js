@@ -15,7 +15,7 @@ function ShareDocuments() {
     const timeUnit = useRef(null)
     useEffect(() => {
         async function getDoctor() {
-            const response = await fetch("http://localhost:7000/search/doctor", {
+            const response = await fetch(`http://localhost:7000/personal/friendList?patientId=${userData.uId}`, {
                 method: "GET"
             });
             const data = await response.json();

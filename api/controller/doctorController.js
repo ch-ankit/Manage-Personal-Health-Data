@@ -219,8 +219,7 @@ exports.requestDocument = async (req, res, next) => {
   var session = driver.session();
   const io = req.app.get("socketServer");
   var query = `MATCH(n:Patient{value:$patientId})-[:medicalRecord]->(m:masterIdentifier{value:$masterId})
-               MATCH(n1:Practitioner{value:$doctorId})-[r1:hasAcess]->(m) WHERE r1.terminated=1 OR r1.timeStamp<${Date.now() / 60000
-    }
+               MATCH(n1:Practitioner{value:$doctorId})-[r1:hasAcess]->(m) WHERE r1.terminated=1 OR r1.timeStamp<${Date.now() / 60000}
                MERGE(n1)-[:hasRequested{masterId:$masterId,requestedTime:"${Date()}",status:"pending"}]->(m)
               `;
   var params = {

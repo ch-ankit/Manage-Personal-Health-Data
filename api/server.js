@@ -61,6 +61,9 @@ io.on('connection', (socket) => {
     addUsers(userId, socket.id)
     io.volatile.emit('getUsers', socketUsers)
   })
+  socket.on('removeUser', (parameters) => {
+    removeUsers(parameters.socketId)
+  })
   // send and get notification
   socket.volatile.on('disconnect', () => {
     console.log('A user disconnected')

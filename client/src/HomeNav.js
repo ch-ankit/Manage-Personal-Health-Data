@@ -10,7 +10,6 @@ import { darkmode, logoutUser, logoutDoctor } from './features/counterSlice';
 function HomeNav(props) {
     const [countNotifications, setCountNotifications] = useState(0)
     const [countFriendReqs, setCountFriendReqs] = useState(0)
-    const [connectedUsers, setConnectedUsers] = useState('')
     const [intendedDoctor, setIntendedDoctor] = useState('')
     const [sentPatientName, setSentPatientName] = useState('')
     const [notifier, setNotifier] = useState([])
@@ -26,7 +25,7 @@ function HomeNav(props) {
         socket.current = io("http://localhost:7000", {
             path: '/notification/',
         })
-    })
+    }, [])
 
 
     useEffect(() => {
@@ -183,11 +182,11 @@ function HomeNav(props) {
                     <ul>
                         <li>Settings</li>
                         <li onClick={() => {
+                            socket.current.volatile.emit('removeUser', { socketId: socket.current.id })
                             dispatch(logoutUser())
                             dispatch(logoutDoctor())
                             darkMode && dispatch(darkmode())
                             history.push('/')
-                            window.location.reload()
                         }}>Log Out</li>
                     </ul>
                 </div>

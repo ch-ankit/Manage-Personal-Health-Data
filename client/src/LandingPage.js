@@ -45,6 +45,9 @@ function LandingPage() {
             patientData.gender=data.gender;
             patientData.firstName=data.name[0].given[0];
             patientData.lastName=data.name[0].family;
+            patientData.prefix=data.name[0].prefix;
+            patientData.lastName=data.name[0].family;
+
             data.telecom.forEach((tel)=>
                 patientData[tel.system]=tel.value
             )
@@ -56,6 +59,10 @@ function LandingPage() {
                     patientData[`address${val.type}${name}`]=val[name]
                 })
             })
+            patientData.language=data.communication[0].language["text"];
+            patientData.multipleBirthBoolean=data.multipleBirthBoolean;
+            patientData.multipleBirthInteger=data.multipleBirthInteger;
+
             console.log(data);
             console.log(patientData)
             dispatch(loginUser(patientData));

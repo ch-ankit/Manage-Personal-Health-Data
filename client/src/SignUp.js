@@ -84,11 +84,7 @@ function SignUp() {
                                 streetName: streetName.current.value,
                                 dob: dob.current.value,
                                 email: email.current.value,
-                                emergencyContactName: emergencyContactName.current.value,
-                                emergencyContactNo: emergencyContactNo.current.value,
-                                emergencyContactRltn: emergencyContactRltn.current.value,
                                 gender: gender.current.value,
-                                occupation: occupation.current.value,
                                 language: system[0],
                                 languageCode: system[1],
                                 maritialStatus: maritalStatus,
@@ -184,19 +180,59 @@ function SignUp() {
                 <div className="signUp__radio" style={{display:"flex",flexDirection:"column",width:"80%"}}>
                     <h5 style={{alignSelf:"flex-start",padding:"0.5em 0"}}>Marital Status:</h5>
                     <div className="signUp__customSelect">
-                        <select ref={maritalStatusCode} defaultChecked="Marital Status" id="Marital Status" required>
+                    <select ref={maritalStatusCode} defaultChecked="Marital Status" onChange={(e)=>{
+                            e.preventDefault();
+                            switch(e.target.value){
+                                case "A":
+                                    setMaritalStatus('Annuled');
+                                    break;
+                                
+                                case "D":
+                                    setMaritalStatus('Divorced');
+                                    break;
+
+                                case "I":
+                                    setMaritalStatus('Interlocutory');
+                                    break;
+                                
+                                case "L":
+                                    setMaritalStatus('Legally Separated')
+                                    break;
+                                case "M":
+                                    setMaritalStatus('Married')
+                                    break;
+                                case "P":
+                                    setMaritalStatus('Polygamous')
+                                    break;
+                                case "S":
+                                    setMaritalStatus('Never Married');
+                                    break;
+                                case "T":
+                                    setMaritalStatus('Domestic Partner')
+                                    break;
+                                case "U":
+                                    setMaritalStatus('Unmarried')
+                                    break;
+                                case "W":
+                                    setMaritalStatus('Widowed')
+                                    break;
+                                case "UNK":
+                                    setMaritalStatus('unknown')
+                                    break;
+                            }
+                        }}id="Marital Status" required>
                             <option value="Marital Status" hidden > Please Select you status</option>
-                            <option value="A" onClick={() => setMaritalStatus('Annuled')} >Annuled</option>
-                            <option value="D" onClick={() => setMaritalStatus('Divorced')} >Divorced</option>
-                            <option value="I" onClick={() => setMaritalStatus('Interlocutory')} >Interlocutory</option>
-                            <option value="L" onClick={() => setMaritalStatus('Legally Separated')} >Legally Seperated</option>
-                            <option value="M" onClick={() => setMaritalStatus('Married')} >Married</option>
-                            <option value="P" onClick={() => setMaritalStatus('Polygamous')} >Polygamous</option>
-                            <option value="S" onClick={() => setMaritalStatus('Never Married')} >Never Married</option>
-                            <option value="T" onClick={() => setMaritalStatus('Domestic Partner')} >Domestic Partner</option>
-                            <option value="U" onClick={() => setMaritalStatus('Unmarried')} >Unmarried</option>
-                            <option value="W" onClick={() => setMaritalStatus('Widowed')} >Widowed</option>
-                            <option value="UNK" onClick={() => setMaritalStatus('unknown')} >unknown</option>
+                            <option value="A" >Annuled</option>
+                            <option value="D" >Divorced</option>
+                            <option value="I">Interlocutory</option>
+                            <option value="L" >Legally Seperated</option>
+                            <option value="M" >Married</option>
+                            <option value="P" >Polygamous</option>
+                            <option value="S" >Never Married</option>
+                            <option value="T" >Domestic Partner</option>
+                            <option value="U" >Unmarried</option>
+                            <option value="W" >Widowed</option>
+                            <option value="UNK" >unknown</option>
                         </select>
                     </div>
                 </div>

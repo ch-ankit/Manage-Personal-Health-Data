@@ -53,6 +53,10 @@ function HomeNav(props) {
             setCountFriendReqs((prevState) => prevState + 1)
             setFriendNotifier((prevState) => [...prevState, parameters])
         })
+        socket.current.on('pushNotsPatientFriendAccept', (parameters) => {
+            setCountFriendReqs((prevState) => prevState + 1)
+            setFriendNotifier((prevState) => [...prevState, parameters])
+        })
         // socket.current.on('verifiedUser', (parameters) => {
         //     setNotifier(parameters)
         //     setIntendedDoctor(parameters.doctorId)
@@ -126,7 +130,7 @@ function HomeNav(props) {
     if (friendNotifier) {
         displayFriendNotifications = Object.keys(friendNotifier).map(el =>
             <Link key={el} to={props.doctor ? "/Doctor/friendList" : "/home/friendList"}>
-                <li>{friendNotifier[el].name} sent you a Connect Request</li>
+                {props.doctor ? <li>{friendNotifier[el].name} sent you a Connect Request</li> : <li>{friendNotifier[el].name} ${friendNotifier[el].status} your Connect Request</li>}
             </Link>)
     }
     return (

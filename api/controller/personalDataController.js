@@ -127,18 +127,20 @@ exports.notifications = async (req, res, next) => {
   var session = driver.session();
   session
     .run(
-      `MATCH (n:Patient{value:"${req.query.patientId}"})-[r:hasNotification{}]->(m:notificaton)
-      RETURN m.viewed,m.doctorId,m.status,m.doctorName,m.time
+      `MATCH (n:Patient{value:"${req.query.patientId}"})-[r:hasNotification{}]->(m:notification)
+      WHERE m.viewed="false"
+      SET m.viewed="true"
+      RETURN m.doctorId,m.doctorName,m.time,m.photo,m.status
       `
     )
     .then((result) => {
       var data = result.records.map((el) => {
         var returnData = {};
-        returnData.viewed = el._fields[0];
-        returnData.doctortId = el._fields[1];
-        returnData.status = el._fields[2];
-        returnData.doctorName = el._fields[3];
-        returnData.time = el._fields[4];
+        returnData.doctorId = el._fields[0];
+        returnData.name = el._fields[1];
+        returnData.time = el._fields[2];
+        returnData.photo = el._fields[3];
+        returnData.status = el._fields[4];
         return returnData;
       });
       return data;
@@ -264,9 +266,8 @@ exports.friendList = async (req, res, next) => {
         returnData.photo = el._fields[3];
         returnData.qualifiction = el._fields[4];
         var nameObj = el._fields[2].properties;
-        returnData.name = `${nameObj.prefix}.${nameObj.given[0]} ${
-          nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
-        }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
+        returnData.name = `${nameObj.prefix}.${nameObj.given[0]} ${nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
+          }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
         return returnData;
       });
       return data;

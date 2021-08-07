@@ -115,6 +115,27 @@ exports.doctorAcceptsPatient = async (req, res, next) => {
   session
     .run(query, {})
     .then(() => {
+      const query = `MATCH (n:Socketuser) return n.socketId,n.userId`;
+
+      const session = driver.session({ database: "neo4j" });
+
+      var params = {
+        recordName: "1627040983832",
+        patientId: "20000101-794155",
+        subjectIdentifierValue: "20000101-794155",
+        masterIdentifierValue: "1626764008937",
+        reportIdentifierValue: "104",
+      };
+      session
+        .run(query)
+        .then((result) => {
+          result.records.forEach((el) => {
+            console.log(el._fields[0], el._fields[1]);
+          });
+        })
+        .catch((err) => console.log(err));
+    })
+    .then(() => {
       var session = driver.session();
       session
         .run(`MATCH (n:Socketuser) return n;`)
@@ -139,13 +160,14 @@ exports.doctorAcceptsPatient = async (req, res, next) => {
               doctorId: req.body.doctorId,
               name: `Dr. ${req.body.firstName} ${req.body.lastName}`,
               time: strTime,
-              photo: req.body
+              photo: req.body.photo,
+              status: req.body.status
             });
             var session = driver.session();
             session
               .run(
                 `MATCH(n:Patient{value:"${req.body.patientId}"})
-            MERGE(n)-[:hasNotification]->(:notification{doctorId:"${req.body.doctorId}",doctorName:"${`Dr. ${req.body.firstName} ${req.body.lastName}`}",time:"${strTime}", viewed:"false"})`,
+            MERGE(n)-[:hasNotification]->(:notification{photo:"${req.body.photo}",status:"${req.body.status}",doctorId:"${req.body.doctorId}",doctorName:"${`Dr. ${req.body.firstName} ${req.body.lastName}`}",time:"${strTime}", viewed:"false"})`,
                 {}
               )
               .then(() => {
@@ -160,7 +182,7 @@ exports.doctorAcceptsPatient = async (req, res, next) => {
             session
               .run(
                 `MATCH(n:Patient{value:"${req.body.patientId}"})
-                MERGE(n)-[:hasNotification]->(:notification{doctorId:"${req.body.doctorId}",doctorName:"${`Dr. ${req.body.firstName} ${req.body.lastName}`}",time:"${strTime}", viewed:"false"})`,
+                MERGE(n)-[:hasNotification]->(:notification{photo:"${req.body.photo}",status:"${req.body.status}",doctorId:"${req.body.doctorId}",doctorName:"${`Dr. ${req.body.firstName} ${req.body.lastName}`}",time:"${strTime}", viewed:"false"})`,
                 {}
               )
               .then(() => {

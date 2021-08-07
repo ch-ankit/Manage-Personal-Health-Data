@@ -216,19 +216,58 @@ exports.addPatient = async (req, res, next) => {
 };
 
 exports.requestDocument = async (req, res, next) => {
+  console.log(req.body)
   var session = driver.session();
   const io = req.app.get("socketServer");
   var query = `MATCH(n:Patient{value:$patientId})-[:medicalRecord]->(m:masterIdentifier{value:$masterId})
                MATCH(n1:Practitioner{value:$doctorId})-[r1:hasAcess]->(m) WHERE r1.terminated=1 OR r1.timeStamp<${Date.now() / 60000}
-               MERGE(n1)-[:hasRequested{masterId:$masterId,requestedTime:"${Date()}",status:"pending"}]->(m)
+               MERGE(n1)-[:hasRequested{masterId:$masterId,doctorId:$doctorId,requestedTime:"${Date()}",status:"pending",name:$name,photo:$photo,title:$title}]->(m)
               `;
   var params = {
     patientId: req.body.patientId,
     masterId: req.body.masterId,
     doctorId: req.body.doctorId,
+    name: req.body.name,
+    photo: req.body.photo,
+    title: req.body.title
   };
   session
     .run(query, params)
+    .then(() => {
+      var session = driver.session();
+      session
+        .run(`MATCH (n:Socketuser) return n;`)
+        .then((result) => {
+          var users = result.records.map((el) => el._fields[0].properties);
+          return users;
+        })
+        .then((users) => {
+          var date = new Date();
+          var hours = date.getHours();
+          var minutes = date.getMinutes();
+          var ampm = hours >= 12 ? "pm" : "am";
+          hours = hours % 12;
+          hours = hours ? hours : 12; // the hour '0' should be '12'
+          minutes = minutes < 10 ? "0" + minutes : minutes;
+          var strTime = hours + ":" + minutes + " " + ampm;
+          console.log(strTime);
+          users = users.filter((el) => req.body.patientId == el.userId);
+          if (users[0]) {
+            console.log(users);
+            io.to(users[0].socketId).emit("pushNotsDocumentRequested", {
+              doctorId: req.body.doctorId,
+              masterId: req.body.masterId,
+              title: req.body.title,
+              time: strTime,
+              requestedDate: Date(),
+              photo: req.body.photo,
+              status: 'pending',
+              name: req.body.name
+            });
+          }
+        })
+        .catch((err) => console.log(err))
+    })
     .then(() => res.send({ message: "Request Added" }))
     .catch((err) => next(err));
 };

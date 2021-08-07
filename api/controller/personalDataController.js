@@ -90,13 +90,10 @@ exports.addContact = async (req, res, next) => {
 };
 
 exports.requestedDocument = async (req, res, next) => {
-  var session = session.driver();
-  var query = `MATCH(n:Patient{value:$patientId}-[:medicalRecord]->(m:masterIdentifier{})-[:content]->(o)
-               MATCH(n1:Practitioner)-[r2:hasName]->(m2)
-               MATCH(n1)-[:photo]->(m3)
-               MATCH(n1)-[r3:hasRequested]->(m)
-               WHERE r3.status="pending"
-               RETURN n1.value,m.value,o.title,r3.Date,m2,m3.url
+  var session = driver.session();
+  var query = `MATCH(n:Patient{value:$patientId})-[:medicalRecord]->(m:masterIdentifier)
+  MATCH(n1:Practitioner)-[r2:hasRequested{}]->(m)
+  RETURN r2.doctorId, r2.masterId, r2.requestedTime,r2.status,r2.name, r2.photo,r2.title
               `;
   var params = {
     patientId: req.query.patientId,
@@ -108,12 +105,11 @@ exports.requestedDocument = async (req, res, next) => {
         var returnData = {};
         returnData.doctortId = el._fields[0];
         returnData.mastertId = el._fields[1];
-        returnData.title = el._fields[2];
-        returnData.requestedDate = el._fields[3];
+        returnData.requestedDate = el._fields[2];
+        returnData.title = el._fields[6];
         returnData.photo = el._fields[5];
-        var nameObj = el._fields[4].properties;
-        returnData.doctorName = `${nameObj.prefix}.${nameObj.given[0]} ${nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
-          }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
+        returnData.name = el._fields[4];
+        returnData.status = 'pending'
         return returnData;
       });
       return data;

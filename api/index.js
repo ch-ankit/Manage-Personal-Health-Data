@@ -35,7 +35,7 @@ app.use("/search", searchRouter);
 app.use("/lastVisited", lastVisitedRouter);
 app.use("/share", shareRouter);
 app.use("/doctor", doctorRouter);
-app.use("/perosnal", personalRouter);
+app.use("/personal", personalRouter);
 
 app.use((req, res, next) => {
   const err = new Error("Not Found");

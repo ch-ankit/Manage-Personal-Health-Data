@@ -250,3 +250,33 @@ exports.checkPassword = async (req, res, data) => {
     }
   });
 };
+
+exports.friendList = async (req, res, next) => {
+  var session = driver.session();
+  var query = `MATCH(l:Patient{value:"${req.query.patientId}"})-[:knows]->(n:Practitioner)
+  MATCH (n)-[r:identifies{}]->(m:doctor{active:True})
+  MATCH(n)-[r1:hasName{}]->(m1:name{})
+  MERGE(n)-[r2:photo]->(m2:photo{})
+  MERGE(n)-[r3:qualification{}]->(:qualification{}) return n.value,m.gender,m1,m2.url,r3.display,r3.text`;
+  session
+    .run(query)
+    .then((result) => {
+      var data = result.records.map((el) => {
+        var returnData = {};
+        returnData.doctorId = el._fields[0];
+        returnData.gender = el._fields[1];
+        returnData.photo = el._fields[3];
+        returnData.qualifiction = el._fields[4];
+        var nameObj = el._fields[2].properties;
+        returnData.name = `${nameObj.prefix}.${nameObj.given[0]} ${
+          nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
+        }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
+        return returnData;
+      });
+      return data;
+    })
+    .then((returnData) => res.send(returnData))
+    .catch((err) => {
+      next(err);
+    });
+};

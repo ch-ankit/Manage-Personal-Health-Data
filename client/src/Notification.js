@@ -13,7 +13,7 @@ function Notification(props) {
     useEffect(() => {
         async function getNotifications() {
             const url = props.doctor ? `http://localhost:7000/doctor/getnotification?doctorId=${docData?.uId}` :
-                `http://localhost:7000/patient/getnotification?patientId=${userData?.uId}`//Patient url for fetch nots
+                `http://localhost:7000/personal/requesteddocument?patientId=${userData?.uId}`//Patient url for fetch nots
             const response = await fetch(url, {
                 method: 'GET'
             })
@@ -25,7 +25,7 @@ function Notification(props) {
     }, [])
     const markRead = async (e) => {
         const url = props.doctor ? `http://localhost:7000/doctor/getnotification?doctorId=${docData?.uId}` :
-            ``//user url to mark all nots as read
+            ``
         const response = await fetch(url, {
             method: 'POST',
             headers: {
@@ -40,7 +40,7 @@ function Notification(props) {
         window.location.reload()
     }
     var displayNotifications
-    if (notification) {
+    if (notification && props.doctor) {
         displayNotifications = Object.keys(notification).map(el => {
             return <Link style={{ width: "100%" }} onClick={() => {
                 dispatch(patientDataDoctorNotification(notification[el].patientId))

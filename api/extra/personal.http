@@ -1,2 +1,5 @@
 ###
 GET http://localhost:7000/personal/notifications?patientId=20000707-513569
+
+###
+GET http://localhost:7000/personal/requesteddocument?patientId=20000707-513569

@@ -56,6 +56,10 @@ function HomeNav(props) {
             setCountFriendReqs((prevState) => prevState + 1)
             setFriendNotifier((prevState) => [...prevState, parameters])
         })
+        socket.current.on('pushNotsDocumentRequested', (parameters) => {
+            setCountNotifications((prevState) => prevState + 1)
+            setNotifier((prevState) => [...prevState, parameters])
+        })
         // socket.current.on('verifiedUser', (parameters) => {
         //     setNotifier(parameters)
         //     setIntendedDoctor(parameters.doctorId)
@@ -69,7 +73,7 @@ function HomeNav(props) {
     useEffect(() => {
         async function getNotifications() {
             const url = props.doctor ? `http://localhost:7000/doctor/getnotification?doctorId=${docData?.uId}` :
-                ""// `http://localhost:7000/patient/getnotification?patientId=${userData?.uId}`
+                `http://localhost:7000/personal/requesteddocument?patientId=${userData?.uId}`
             const response = await fetch(url, {
                 method: 'GET'
             })
@@ -121,7 +125,7 @@ function HomeNav(props) {
             <Link key={el} to={props.doctor ? "/Doctor/notifications" : "/home/notifications"}>
                 <div style={{ display: 'flex', backgroundColor: 'white', border: '1px solid lightgreen' }}>
                     <img className="homeNav__notifications__displayPic" src={notifier[el].photo} alt="Patient Display" />
-                    <li>{notifier[el].patientName} shared a document with you</li>
+                    {props.doctor ? <li>{notifier[el].patientName} shared a document with you</li> : <li>{notifier[el].name} has requested access to {notifier[el].title} record</li>}
                 </div>
             </Link>
         )

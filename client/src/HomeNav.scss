@@ -92,17 +92,33 @@
         }
     }
     &__notifications {
-        background-color: aqua;
+        background-color: rgba(gray, 0.9);
         position: absolute;
-        height: 10em;
+        height: 20em;
+        width: 20em;
         overflow-y: scroll;
         top: 100%;
         display: none;
+        border: 1px solid lightgreen;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(black, 0.5);
         z-index: 101;
+        &__displayPic {
+            height: 3em;
+            width: 3em;
+            padding: 0.1rem;
+        }
+        a {
+            text-decoration: none;
+            color: black;
+        }
         ul {
-            width: 10em;
+            width: 100%;
             li {
                 list-style: none;
+                width: 100%;
+                margin-left: 0.5rem;
+                font-weight: 200;
             }
         }
 
@@ -129,7 +145,7 @@
 
             li {
                 text-align: center;
-                border-bottom:1px solid lightgreen ;
+                border-bottom: 1px solid lightgreen;
                 display: flex;
                 justify-content: center;
                 align-items: center;

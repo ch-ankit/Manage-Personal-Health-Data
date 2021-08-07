@@ -82,6 +82,7 @@ exports.doctorSearch = async (req, res, next) => {
       next(err);
     });
 };
+
 // req = {
 //   query: {
 //     patientId: "20000101-857026",

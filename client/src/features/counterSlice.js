@@ -8,7 +8,7 @@ export const userSlice = createSlice({
     darkMode: false,
     documentName: JSON.parse(window.localStorage.getItem('documentName')),
     report: JSON.parse(window.localStorage.getItem('report')),
-    shareDocuments: window.localStorage.getItem('shareDocuments') === "" ? [] : JSON.parse(window.localStorage.getItem('shareDocuments')),
+    shareDocuments: window.localStorage.getItem('shareDocuments') === "" || window.localStorage.getItem('shareDocuments') === null ? [] : JSON.parse(window.localStorage.getItem('shareDocuments')),
     recentPatient: JSON.parse(window.localStorage.getItem('recentPatient')),
     patientDataForNotification: JSON.parse(window.localStorage.getItem('patientDataForNotification'))
   },

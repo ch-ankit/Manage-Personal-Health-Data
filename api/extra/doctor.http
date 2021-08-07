@@ -17,3 +17,13 @@ content-type: application/json
 
 ###
 GET http://localhost:7000/doctor/addlist?doctorId=777333
+
+###
+POST http://localhost:7000/doctor/requestdocument
+content-type: application/json
+
+{
+    "doctorId":"777333",
+    "patientId":"20000101-592524",
+    "masterId":"167122746285"
+}

@@ -160,8 +160,8 @@ exports.addPatient = async (req, res, next) => {
 };
 
 exports.requestDocument = async (req, res, next) => {
-  var session = session.driver();
-  var query = `MATCH(n:Patient{value:$patientId}-[:medicalRecord]->(m:masterIdentifier{value:$masterId})
+  var session = driver.session();
+  var query = `MATCH(n:Patient{value:$patientId})-[:medicalRecord]->(m:masterIdentifier{value:$masterId})
                MATCH(n1:Practitioner{value:$doctorId})-[r1:hasAcess]->(m) WHERE r1.terminated=1 OR r1.timeStamp<${
                  Date.now() / 60000
                }

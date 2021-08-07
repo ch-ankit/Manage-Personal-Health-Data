@@ -18,9 +18,8 @@ exports.recentPatient = async (req, res, next) => {
         returnData.visitDate = el._fields[3];
         returnData.sharedDate = el._fields[4];
         var nameObj = el._fields[1].properties;
-        returnData.name = `${nameObj.prefix}.${nameObj.given[0]} ${
-          nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
-        }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
+        returnData.name = `${nameObj.prefix}.${nameObj.given[0]} ${nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
+          }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
         return returnData;
       });
       return data;
@@ -133,9 +132,8 @@ exports.toAddList = async (req, res, next) => {
         returnData.patientId = el._fields[0];
         returnData.photo = el._fields[2];
         var nameObj = el._fields[1].properties;
-        returnData.name = `${nameObj.prefix}.${nameObj.given[0]} ${
-          nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
-        }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
+        returnData.name = `${nameObj.prefix}.${nameObj.given[0]} ${nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
+          }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
         return returnData;
       });
       return data;
@@ -148,12 +146,70 @@ exports.toAddList = async (req, res, next) => {
 
 exports.addPatient = async (req, res, next) => {
   var session = driver.session();
-  var query = `MATCH (n:Patient{value:"${req.body.doctorId}"})-[r:knows{}]->(m:Practitioner{value:"${req.body.doctorId}"})
-               SET r.status="${req.body.status}"
+  const io = req.app.get("socketServer");
+  var query = `MATCH (n:Patient{value:"${req.body.patientId}"})-[r:knows{}]->(m:Practitioner{value:"${req.body.doctorId}"})
+               SET r.status="${req.body.status}", r.since="${Date()}"
                `;
   session
     .run(query, {})
-    .then(() => res.send({ message: "Patient Added to known list" }))
+    .then(() => {
+      var session = driver.session();
+      session
+        .run(`MATCH (n:Socketuser) return n;`)
+        .then((result) => {
+          var users = result.records.map((el) => el._fields[0].properties);
+          return users;
+        })
+        .then((users) => {
+          var date = new Date();
+          var hours = date.getHours();
+          var minutes = date.getMinutes();
+          var ampm = hours >= 12 ? "pm" : "am";
+          hours = hours % 12;
+          hours = hours ? hours : 12; // the hour '0' should be '12'
+          minutes = minutes < 10 ? "0" + minutes : minutes;
+          var strTime = hours + ":" + minutes + " " + ampm;
+          console.log(strTime);
+          users = users.filter((el) => req.body.patientId == el.userId);
+          if (users[0]) {
+            console.log(users);
+            io.to(users[0].socketId).emit("pushNotsPatientFriendAccept", {
+              doctorId: req.body.doctorId,
+              name: `Dr. ${req.body.firstName} ${req.body.lastName}`,
+              time: strTime,
+              photo: req.body
+            });
+            var session = driver.session();
+            session
+              .run(
+                `MATCH(n:Patient{value:"${req.body.patientId}"})
+            MERGE(n)-[:hasNotification]->(:notification{doctorId:"${req.body.doctorId}",doctorName:"${`Dr. ${req.body.firstName} ${req.body.lastName}`}",time:"${strTime}", viewed:"false"})`,
+                {}
+              )
+              .then(() => {
+                console.log("Friend request accepted and updated to database");
+              })
+              .catch((err) => next(err));
+          } else {
+            console.log(
+              "Sorry Socket id did not match with connected users so backed up to database"
+            );
+            var session = driver.session();
+            session
+              .run(
+                `MATCH(n:Patient{value:"${req.body.patientId}"})
+                MERGE(n)-[:hasNotification]->(:notification{doctorId:"${req.body.doctorId}",doctorName:"${`Dr. ${req.body.firstName} ${req.body.lastName}`}",time:"${strTime}", viewed:"false"})`,
+                {}
+              )
+              .then(() => {
+                console.log("Friend request accepted and updated to database");
+              })
+              .catch((err) => next(err));
+          }
+        })
+        .catch((err) => console.log(err))
+      res.send({ message: "Patient Added to known list" })
+    })
     .catch((err) => {
       next(err);
     });
@@ -161,10 +217,10 @@ exports.addPatient = async (req, res, next) => {
 
 exports.requestDocument = async (req, res, next) => {
   var session = driver.session();
+  const io = req.app.get("socketServer");
   var query = `MATCH(n:Patient{value:$patientId})-[:medicalRecord]->(m:masterIdentifier{value:$masterId})
-               MATCH(n1:Practitioner{value:$doctorId})-[r1:hasAcess]->(m) WHERE r1.terminated=1 OR r1.timeStamp<${
-                 Date.now() / 60000
-               }
+               MATCH(n1:Practitioner{value:$doctorId})-[r1:hasAcess]->(m) WHERE r1.terminated=1 OR r1.timeStamp<${Date.now() / 60000
+    }
                MERGE(n1)-[:hasRequested{masterId:$masterId,requestedTime:"${Date()}",status:"pending"}]->(m)
               `;
   var params = {

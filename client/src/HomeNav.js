@@ -86,7 +86,9 @@ function HomeNav(props) {
 
     useEffect(() => {
         async function getFriendRequests() {
-            const response = await fetch(`http://localhost:7000/doctor/addlist?doctorId=${docData?.uId}`, {
+            const url = props.doctor ? `http://localhost:7000/doctor/addlist?doctorId=${docData?.uId}` :
+                `http://localhost:7000/personal/notifications?patientId=${userData?.uId}`
+            const response = await fetch(url, {
                 method: 'GET'
             })
             const data = await response.json()
@@ -147,14 +149,9 @@ function HomeNav(props) {
             </div>
 
             <div className="homeNav__notify">
-                {
-                    props.doctor &&
-                    (
-                        <div><UsersIcon className={countFriendReqs === 0 ? "homeNav__userIconNoNots" : "homeNav__userIconNots"} onClick={() => {
-                            document.querySelector(".homeNav__friendnotifications").classList.toggle("active")
-                        }} />{countFriendReqs === 0 ? '' : countFriendReqs}</div>
-                    )
-                }
+                <div><UsersIcon className={countFriendReqs === 0 ? "homeNav__userIconNoNots" : "homeNav__userIconNots"} onClick={() => {
+                    document.querySelector(".homeNav__friendnotifications").classList.toggle("active")
+                }} />{countFriendReqs === 0 ? '' : countFriendReqs}</div>
                 <BellIcon className={countNotifications === 0 ? "homeNav__bellIconNoNots" : "homeNav__bellIconNots"} onClick={() => {
                     document.querySelector(".homeNav__notifications").classList.toggle("active")
                 }} /> {countNotifications === 0 ? '' : countNotifications}

@@ -27,7 +27,10 @@ function FriendList(props) {
             body: JSON.stringify({
                 patientId: e,
                 doctorId: docData.uId,
-                status: decision
+                status: decision,
+                firstName: docData.firstName,
+                lastName: docData.lastName,
+                photo: docData.photo
             })
         })
         const { message } = await response.json()

@@ -34,14 +34,14 @@ POST http://localhost:7000/signup/doctor
 content-type: application/json
 
 {
-"id":"111111",
-"lastName":"Khatiwada",
-"firstName":"Ankit",
+"id":"777777",
+"lastName":"Nepal",
+"firstName":"Ram",
 "middleName":"",
 "prefix":"Dr",
 "suffix":"PHD",
 "mobileNo":"9876543210",
-"email":"akgunner6@gmail.com",
+"email":"yourbusinessanalyst2020@gmail.com",
 "gender":"Male",
 "dob":"2000-01-01",
 "city":"Bhaktapur",

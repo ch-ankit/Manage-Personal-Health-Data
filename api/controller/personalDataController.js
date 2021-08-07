@@ -60,7 +60,9 @@ exports.addContact = async (req, res, next) => {
     address: {
       use: "home",
       type: "postal/physical/both",
-      text: `${req.body.city,req.body.district,req.body.state,req.body.country}`,
+      text: `${
+        (req.body.city, req.body.district, req.body.state, req.body.country)
+      }`,
       line: req.body.streetName,
       city: req.body.city,
       district: req.body.district,
@@ -183,13 +185,48 @@ exports.giveAcess = async (req, res, next) => {
 
 exports.updatePersonalData = async (req, res, next) => {
   var session = driver.session();
+  const params = {
+    identifierValue: req.body.patientId,
+    nameFamily: `${req.body.lastName}`,
+    given: [`${req.body.firstName}`, `${req.body.middleName}`],
+    prefix: `${req.body.prefix}`,
+    suffix: `${req.body.suffix}`,
+    telecom1Value: `${req.body.mobileNo}`,
+    gender: `${req.body.gender}`,
+    birthDate: `${req.body.dob}`,
+    addressText: `${req.body.city},${req.body.district},${req.body.state},${req.body.country}`,
+    city: `${req.body.city}`,
+    district: `${req.body.district}`,
+    state: `${req.body.state}`,
+    country: `${req.body.country}`,
+    line: [`${req.body.houseNo}`, `${req.body.streetName}`],
+    postalCode: `${req.body.postalCode}`,
+    maritalStatusCodingCode: `${req.body.maritialStatusCode}`,
+    maritalStatustext: `${req.body.maritialStatus}`,
+    multipleBirthBoolean: req.body.multipleBirthBoolean === "true",
+    multipleBirthInteger: parseInt(req.body.birthOrder),
+    photoUrl: `${req.body.photo}`,
+    photoCreation: Date(),
+    communicationLanguageCodingCode: `${req.body.languageCode}`,
+    communicationLanguagetext: `${req.body.language}`,
+  };
+
   var query = `MATCH(n:Patient{value:$identifierValue})
-               MERGE(n)-[:identifies{}]->(m:patient{resourceType:$resourceType,active:$active,gender:$gender,birthDate:$birthDate,deceasedBoolean:$deceasedBoolean,multipleBirthBoolean:$multipleBirthBoolean,multipleBirthInteger:$multipleBirthInteger})
-               MERGE(n)-[a:hasName{use:$nameUse}]->(o:name{given:$given,family:$nameFamily,prefix:$prefix,suffix:$suffix})
-               MERGE(n)-[:telecom{system:$telecom1System}]->(q:phone{use:$telecom1Use,value:$telecom1Value,rank:$telecom1rank})
-               MERGE(n)-[:telecom{system:$telecom2System}]->(q1:phone{use:$telecom2Use,value:$telecom2Value,rank:$telecom2rank})
-               MERGE(n)-[:address{use:$addressUse}]->(r:addressUse{type:$addressType,text:$addressText,line:$line,city:$city,district:$district,country:$country,state:$state,postalCode:$postalCode})
-               MERGE(n)-[:maritialStatus{text:$maritalStatustext}]->(:coding{code:$maritalStatusCodingCode,system:$maritalStatusCodingSystem})
-               MERGE(n)-[:photo]->(:photo{contentType:$photoContentType,url:$photoUrl,creation:$photoCreation})
-               MERGE(n)-[:communication{preferred:$communicationprefered,text:$communicationLanguagetext}]->(:coding{system:$communicationLanguageCodingSystem,code:$communicationLanguageCodingCode})`;
+               MATCH(n)-[r:identifies{}]->(m:patient{})
+               MATCH(n)-[r1:hasName{}]->(m1:name{})
+               MATCH(n)-[r2:telecom{}]->(m2:phone{})
+               MATCH(n)-[r3:address{}]->(m3:addressUse{})
+               MATCH(n)-[r4:maritialStatus{}]->(m4:coding{})
+               MATCH(n)-[r5:photo]->(m5:photo{})
+               MATCH(n)-[r6:communication{}]->(m6:coding{})
+               SET m1.family=$nameFamily,given=$given,m1.prefix=$prefix,m1.suffix=$suffix,m2.telecom1Value=$telecom1Value,m.gender=$gender,m.birthDate=$birthDate,m3.text=$addressText,m3.city=$city,m3.district=$district,m3.state=$state,m3.country=$country,m3.line=$line,m3.postalCode=$postalCode,m4.maritalStatusCodingCode=$maritalStatusCodingCode,r4.text=$maritalStatustext,m.multipleBirthBoolean=$multipleBirthBoolean,m.multipleBirthInteger=$multipleBirthInteger,m5.url=$photoUrl,m5.creation=$photoCreation,m6.code=$communicationLanguageCodingCode,r6.text=$communicationLanguagetext`;
+
+  session
+    .run(query, params)
+    .then(() => {
+      res.send({ message: "data updated sucessfuly" });
+    })
+    .catch((err) => {
+      next(err);
+    });
 };

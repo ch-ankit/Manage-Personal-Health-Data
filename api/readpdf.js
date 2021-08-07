@@ -223,7 +223,7 @@ var medicalData = {
 };
 
 fs.readFile(
-  `${path.resolve()}//public//Observation_Report_1.pdf`,
+  `${path.resolve()}//public//medicalRecords//20000707-513569//1628345620284.pdf`,
   (err, pdfBuffer) => {
     // pdfBuffer contains the file content
     new pdfReader.PdfReader().parseBuffer(
@@ -245,8 +245,8 @@ fs.readFile(
           // console.log(medicalData.masterIdentifier.value);
           medicalData.status = /Report Status:\s(.*?)Date/i.exec(reportData)[1];
           //console.log(medicalData.status);
-          medicalData.subject.identifier.value =
-            /PatientId:\s(.*?)Patient Name/i.exec(reportData)[1];
+          // medicalData.subject.identifier.value =
+          //   /PatientId:\s(.*?)Patient Name/i.exec(reportData)[1];
           // var query = `MATCH (n:Patient{value:"20000101-633940"})-[:hasName]-(m) RETURN m`;
           // var params = {
           //   value: medicalData.subject.identifier.value,

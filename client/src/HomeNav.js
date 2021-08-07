@@ -79,14 +79,19 @@ function HomeNav(props) {
             })
             const data = await response.json()
             var unread = [];
-            data.forEach(el => {
-                if (el.markAsRead === "false") {
-                    unread.push(el)
+            if (props.doctor) {
+                data.forEach(el => {
+                    if (el.markAsRead === "false") {
+                        unread.push(el)
+                    }
                 }
+                )
+                setCountNotifications(unread.length)
+                setNotifier(unread)
+            } else {
+                setCountNotifications(data.length)
+                setNotifier(data)
             }
-            )
-            setCountNotifications(unread.length)
-            setNotifier(unread)
         }
         return getNotifications()
     }, [])

@@ -15,12 +15,7 @@ function PersonalDetail() {
     const country = useRef(null)
     const mobileNo = useRef(null)
     const dob = useRef(null);
-    const email = useRef(null)
-    const emergencyContactName = useRef(null)
-    const emergencyContactNo = useRef(null)
-    const emergencyContactRltn = useRef(null)
     const gender = useRef(null)
-    const occupation = useRef(null)
     const language = useRef(null)
     const firstName = useRef(null)
     const middleName = useRef(null)
@@ -76,12 +71,15 @@ function PersonalDetail() {
                     .getDownloadURL()
                     .then(async (url) => {
                         const system = language.current.value.split('-')
-                        const response = await fetch('http://localhost:7000/signUp/patient', {
+                        console.log(url);
+                        console.log(maritalStatus)
+                        const response = await fetch('http://localhost:7000/personal/update', {
                             method: 'POST',
                             headers: {
                                 'Content-type': 'application/json'
                             },
                             body: JSON.stringify({
+                                patientId:userData.uId,
                                 city: city.current.value,
                                 district: district.current.value,
                                 state: state.current.value,
@@ -90,12 +88,7 @@ function PersonalDetail() {
                                 houseNo: houseNo.current.value,
                                 streetName: streetName.current.value,
                                 dob: dob.current.value,
-                                email: email.current.value,
-                                emergencyContactName: emergencyContactName.current.value,
-                                emergencyContactNo: emergencyContactNo.current.value,
-                                emergencyContactRltn: emergencyContactRltn.current.value,
                                 gender: gender.current.value,
-                                occupation: occupation.current.value,
                                 language: system[0],
                                 languageCode: system[1],
                                 maritialStatus: maritalStatus,
@@ -112,7 +105,7 @@ function PersonalDetail() {
                             })
                         })
                         setViewFile('')
-                        console.log(response)
+                        console.log(await response.json())
                     })
 
             }
@@ -147,7 +140,7 @@ function PersonalDetail() {
                     <div className="personalDetail__contact">
                         <h4>Contact</h4>
                         <div className="personalDetail__contact1">
-                            <p>Address: {userData?.addressbothcity}</p>          {/* display the address of the user */}
+                            <p>Address: {userData?.addressbothtext}</p>          {/* display the address of the user */}
                             <p>Country: {(userData?.addresspermanentcountry) ?? (userData?.addressbothcountry)}</p> 
                             <p>Mobile Phone: {userData?.phone}</p>     {/* display mobile number of user */}
                         </div>
@@ -235,9 +228,9 @@ function PersonalDetail() {
                         </label>
                     </div>
 
-                    <label htmlFor="email" style={{width:"80%"}}>Email
+                    {/* <label htmlFor="email" style={{width:"80%"}}>Email
                     <input ref={email} style={{height:"2.5em",marginTop:"0.5rem"}} type="email"  defaultValue={userData?.email} id="email" placeholder="Email" />
-                    </label>
+                    </label> */}
                     <div className="personalDetail__customSelect" style={{width:'80%'}}>
                         <label htmlFor="">Language</label>
                         <select ref={language}  id="language" required>
@@ -266,20 +259,59 @@ function PersonalDetail() {
                     <div className="personalDetail__radio" style={{display:"flex",flexDirection:"column",width:"80%"}}>
                     <div className="personalDetail__customSelect">
                         <label htmlFor="">Marital Status</label>
-                        <select ref={maritalStatusCode} defaultChecked={userData.maritalStatus.slice(0,1)} id="Marital Status" required>
+                        <select ref={maritalStatusCode} onChange={(e)=>{
+                            e.preventDefault();
+                            switch(e.target.value){
+                                case "A":
+                                    setMaritalStatus('Annuled');
+                                    break;
+                                
+                                case "D":
+                                    setMaritalStatus('Divorced');
+                                    break;
+
+                                case "I":
+                                    setMaritalStatus('Interlocutory');
+                                    break;
+                                
+                                case "L":
+                                    setMaritalStatus('Legally Separated')
+                                    break;
+                                case "M":
+                                    setMaritalStatus('Married')
+                                    break;
+                                case "P":
+                                    setMaritalStatus('Polygamous')
+                                    break;
+                                case "S":
+                                    setMaritalStatus('Never Married');
+                                    break;
+                                case "T":
+                                    setMaritalStatus('Domestic Partner')
+                                    break;
+                                case "U":
+                                    setMaritalStatus('Unmarried')
+                                    break;
+                                case "W":
+                                    setMaritalStatus('Widowed')
+                                    break;
+                                case "UNK":
+                                    setMaritalStatus('unknown')
+                                    break;
+                            }
+                        }}id="Marital Status" required>
                             <option selected="selected">{userData?.maritalStatus}</option>
-                            <option value="Marital Status" hidden > Please Select you status</option>
-                            <option value="A" onClick={() => setMaritalStatus('Annuled')} >Annuled</option>
-                            <option value="D" onClick={() => setMaritalStatus('Divorced')} >Divorced</option>
-                            <option value="I" onClick={() => setMaritalStatus('Interlocutory')} >Interlocutory</option>
-                            <option value="L" onClick={() => setMaritalStatus('Legally Separated')} >Legally Seperated</option>
-                            <option value="M" onClick={() => setMaritalStatus('Married')} >Married</option>
-                            <option value="P" onClick={() => setMaritalStatus('Polygamous')} >Polygamous</option>
-                            <option value="S" onClick={() => setMaritalStatus('Never Married')} >Never Married</option>
-                            <option value="T" onClick={() => setMaritalStatus('Domestic Partner')} >Domestic Partner</option>
-                            <option value="U" onClick={() => setMaritalStatus('Unmarried')} >Unmarried</option>
-                            <option value="W" onClick={() => setMaritalStatus('Widowed')} >Widowed</option>
-                            <option value="UNK" onClick={() => setMaritalStatus('unknown')} >unknown</option>
+                            <option value="A" >Annuled</option>
+                            <option value="D" >Divorced</option>
+                            <option value="I">Interlocutory</option>
+                            <option value="L" >Legally Seperated</option>
+                            <option value="M" >Married</option>
+                            <option value="P" >Polygamous</option>
+                            <option value="S" >Never Married</option>
+                            <option value="T" >Domestic Partner</option>
+                            <option value="U" >Unmarried</option>
+                            <option value="W" >Widowed</option>
+                            <option value="UNK" >unknown</option>
                         </select>
                     </div>
                 </div>

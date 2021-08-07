@@ -46,6 +46,7 @@ function LandingPage() {
             patientData.firstName=data.name[0].given[0];
             patientData.lastName=data.name[0].family;
             patientData.prefix=data.name[0].prefix;
+            patientData.suffix=data.name[0].suffix;
             patientData.lastName=data.name[0].family;
 
             data.telecom.forEach((tel)=>

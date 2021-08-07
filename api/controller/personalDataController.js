@@ -219,7 +219,7 @@ exports.updatePersonalData = async (req, res, next) => {
                MATCH(n)-[r4:maritialStatus{}]->(m4:coding{})
                MATCH(n)-[r5:photo]->(m5:photo{})
                MATCH(n)-[r6:communication{}]->(m6:coding{})
-               SET m1.family=$nameFamily,given=$given,m1.prefix=$prefix,m1.suffix=$suffix,m2.telecom1Value=$telecom1Value,m.gender=$gender,m.birthDate=$birthDate,m3.text=$addressText,m3.city=$city,m3.district=$district,m3.state=$state,m3.country=$country,m3.line=$line,m3.postalCode=$postalCode,m4.maritalStatusCodingCode=$maritalStatusCodingCode,r4.text=$maritalStatustext,m.multipleBirthBoolean=$multipleBirthBoolean,m.multipleBirthInteger=$multipleBirthInteger,m5.url=$photoUrl,m5.creation=$photoCreation,m6.code=$communicationLanguageCodingCode,r6.text=$communicationLanguagetext`;
+               SET m1.family=$nameFamily,m1.given=$given,m1.prefix=$prefix,m1.suffix=$suffix,m2.telecom1Value=$telecom1Value,m.gender=$gender,m.birthDate=$birthDate,m3.text=$addressText,m3.city=$city,m3.district=$district,m3.state=$state,m3.country=$country,m3.line=$line,m3.postalCode=$postalCode,m4.maritalStatusCodingCode=$maritalStatusCodingCode,r4.text=$maritalStatustext,m.multipleBirthBoolean=$multipleBirthBoolean,m.multipleBirthInteger=$multipleBirthInteger,m5.url=$photoUrl,m5.creation=$photoCreation,m6.code=$communicationLanguageCodingCode,r6.text=$communicationLanguagetext`;
 
   session
     .run(query, params)

@@ -230,3 +230,23 @@ exports.updatePersonalData = async (req, res, next) => {
       next(err);
     });
 };
+
+exports.checkPassword = async (req, res, data) => {
+  var session = driver.session();
+  var query = `MATCH (n:Patient{value:"${req.body.id}"}) return n`;
+  session.run(query).then(async (result) => {
+    if (result.records[0] !== undefined) {
+      let passwordMatched = await bcrypt.compare(
+        req.body.password,
+        result.records[0]._fields[0].properties.password
+      );
+      if (!passwordMatched) {
+        res.send({ message: false });
+      } else {
+        res.send({ message: true });
+      }
+    } else {
+      res.send({ message: false });
+    }
+  });
+};

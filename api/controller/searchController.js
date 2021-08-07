@@ -56,6 +56,8 @@ exports.getPrescriptions = async (req, res, next) => {
 
 exports.doctorSearch = async (req, res, next) => {
   var session = driver.session();
+  if (req.query.patientId) {
+  }
   var query = `MATCH (n:Practitioner{})-[r:identifies{}]->(m:doctor{active:True})
   MATCH(n)-[r1:hasName{}]->(m1:name{})
   MERGE(n)-[r2:photo]->(m2:photo{})
@@ -82,6 +84,7 @@ exports.doctorSearch = async (req, res, next) => {
       next(err);
     });
 };
+
 // req = {
 //   query: {
 //     patientId: "20000101-857026",

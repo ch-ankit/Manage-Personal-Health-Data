@@ -6,7 +6,7 @@ const driver = neo4j.driver(
   neo4j.auth.basic("neo4j", "yJ76GNUav3QAQDKOiwR4aMdCwgnWxurIty_6WH-g7aU"),
   {}
 );
-const query = ` MATCH(n:Patient) RETURN n.value`;
+const query = `MATCH (n:Socketuser) return n.socketId,n.userId`;
 
 const session = driver.session({ database: "neo4j" });
 
@@ -21,7 +21,7 @@ session
   .run(query)
   .then((result) => {
     result.records.forEach((el) => {
-      console.log(el._fields);
+      console.log(el._fields[0], el._fields[1]);
     });
   })
   .catch((err) => console.log(err));

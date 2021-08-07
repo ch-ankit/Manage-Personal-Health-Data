@@ -1,9 +1,10 @@
 import React, { useRef, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import "./PersonalDetail.scss"
 import { useHistory } from 'react-router-dom'
 import { languages } from './LanguageDataset'
 import storage from './firebaseConfig'
+import { loginUser } from './features/counterSlice'
 function PersonalDetail() {
     const userData = useSelector((state) => state.user.value);
     const darkMode = useSelector((state) => state.user.darkMode);
@@ -34,8 +35,7 @@ function PersonalDetail() {
     const [viewFile, setViewFile] = useState(userData.photo);
     const [photo, setPhoto] = useState('');
     const password=useRef(null);
-
-
+    const dispatch=useDispatch();
 
     if (userData == null) {
         history.push('/')
@@ -110,10 +110,75 @@ function PersonalDetail() {
                     })
 
             }
-        )
+        );
+
+        const response = await fetch("http://localhost:7000/login/patient", {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json"
+                },
+                body: JSON.stringify({
+                    id: userData.uId,
+                    password:password.current.value
+                })
+            });
+            console.log(response)
+            console.log('Hello')
+            const data = await response.json();
+            console.log(data)
+            let patientData={};
+            patientData.uId=data.identifier[0].value;
+            patientData.birthDate=data.birthDate;
+            patientData.gender=data.gender;
+            patientData.firstName=data.name[0].given[0];
+            patientData.lastName=data.name[0].family;
+            patientData.prefix=data.name[0].prefix;
+            patientData.suffix=data.name[0].suffix;
+            patientData.lastName=data.name[0].family;
+
+            data.telecom.forEach((tel)=>
+                patientData[tel.system]=tel.value
+            )
+            patientData.maritalStatus=data.maritialStatus.text;
+            patientData.photo=data.photo.url;
+            data.address.forEach((val)=>{
+                let arr=Object.getOwnPropertyNames(val);
+                arr.forEach((name)=>{
+                    patientData[`address${val.type}${name}`]=val[name]
+                })
+            })
+            patientData.language=data.communication[0].language["text"];
+            patientData.multipleBirthBoolean=data.multipleBirthBoolean;
+            patientData.multipleBirthInteger=data.multipleBirthInteger;
+
+            console.log(data);
+            console.log(patientData)
+            dispatch(loginUser(patientData));
 
     }
     const languageMap = Object.keys(languages).map(el => <option key={el} value={`${languages[el].name}-${languages[el].code}`} > {languages[el].name}</ option>)
+    
+    const checkPassword=async (e)=>{
+        e.preventDefault();
+        const response=await fetch("http://localhost:7000/personal/checkPassword",{
+            method:"POST",
+            headers:{
+                "Content-type":"application/json"
+            },
+            body:JSON.stringify({
+                id:userData.uId,
+                password:password.current.value
+            })
+        })
+        const data=await response.json();
+        if(data.message){
+            handleSubmit();
+        }
+        else{
+            alert("Incorrect Password")
+        }
+    }
+    
     return (
         <div className="personalDetail">
             {console.log(darkMode)}
@@ -358,11 +423,12 @@ function PersonalDetail() {
                     </div> */}
                     <button type="submit" form="personalDetailForm">Change</button>
                 </form>
-                <form>
-                    <input type="password" placeholder="Password" ref={password}/>
-                    <div className="personalDetail__popup2Buttons">
+                <form className="personalDetail__popUp2" onSubmit={checkPassword}>
+                    <h1>Enter your password</h1>
+                    <input type="password" placeholder="Password" ref={password} required/>
+                    <div className="personalDetail__popUp2Buttons">
                         <button>Close</button>
-                        <button type="submit">Confirm</button>
+                        <button type="submit" className="personalDetail__confirm">Confirm</button>
                     </div>
                 </form>
             </div>

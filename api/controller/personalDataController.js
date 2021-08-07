@@ -1,5 +1,5 @@
 const driver = require("./../database");
-
+const bcrypt = require("bcrypt");
 exports.getContact = async (req, res, next) => {
   const session = driver.session();
   const query = `MATCH(n:Patient{value:"${req.query.id}"})-[r:contact]->(m:relationship)-[:coding]->(:coding)

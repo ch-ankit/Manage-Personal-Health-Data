@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom';
 import { documentGet } from './features/counterSlice';
 import "./RecentPatientDocuments.scss"
+import {RefreshIcon} from "@heroicons/react/solid"
 function ReccentPatientDocuments() {
     const patientData = useSelector(state => state.user.recentPatient)
     const docData = useSelector(state => state.user.doctor);
@@ -33,6 +34,7 @@ function ReccentPatientDocuments() {
                 <h4>Documents</h4>
                 {Object.keys(documents).map((key) => {
                     return (
+                        <div style={{width:"100%",display:"flex",alignItems:"center",position:"relative"}}>
                         <div key={key}
                             className={`recentPatientDocuments__list ${documents[key].terminationStatus === 1 && "recentPatientDocuments__terminatedList"} ${Math.floor(documents[key].timeStamp - Date.now() / 60000) < 0 && "recentPatientDocuments__timeUpList"} `}
                             onClick={() => {
@@ -44,6 +46,8 @@ function ReccentPatientDocuments() {
                             <p>{documents[key].title}</p>
                             <p>{documents[key].documentId}</p>
                             <p>Remaining Time: {Math.floor(documents[key].timeStamp - Date.now() / 60000) > 0 ? Math.floor((documents[key].timeStamp - Date.now() / 60000)) + " min" : " 00 min"}</p>
+                        </div>
+                            <RefreshIcon className={`recentPatientDocuments__icon ${(documents[key].terminationStatus === 1 ||Math.floor(documents[key].timeStamp - Date.now() / 60000) < 0) && "recentPatientDocuments__iconactive"}`}/>
                         </div>
                     )
                 })}

@@ -36,6 +36,7 @@
         width: 100%;
         height: 2em;
         display:flex;
+        position: relative;
         align-items: center;
         margin: 1em 0;
         border: 1px solid lightgreen;
@@ -53,9 +54,27 @@
         background-color: rgba(145, 143, 143,0.5);
         pointer-events: none;
     }
-
     &__terminatedList{
         background-color: red;
         pointer-events: none;
+    }
+
+    &__icon{
+        margin-left: 1em;
+        background-color: white;
+        width: 2em;
+        height: 2em;
+        position: absolute;
+        right: 0%;
+        display: none;
+        cursor: pointer;
+        pointer-events:visibleStroke;
+        transition: all 0.5s ease-out;
+        &:hover{
+            transform: rotateZ(180deg);
+        }
+        &active{
+            display:block;
+        }
     }
 }

@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { CheckIcon, XIcon } from "@heroicons/react/solid"
+import bell from './images/bell.jpg'
 
 import { documentGet, patientDataDoctorNotification, recentPatients } from './features/counterSlice';
 import './Notification.scss'
@@ -27,6 +28,7 @@ function Notification(props) {
         }
         return getNotifications()
     }, [])
+
     const markRead = async (e) => {
         const url = props.doctor && `http://localhost:7000/doctor/getnotification?doctorId=${docData?.uId}`
         const response = await fetch(url, {
@@ -126,8 +128,13 @@ function Notification(props) {
         <div className='notification' style={{ backgroundColor: 'white', height: '100%', width: '100%' }}>
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "80%", margin: '0 auto', position: 'relative', paddingTop: '2rem' }}>
                 <p style={{ position: 'absolute', right: '0', top: "1rem", border: 'black 1px solid', padding: '2px' }} onClick={markRead}>Mark all as Read</p>
+                {notification.length === 0 && (
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '0 auto', marginTop: '3em' }}>
+                        <img style={{ width: "50%" }} src={bell} alt="No request " />
+                        <h2 style={{ color: 'lightcoral' }}>All caught Up!!</h2>
+                    </div>)}
                 {displayNotifications}
-                <div className="shareDocuments__Time">
+                <div className="notification__shareTime">
                     <input ref={timeNumber} type="number" />
                     <select ref={timeUnit}>
                         <option value="day">day</option>

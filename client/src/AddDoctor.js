@@ -29,7 +29,8 @@ function AddDoctor(props) {
     const addDoctor = async (doctorId) => {
         const sendData = JSON.stringify({
             patientId: userData.uId,
-            doctorId: doctorId
+            doctorId: doctorId,
+            photo: userData.photo
         })
         const response = await fetch('http://localhost:7000/share/addDoctor', {
             method: "POST",

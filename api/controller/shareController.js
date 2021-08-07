@@ -74,32 +74,103 @@ exports.patientKnowsDoctor = async (req, res, next) => {
     });
 };
 
+// exports.doctorAcceptsPatient = async (req, res, next) => {
+//   var session = driver.session();
+//   var query;
+//   if (req.body.status == "accepted") {
+//     query = `MATCH (n:Patient{value:"${req.body.patientId
+//       }"})-[r:knows{}]->(m:Practitioner{value:"${req.body.doctorId
+//       }"}) SET r.status="accepted",r.since="${Date()}"`;
+//   } else {
+//     query = `MATCH (n:Patient{value:"${req.body.patientId}"})-[r:knows{}]->(m:Practitioner{value:"${req.body.doctorId}"}) SET r.status="rejected"`;
+//   }
+//   session
+//     .run(query)
+//     .then(() => {
+//       var session = driver.session();
+//       session
+//         .run(
+//           `MATCH (n:Patient{value:"${req.body.patientId}"})
+// MERGE (n)-[r:hasNotification{viewed:"false"}]->(m:notificaton{value:"${req.body.doctorId}",status:"${req.body.status}",doctorName:"${req.body.name}"})`
+//         )
+//         .then()
+//         .catch((err) => {
+//           next(err);
+//         });
+//     })
+//     .then(() => {
+//       res.send({ message: "Response recorded" });
+//     })
+//     .catch((err) => {
+//       next(err);
+//     });
+// };
+
 exports.doctorAcceptsPatient = async (req, res, next) => {
   var session = driver.session();
-  var query;
-  if (req.body.status == "accepted") {
-    query = `MATCH (n:Patient{value:"${req.body.patientId
-      }"})-[r:knows{}]->(m:Practitioner{value:"${req.body.doctorId
-      }"}) SET r.status="accepted",r.since="${Date()}"`;
-  } else {
-    query = `MATCH (n:Patient{value:"${req.body.patientId}"})-[r:knows{}]->(m:Practitioner{value:"${req.body.doctorId}"}) SET r.status="rejected"`;
-  }
+  const io = req.app.get("socketServer");
+  var query = `MATCH (n:Patient{value:"${req.body.patientId}"})-[r:knows{}]->(m:Practitioner{value:"${req.body.doctorId}"})
+               SET r.status="${req.body.status}", r.since="${Date()}"
+               `;
   session
-    .run(query)
+    .run(query, {})
     .then(() => {
       var session = driver.session();
       session
-        .run(
-          `MATCH (n:Patient{value:"${req.body.patientId}"})
-MERGE (n)-[r:hasNotification{viewed:"false"}]->(m:notificaton{value:"${req.body.doctorId}",status:"${req.body.status}",doctorName:"${req.body.name}"})`
-        )
-        .then()
-        .catch((err) => {
-          next(err);
-        });
-    })
-    .then(() => {
-      res.send({ message: "Response recorded" });
+        .run(`MATCH (n:Socketuser) return n;`)
+        .then((result) => {
+          var users = result.records.map((el) => el._fields[0].properties);
+          return users;
+        })
+        .then((users) => {
+          var date = new Date();
+          var hours = date.getHours();
+          var minutes = date.getMinutes();
+          var ampm = hours >= 12 ? "pm" : "am";
+          hours = hours % 12;
+          hours = hours ? hours : 12; // the hour '0' should be '12'
+          minutes = minutes < 10 ? "0" + minutes : minutes;
+          var strTime = hours + ":" + minutes + " " + ampm;
+          console.log(strTime);
+          users = users.filter((el) => req.body.patientId == el.userId);
+          if (users[0]) {
+            console.log(users);
+            io.to(users[0].socketId).emit("pushNotsPatientFriendAccept", {
+              doctorId: req.body.doctorId,
+              name: `Dr. ${req.body.firstName} ${req.body.lastName}`,
+              time: strTime,
+              photo: req.body
+            });
+            var session = driver.session();
+            session
+              .run(
+                `MATCH(n:Patient{value:"${req.body.patientId}"})
+            MERGE(n)-[:hasNotification]->(:notification{doctorId:"${req.body.doctorId}",doctorName:"${`Dr. ${req.body.firstName} ${req.body.lastName}`}",time:"${strTime}", viewed:"false"})`,
+                {}
+              )
+              .then(() => {
+                console.log("Friend request accepted and updated to database");
+              })
+              .catch((err) => next(err));
+          } else {
+            console.log(
+              "Sorry Socket id did not match with connected users so backed up to database"
+            );
+            var session = driver.session();
+            session
+              .run(
+                `MATCH(n:Patient{value:"${req.body.patientId}"})
+                MERGE(n)-[:hasNotification]->(:notification{doctorId:"${req.body.doctorId}",doctorName:"${`Dr. ${req.body.firstName} ${req.body.lastName}`}",time:"${strTime}", viewed:"false"})`,
+                {}
+              )
+              .then(() => {
+                console.log("Friend request accepted and updated to database");
+              })
+              .catch((err) => next(err));
+          }
+        })
+        .catch((err) => console.log(err))
+      res.send({ message: "Patient Added to known list" })
     })
     .catch((err) => {
       next(err);

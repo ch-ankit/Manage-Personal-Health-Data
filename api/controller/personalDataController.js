@@ -60,9 +60,8 @@ exports.addContact = async (req, res, next) => {
     address: {
       use: "home",
       type: "postal/physical/both",
-      text: `${
-        (req.body.city, req.body.district, req.body.state, req.body.country)
-      }`,
+      text: `${(req.body.city, req.body.district, req.body.state, req.body.country)
+        }`,
       line: req.body.streetName,
       city: req.body.city,
       district: req.body.district,
@@ -113,9 +112,8 @@ exports.requestedDocument = async (req, res, next) => {
         returnData.requestedDate = el._fields[3];
         returnData.photo = el._fields[5];
         var nameObj = el._fields[4].properties;
-        returnData.doctorName = `${nameObj.prefix}.${nameObj.given[0]} ${
-          nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
-        }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
+        returnData.doctorName = `${nameObj.prefix}.${nameObj.given[0]} ${nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
+          }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
         return returnData;
       });
       return data;
@@ -125,11 +123,12 @@ exports.requestedDocument = async (req, res, next) => {
 };
 
 exports.notifications = async (req, res, next) => {
+  console.log(req.query.patientId)
   var session = driver.session();
   session
     .run(
-      `MATCH (n:Patient{value:"${req.body.patientId}"})-[r:hasNotification{}]->(m:notificaton)
-       RETUrN r.viewed,m.doctorId,m.status,m.doctorName
+      `MATCH (n:Patient{value:"${req.query.patientId}"})-[r:hasNotification{}]->(m:notificaton)
+      RETURN m.viewed,m.doctorId,m.status,m.doctorName,m.time
       `
     )
     .then((result) => {
@@ -138,10 +137,8 @@ exports.notifications = async (req, res, next) => {
         returnData.viewed = el._fields[0];
         returnData.doctortId = el._fields[1];
         returnData.status = el._fields[2];
-        var nameObj = el._fields[3].properties;
-        returnData.doctorName = `${nameObj.prefix}.${nameObj.given[0]} ${
-          nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
-        }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
+        returnData.doctorName = el._fields[3];
+        returnData.time = el._fields[4];
         return returnData;
       });
       return data;
@@ -160,9 +157,8 @@ exports.giveAcess = async (req, res, next) => {
                MATCH(n1:Practitioner{value:$doctorId})
                MATCH(n1)-[r3:hasRequested]->(m)
                MATCH(n1)-[r4:hasAcess]->(m)
-               SET r3.status="granted,r4.terminated=0,r4.timeStamp=${
-                 Date.now() + accessTime
-               }
+               SET r3.status="granted,r4.terminated=0,r4.timeStamp=${Date.now() + accessTime
+      }
               `;
   } else {
     query = `MATCH(n:Patient{value:$patientId}-[:medicalRecord]->(m:masterIdentifier{value:$masterId})

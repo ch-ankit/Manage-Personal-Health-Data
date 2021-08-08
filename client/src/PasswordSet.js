@@ -9,6 +9,7 @@ function PasswordSet(props) {
     const confirmPassword = useRef(null)
     const [isValid, setIsValid] = useState(true)
     const history = useHistory()
+    const id = history.location.search.slice(4)
     //Functions
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -42,11 +43,11 @@ function PasswordSet(props) {
         <div className="passwordset">
             <h2>Set Your Login Password</h2>
             <form onSubmit={handleSubmit} id="passwordSet">
-                <input ref={userId} type='text' id="userId" placeholder="User-ID" required />
+                <input ref={userId} value={id} type='text' id="userId" placeholder="User-ID" required disabled />
                 <input ref={password} type='password' id="password" placeholder="Password" required />
                 <input ref={confirmPassword} type='password' id="confirmPassword" placeholder="Confirm Password" required />
                 {!isValid && <span style={{ color: 'red' }}>*Passwords donot match!! </span>}
-                <button type="submit" id='submit' form="passwordSet">Confirm</button>
+                <button className="passwordset__button" type="submit" id='submit' form="passwordSet">Confirm</button>
             </form>
         </div>
     );

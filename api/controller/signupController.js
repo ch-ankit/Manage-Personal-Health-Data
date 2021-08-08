@@ -25,9 +25,8 @@ var checker = async (label, email, next) => {
 var uniqueId = async (dob, label, next) => {
   var session = driver.session();
   var dob = dob.split("-").join("");
-  var id = `${dob}-${10 + Math.floor(Math.random() * 89)}${
-    10 + Math.floor(Math.random() * 89)
-  }${10 + Math.floor(Math.random() * 89)}`;
+  var id = `${dob}-${10 + Math.floor(Math.random() * 89)}${10 + Math.floor(Math.random() * 89)
+    }${10 + Math.floor(Math.random() * 89)}`;
   console.log(id);
   var query = `MATCH (n:${label}{value:$value}) RETURN n.value`;
   var params = {
@@ -87,9 +86,8 @@ exports.patientSignup = async (req, res, next) => {
       telecom1rank: 1,
       telecom2System: `email`,
       telecom2Value: `${req.body.email}`,
-      telecom2Use: `${
-        req.body.email.includes("@gmail.com") ? "personal" : "work"
-      }`,
+      telecom2Use: `${req.body.email.includes("@gmail.com") ? "personal" : "work"
+        }`,
       telecom2rank: 2,
       gender: `${req.body.gender}`,
       birthDate: `${req.body.dob}`,
@@ -636,9 +634,8 @@ exports.doctorSignup = async (req, res, next) => {
       telecom1rank: 1,
       telecom2System: `email`,
       telecom2Value: `${req.body.email}`,
-      telecom2Use: `${
-        req.body.email.includes("@gmail.com") ? "personal" : "work"
-      }`,
+      telecom2Use: `${req.body.email.includes("@gmail.com") ? "personal" : "work"
+        }`,
       telecom2rank: 2,
       gender: `${req.body.gender}`,
       birthDate: `${req.body.dob}`,
@@ -1592,16 +1589,17 @@ exports.doctorLogin = async (req, res, next) => {
 };
 
 exports.setPasswordPatient = async (req, res, next) => {
+  console.log(req.body)
   var session = driver.session();
   var query = ` MATCH (n:Patient{value:$id})  SET n.password = $newPassword return n.value`;
   var params = {
     newPassword: await bcrypt.hash(req.body.password, 10),
-    id: `${req.body.id}`,
+    id: req.body.id,
   };
   session
     .run(query, params)
     .then((result) => {
-      console.log(result.records[0]._fields);
+      console.log(result.records);
       fs.mkdir(
         `${path.resolve()}//public//medicalRecords//${req.body.id}`,
         (err) => {

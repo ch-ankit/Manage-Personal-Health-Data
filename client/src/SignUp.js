@@ -30,7 +30,7 @@ function SignUp() {
     const [customPrefix, setCustomPrefix] = useState(false)
     const [customSuffix, setCustomSuffix] = useState(false)
     const [maritalStatus, setMaritalStatus] = useState('')
-    const [errorFrom, setErrorFrom] = useState(null)
+    const [errorFrom, setErrorFrom] = useState('')
     const [multipleBirthBoolean, setMultipleBirthBoolean] = useState(false)
     const [photo, setPhoto] = useState('')
     const [viewFile, setViewFile] = useState('')
@@ -151,7 +151,7 @@ function SignUp() {
                             setViewFile('')
                             console.log(response)
                         }).then(() => {
-                            // (errorFrom !== '' || errorFrom !== null) && history.push('/')
+                            (errorFrom !== '' || errorFrom !== null) && history.push('/')
                         })
                 }
             )
@@ -169,7 +169,7 @@ function SignUp() {
             <form id="SignUpForm" onSubmit={handleSubmit}>
                 <h1>Sign Up</h1>
                 {
-                    (errorFrom) && (
+                    errorFrom && (
                         <p style={{ backgroundColor: 'bisque', color: 'crimson', height: '4rem', width: '80%', marginTop: "1em", marginBottom: '1em', padding: '0.6rem', borderRadius: '5px' }}>
                             {errorFrom.message}
                         </p>

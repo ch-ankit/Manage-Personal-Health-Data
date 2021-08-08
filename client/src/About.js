@@ -15,9 +15,9 @@ function AboutUs(props) {
           <div class="row h-100 align-items-center py-5">
             <div class="col-lg-6">
               <h2 class="jumbotron">Managing Personal Health Data</h2>
-              <p class="lead text mb-0">
+              <p class="lead text mb-0" style={{wordSpacing:"0.3em",textAlign:"center", fontSize:"1.3em",padding:"1em 1em"}}>
                 {" "}
-                <i>
+                <i style={{textAlign:"center"}}>
                   A place to digitize your health<br></br>
                 </i>{" "}
                 MPHD is a FHIR based web pplication that stores the pdf format
@@ -27,7 +27,7 @@ function AboutUs(props) {
                 factors are considered for categorization. Also you can get a
                 list of all the medicines that you have consumed till now.
               </p>
-              <p class="lead text-muted">
+              <p class="lead text-muted" style={{fontSize:"1.2em",textAlign:"center"}}>
                 {" "}
                 Visit our web application:
                 <a href="/" class="text">
@@ -46,10 +46,10 @@ function AboutUs(props) {
         </div>
       </div>
       <section id="team" class="pb-5 white-section">
-        <div class="container">
-          <h5 class="section-title h1">OUR TEAM</h5>
+        <div class="container1">
+          <h5 class="section-title h1" style={{fontSize:"1.4em"}}>OUR TEAM</h5>
           <div class="row">
-            <div class="col-xs-12 col-sm-6 col-md-4">
+            <div class="content">
               <div
                 class="image-flip"
                 ontouchstart="this.classList.toggle('hover');"
@@ -57,7 +57,7 @@ function AboutUs(props) {
                 <div class="mainflip">
                   <div class="frontside">
                     <div class="card">
-                      <div class="card-body text-center">
+                      <div class="card-body text-center" style={{textAlign:"center"}}>
                         <p>
                           <img
                             class=" img-fluid"
@@ -75,7 +75,7 @@ function AboutUs(props) {
                   </div>
                   <div class="backside">
                     <div class="card">
-                      <div class="card-body text-center mt-4">
+                      <div class="card-body text-center mt-4" style={{textAlign:"center"}}>
                         <h4 class="card-title">Nischal Bhandari</h4>
                         <p class="card-text">
                           He has worked on backend and database.
@@ -86,7 +86,7 @@ function AboutUs(props) {
                 </div>
               </div>
             </div>
-            <div class="col-xs-12 col-sm-6 col-md-4">
+            <div class="cotent">
               <div
                 class="image-flip"
                 ontouchstart="this.classList.toggle('hover');"
@@ -94,7 +94,7 @@ function AboutUs(props) {
                 <div class="mainflip">
                   <div class="frontside">
                     <div class="card">
-                      <div class="card-body text-center">
+                      <div class="card-body text-center" style={{textAlign:"center"}}>
                         <p>
                           <img
                             class=" img-fluid"
@@ -112,7 +112,7 @@ function AboutUs(props) {
                   </div>
                   <div class="backside">
                     <div class="card">
-                      <div class="card-body text-center mt-4">
+                      <div class="card-body text-center mt-4" style={{textAlign:"center"}}>
                         <h4 class="card-title">Nabin Ghimire</h4>
                         <p class="card-text">
                           He has worked on socket and chat application.
@@ -124,7 +124,7 @@ function AboutUs(props) {
               </div>
             </div>
 
-            <div class="col-xs-12 col-sm-6 col-md-4">
+            <div class="cotent">
               <div
                 class="image-flip"
                 ontouchstart="this.classList.toggle('hover');"
@@ -132,7 +132,7 @@ function AboutUs(props) {
                 <div class="mainflip">
                   <div class="frontside">
                     <div class="card">
-                      <div class="card-body text-center">
+                      <div class="card-body text-center" style={{textAlign:"center"}}>
                         <p>
                           <img
                             class=" img-fluid"
@@ -150,7 +150,7 @@ function AboutUs(props) {
                   </div>
                   <div class="backside">
                     <div class="card">
-                      <div class="card-body text-center mt-4">
+                      <div class="card-body text-center mt-4" style={{textAlign:"center"}}>
                         <h4 class="card-title">Ankit khatiwada</h4>
                         <p class="card-text ">
                           He has worked on frontend mainly focusing on Gift
@@ -163,7 +163,7 @@ function AboutUs(props) {
               </div>
             </div>
 
-            <div class="col-xs-12 col-sm-6 col-md-4">
+            <div class="cotent">
               <div
                 class="image-flip"
                 ontouchstart="this.classList.toggle('hover');"
@@ -171,7 +171,7 @@ function AboutUs(props) {
                 <div class="mainflip">
                   <div class="frontside">
                     <div class="card">
-                      <div class="card-body text-center">
+                      <div class="card-body text-center" style={{textAlign:"center"}}>
                         <p>
                           <img
                             class=" img-fluid"
@@ -189,7 +189,7 @@ function AboutUs(props) {
                   </div>
                   <div class="backside">
                     <div class="card">
-                      <div class="card-body text-center mt-4">
+                      <div class="card-body text-center mt-4" style={{textAlign:"center"}}>
                         <h4 class="card-title">Babin Khatri</h4>
                         <p class="card-text">
                           He has worked on wonderful frontend designs on the
@@ -219,7 +219,7 @@ function AboutUs(props) {
               <span>-Pratik Gauchan, User</span>
             </h4>
           </div>
-          <div class="item">
+          <div class="item active" >
             <h4>
               "One word... WOW!! The work on party palace interface is simple
               and easy"
@@ -232,17 +232,18 @@ function AboutUs(props) {
       <div class="bg-white py-5">
         <div class="container py-5">
           <div class="row align-items-center mb-5">
-            <div class="col-lg-6 order-2 order-lg-1">
+            <div class="significance">
               <i class="fa fa-bar-chart fa-2x mb-3 text-primary"></i>
               <h2 class="font-weight-light">Significance</h2>
-              <p class="font-italic text-muted mb-4">
+              <div class="significance__content">
+                <p>
                 Our application generally focuses on organizing online weddings
                 and providing a common platform for users, party palace and
-                bands
-              </p>
-              <a href="/" class="btn btn-light px-5 rounded-pill shadow-sm">
+                bands</p>
+                <a href="/" class="btn btn-light px-5 rounded-pill shadow-sm">
                 Learn More
               </a>
+              </div>
             </div>
             <div class="col-lg-5 px-5 mx-auto order-1 order-lg-2">
               <img
@@ -260,10 +261,10 @@ function AboutUs(props) {
                 class="img-fluid mb-4 mb-lg-0"
               />
             </div>
-            <div class="col-lg-6">
+            <div class="features">
               <i class="fa fa-leaf fa-2x mb-3 text-primary"></i>
               <h2 class="font-weight-light">Features</h2>
-              <p class="font-italic text-muted mb-4">
+              <p class="features__content">
                 {" "}
                 Apart from the above features our application also provides a
                 platform for an online giftstore to purchase gifts for the

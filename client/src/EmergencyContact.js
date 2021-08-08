@@ -67,7 +67,7 @@ function EmergencyContact() {
                </div>
                <div className="emergencyContact__gender">
                <select ref={gender} defaultChecked="Select Gender" id="gender" required>
-                            <option value="Select Gender" hidden > Please Select Your Gender</option>
+                            <option value="Select Gender" hidden > Select Gender</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                             <option value="Other">Other</option>

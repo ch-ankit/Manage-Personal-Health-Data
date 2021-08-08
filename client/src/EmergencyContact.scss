@@ -1,21 +1,29 @@
 .emergencyContact{
-    width: 50%;
+    width: 80%;
     border: 1px solid lightgreen;
     margin-left: 5%;
     display: flex;
+    padding: 1em 1em;
     input{
         margin-right: 1rem;
         margin-top: 1.5rem;
         border-radius: 200em;
+        height: 3em;
         outline: 0;
         border: 1px solid lightgreen;
         text-align: center;
     }
     &__gender{
         margin-top: 1.5rem;
+        width: 30%;
         select{
+            width: 100%;
             border: 1px solid lightgreen;
+            height: 3em;
+            border-radius: 10em;
             background-color: transparent;
+            cursor: pointer;
+            outline: none;
         }
     }
     &__workPlace{
@@ -24,10 +32,12 @@
     button{
         margin-top: 1.25rem;
         width: 50%;
+        height: 3em;
         margin-bottom: 2em;
         background-color:rgba(152, 233, 152, 0.4);
         outline: 0;
         border: 1px solid lightgreen;
+        border-radius: 10px;
         cursor: pointer;
 
         &:hover{

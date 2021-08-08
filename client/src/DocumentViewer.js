@@ -3,7 +3,7 @@ import { useHistory } from "react-router";
 import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
 import "./DocumentViewer.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { reportGet } from "./features/counterSlice";
+import { reportGet, shareDocs } from "./features/counterSlice";
 
 function DocumentViewer() {
   const [numPages, setNumPages] = useState(null);
@@ -21,8 +21,8 @@ function DocumentViewer() {
   { console.log(documentName) }
   useEffect(() => {
     async function getToUploadData() {
-      console.log(documentName.replace('.pdf', ''))
-      const response = await fetch(`http://localhost:7000/report/toupload?id=${userData?.uId ?? patientData?.value ?? patientUidFromDocNots}&masterIdentifier=${documentName.replace('.pdf', '')}`, {
+      console.log(documentName.filename.replace('.pdf', ''))
+      const response = await fetch(`http://localhost:7000/report/toupload?id=${userData?.uId ?? patientData?.value ?? patientUidFromDocNots}&masterIdentifier=${documentName.filename.replace('.pdf', '')}`, {
         method: "GET"
       });
       const data = await response.json();
@@ -36,7 +36,7 @@ function DocumentViewer() {
   return (
     <div className="documentViewer">
       <Document
-        file={`http://localhost:7000/record?recordName=${documentName}&patientId=${userData?.uId ?? patientData?.value ?? patientUidFromDocNots}`}
+        file={`http://localhost:7000/record?recordName=${documentName.filename}&patientId=${userData?.uId ?? patientData?.value ?? patientUidFromDocNots}`}
         onLoadSuccess={onDocumentLoadSuccess}
         className="documentViewer__document"
       >
@@ -47,14 +47,18 @@ function DocumentViewer() {
           ))}
       </Document>
       {console.log(patientData)}
-      <div className={`documentViewer__share ${patientData && "documentViewer__shareNone"}`}>Share</div>
+      <div className={`documentViewer__share ${patientData && "documentViewer__shareNone"}`}
+      onClick={()=>{dispatch(shareDocs(documentName));
+      history.push("/home/shareDocuments")
+      }}
+      >Share</div>
 
       <div className="documentViewer__reports">
         <ul>
           {Object.keys(uploadData).map((key) => {
             return (
               <li key={key} onClick={async () => {
-                const response = await fetch(`http://localhost:7000/report/checkreport?id=${userData?.uId ?? patientData?.value ?? patientUidFromDocNots}&masterId=${documentName.replace('.pdf', '')}&reportId=${uploadData[key].value}`, {
+                const response = await fetch(`http://localhost:7000/report/checkreport?id=${userData?.uId ?? patientData?.value ?? patientUidFromDocNots}&masterId=${documentName.filename.replace('.pdf', '')}&reportId=${uploadData[key].value}`, {
                   method: "GET"
                 })
                 const data = await response.json();

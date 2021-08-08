@@ -26,7 +26,7 @@ function ListPage() {
             {Object.keys(listData).map((key)=>{
                 return(
                     <div key={key} className="listPage__list" onClick={()=>{
-                        dispatch(documentGet(listData[key].filename));
+                        dispatch(documentGet(listData[key]));
                         history.push('documentviewer'
                         )}}>
                         <p>{listData[key].reportTitle}</p>

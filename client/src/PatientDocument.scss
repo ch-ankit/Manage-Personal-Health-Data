@@ -1,6 +1,7 @@
 .patientDocument{
     width: 100%;
     height: 94.5vh;
+    overflow-y: auto;
     background-color: white;
     &__documents{
         width: 100%;

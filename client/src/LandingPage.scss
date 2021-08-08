@@ -9,6 +9,7 @@ $mobileScreen:650px;
         position: absolute;
         left: 1.45em;
         top: 20%;
+        z-index: 1;
         & h1{
             font-size: 5vw;
         }
@@ -20,6 +21,7 @@ $mobileScreen:650px;
     }
     &__loginUser{
         width: 20em;
+        z-index: 2;
         height: 25em;
         box-shadow: 0px 0px 20px 5px rgba(144, 238, 144,0.75);
         display: flex;
@@ -49,6 +51,7 @@ $mobileScreen:650px;
     &__loginDoctor{
         width: 20em;
         height: 25em;
+        z-index: 2;
         box-shadow: 0px 0px 20px 5px rgba(144, 238, 144,0.75);
         display: flex;
         flex-direction: column;
@@ -85,7 +88,7 @@ $mobileScreen:650px;
     &__imgBox{
         position: absolute;
         bottom: 0;
-        z-index: -1;
+        z-index: 0;
         width: 50%;
         height: 90%;
         & img{

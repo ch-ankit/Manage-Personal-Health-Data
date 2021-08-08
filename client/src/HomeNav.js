@@ -27,7 +27,7 @@ function HomeNav(props) {
         })
     }, [])
 
-
+    //add connected users and their socket id to server
     useEffect(() => {
         if (docData) {
             socket.current.emit('addUser', docData?.uId)
@@ -39,6 +39,7 @@ function HomeNav(props) {
         }
     }, [docData, userData])
 
+    //Socket calls for notifications
     useEffect(() => {
         socket.current.on('pushNotificationDoctor', (parameters) => {
             console.log('Run from push nots')
@@ -69,7 +70,7 @@ function HomeNav(props) {
         //     socket.emit('handleOffline', parameters)
         // })
     }, [])
-
+    //notifications for doctor(document shared) and patient(document requested)
     useEffect(() => {
         async function getNotifications() {
             const url = props.doctor ? `http://localhost:7000/doctor/getnotification?doctorId=${docData?.uId}` :
@@ -79,18 +80,24 @@ function HomeNav(props) {
             })
             const data = await response.json()
             var unread = [];
-            data.forEach(el => {
-                if (el.markAsRead === "false") {
-                    unread.push(el)
+            if (props.doctor) {
+                data.forEach(el => {
+                    if (el.markAsRead === "false") {
+                        unread.push(el)
+                    }
                 }
+                )
+                setCountNotifications(unread.length)
+                setNotifier(unread)
+            } else {
+                setCountNotifications(data.length)
+                setNotifier(data)
             }
-            )
-            setCountNotifications(unread.length)
-            setNotifier(unread)
         }
         return getNotifications()
     }, [])
 
+    //conncet request to doctors and connect request accepted by doctor to patients
     useEffect(() => {
         async function getFriendRequests() {
             const url = props.doctor ? `http://localhost:7000/doctor/addlist?doctorId=${docData?.uId}` :
@@ -133,7 +140,10 @@ function HomeNav(props) {
     if (friendNotifier) {
         displayFriendNotifications = Object.keys(friendNotifier).map(el =>
             <Link key={el} to={props.doctor ? "/Doctor/friendList" : "/home/friendList"}>
-                {props.doctor ? <li>{friendNotifier[el].name} sent you a Connect Request</li> : <li>{friendNotifier[el].name} ${friendNotifier[el].status} your Connect Request</li>}
+                <div style={{ display: 'flex', backgroundColor: 'white', border: '1px solid lightgreen' }}>
+                    <img className="homeNav__notifications__displayPic" src={friendNotifier[el].photo} alt="Patient Display" />
+                    {props.doctor ? <li>{friendNotifier[el].name} sent you a Connect Request</li> : <li>{friendNotifier[el].name} ${friendNotifier[el].status} your Connect Request</li>}
+                </div>
             </Link>)
     }
     return (
@@ -156,29 +166,44 @@ function HomeNav(props) {
             </div>
 
             <div className="homeNav__notify">
-                <div><UsersIcon className={countFriendReqs === 0 ? "homeNav__userIconNoNots" : "homeNav__userIconNots"} onClick={() => {
-                    document.querySelector(".homeNav__friendnotifications").classList.toggle("active")
-                }} />{countFriendReqs === 0 ? '' : countFriendReqs}</div>
-                <BellIcon className={countNotifications === 0 ? "homeNav__bellIconNoNots" : "homeNav__bellIconNots"} onClick={() => {
-                    document.querySelector(".homeNav__notifications").classList.toggle("active")
-                }} /> {countNotifications === 0 ? '' : countNotifications}
+                <div><UsersIcon className={countFriendReqs === 0 ? "homeNav__userIconNoNots" : "homeNav__userIconNots"}
+                    onClick={() => {
+                        document.querySelector(".homeNav__friendnotifications").classList.toggle("active")
+                    }} />
+                    {countFriendReqs === 0 ? '' : countFriendReqs}
+                </div>
+                <BellIcon className={countNotifications === 0 ? "homeNav__bellIconNoNots" : "homeNav__bellIconNots"}
+                    onClick={() => {
+                        document.querySelector(".homeNav__notifications").classList.toggle("active")
+                    }} /> {countNotifications === 0 ? '' : countNotifications}
                 <div className="homeNav__friendnotifications">
+                    <div style={{ color: 'white', padding: '0.5rem', fontWeight: 'bold', position: 'relative' }}>Connect Requests</div>
                     <ul>
                         {friendNotifier ? displayFriendNotifications : ''}
                     </ul>
                 </div>
                 <div className="homeNav__notifications">
-                    <div style={{ color: 'white', padding: '0.5rem', fontWeight: 'bold', position: 'relative' }}>Notifications</div>
+                    <div style={{ color: 'white', padding: '0.5rem', fontWeight: 'bold', position: 'relative' }}>
+                        Notifications
+                    </div>
                     <ul>
                         {notifier ? displayNotifications : ''}
                     </ul>
-                    <div style={{ position: 'absolute', bottom: '0', color: 'white', fontWeight: 'bold' }}>See all Notifications...</div>
+                    <div style={{ position: 'absolute', bottom: '0', color: 'white', fontWeight: 'bold', cursor: 'pointer' }}
+                        onClick={() => {
+                            props.doctor ? history.push('/Doctor/notifications') :
+                                history.push('/home/notifications')
+                        }}>
+                        See all Notifications...
+                    </div>
                 </div>
             </div>
             <div className="homeNav__right" onClick={() => {
                 document.querySelector('.homeNav__onClick').classList.toggle('active')
             }}>
-                <img className={`homeNav__icon ${darkMode && "iconDark"}  `} src={userData?.photo} alt={userData?.firstName.slice(0, 1)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} />
+                <img className={`homeNav__icon ${darkMode && "iconDark"}  `}
+                    src={userData?.photo} alt={userData?.firstName.slice(0, 1)}
+                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} />
                 <p>{userData?.firstName}</p>   {/* display the userName */}
                 <div className="downArrow">
                 </div>
@@ -186,7 +211,7 @@ function HomeNav(props) {
                     <ul>
                         <li>Settings</li>
                         <li onClick={() => {
-                            socket.current.volatile.emit('removeUser', { socketId: socket.current.id })
+                            socket.current.volatile.emit('removeUser', { socketId: socket.current.id })//remove user socket id from server after logout
                             dispatch(logoutUser())
                             dispatch(logoutDoctor())
                             darkMode && dispatch(darkmode())

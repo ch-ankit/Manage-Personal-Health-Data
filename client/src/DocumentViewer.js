@@ -32,6 +32,7 @@ function DocumentViewer() {
     }
     return getToUploadData();
   }, []);
+  console.log(patientUidFromDocNots)
   return (
     <div className="documentViewer">
       <Document
@@ -53,7 +54,7 @@ function DocumentViewer() {
           {Object.keys(uploadData).map((key) => {
             return (
               <li key={key} onClick={async () => {
-                const response = await fetch(`http://localhost:7000/report/checkreport?id=${userData?.uId ?? patientData?.value}&masterId=${documentName.replace('.pdf', '')}&reportId=${uploadData[key].value}`, {
+                const response = await fetch(`http://localhost:7000/report/checkreport?id=${userData?.uId ?? patientData?.value ?? patientUidFromDocNots}&masterId=${documentName.replace('.pdf', '')}&reportId=${uploadData[key].value}`, {
                   method: "GET"
                 })
                 const data = await response.json();

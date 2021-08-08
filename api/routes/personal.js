@@ -3,7 +3,8 @@ var router = express.Router();
 var personalDataController = require("./../controller/personalDataController");
 router
   .route("/requesteddocument")
-  .get(personalDataController.requestedDocument);
+  .get(personalDataController.requestedDocument)
+  .post(personalDataController.giveAcess);
 
 router.route("/notifications").get(personalDataController.notifications);
 router.route("/friendlist").get(personalDataController.friendList);

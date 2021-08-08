@@ -93,6 +93,7 @@ exports.requestedDocument = async (req, res, next) => {
   var session = driver.session();
   var query = `MATCH(n:Patient{value:$patientId})-[:medicalRecord]->(m:masterIdentifier)
   MATCH(n1:Practitioner)-[r2:hasRequested{}]->(m)
+  WHERE r2.status="pending"
   RETURN r2.doctorId, r2.masterId, r2.requestedTime,r2.status,r2.name, r2.photo,r2.title
               `;
   var params = {
@@ -103,8 +104,8 @@ exports.requestedDocument = async (req, res, next) => {
     .then((result) => {
       var data = result.records.map((el) => {
         var returnData = {};
-        returnData.doctortId = el._fields[0];
-        returnData.mastertId = el._fields[1];
+        returnData.doctorId = el._fields[0];
+        returnData.masterId = el._fields[1];
         returnData.requestedDate = el._fields[2];
         returnData.title = el._fields[6];
         returnData.photo = el._fields[5];
@@ -148,18 +149,20 @@ exports.notifications = async (req, res, next) => {
 };
 
 exports.giveAcess = async (req, res, next) => {
-  var session = session.driver();
+  console.log(req.body)
+  var session = driver.session();
+  const io = req.app.get("socketServer");
   var query;
   if (req.body.status == "granted") {
-    query = `MATCH(n:Patient{value:$patientId}-[:medicalRecord]->(m:masterIdentifier{value:$masterId})
+    query = `MATCH(n:Patient{value:$patientId})-[:medicalRecord]->(m:masterIdentifier{value:$masterId})
                MATCH(n1:Practitioner{value:$doctorId})
                MATCH(n1)-[r3:hasRequested]->(m)
                MATCH(n1)-[r4:hasAcess]->(m)
-               SET r3.status="granted,r4.terminated=0,r4.timeStamp=${Date.now() + accessTime
+               SET r3.status="granted",r4.terminated=0,r4.timeStamp=${Date.now() + parseInt(req.body.accessTime)
       }
               `;
   } else {
-    query = `MATCH(n:Patient{value:$patientId}-[:medicalRecord]->(m:masterIdentifier{value:$masterId})
+    query = `MATCH(n:Patient{value:$patientId})-[:medicalRecord]->(m:masterIdentifier{value:$masterId})
                MATCH(n1:Practitioner{value:$doctorId})
                MATCH(n1)-[r3:hasRequested]->(m)
                SET r3.status="rejected"
@@ -168,12 +171,71 @@ exports.giveAcess = async (req, res, next) => {
   var params = {
     patientId: req.body.patientId,
     doctorId: req.body.doctorId,
-    acessTime: req.body.acessTime,
     masterId: req.body.masterId,
   };
   session
     .run(query, params)
-    .then(() => res.send({ message: "acess re-granted" }))
+    .then(() => {
+      var session = driver.session();
+      session
+        .run(`MATCH (n:Socketuser) return n;`)
+        .then((result) => {
+          var users = result.records.map((el) => el._fields[0].properties);
+          return users;
+        })
+        .then((users) => {
+          var date = new Date();
+          var hours = date.getHours();
+          var minutes = date.getMinutes();
+          var ampm = hours >= 12 ? "pm" : "am";
+          hours = hours % 12;
+          hours = hours ? hours : 12; // the hour '0' should be '12'
+          minutes = minutes < 10 ? "0" + minutes : minutes;
+          var strTime = hours + ":" + minutes + " " + ampm;
+          console.log(strTime);
+          users = users.filter((el) => req.body.doctorId == el.userId);
+          if (users[0]) {
+            console.log(users);
+            io.to(users[0].socketId).emit("pushNotificationDoctor", {
+              doctorId: req.body.doctorId,
+              patientName: req.body.name,
+              time: strTime,
+              title: req.body.title,
+              documentId: req.body.masterId,
+            });
+            var session = driver.session();
+            session
+              .run(
+                `MATCH(n:Practitioner{value:"${req.body.doctorId}"})
+            MERGE(n)-[:hasNotification]->(:notification{doctorId:"${req.body.doctorId}",patientId:"${req.body.id}", patientName:"${req.body.name}", time:"${strTime}",documentId:"${req.body.masterId}",markAsRead:"false"})`,
+                {}
+              )
+              .then(() => {
+                console.log("re acess notification added to database");
+              })
+              .catch((err) => next(err));
+          } else {
+            console.log(
+              "Sorry Socket id did not match with connected users so backed up to database"
+            );
+            var session = driver.session();
+            session
+              .run(
+                `MATCH(n:Practitioner{value:"${req.body.doctorId}"})
+            MERGE(n)-[:hasNotification]->(:notification{doctorId:"${req.body.doctorId}",patientId:"${req.body.id}", patientName:"${req.body.name}", time:"${strTime}",documentId:"${req.body.masterId}",markAsRead:"false"})`,
+                {}
+              )
+              .then(() => {
+                console.log("re access notification added to database");
+              })
+              .catch((err) => next(err));
+          }
+        })
+        .catch((err) => console.log(err));
+      res.send({
+        message: "access granted",
+      });
+    })
     .catch((err) => next(err));
 };
 

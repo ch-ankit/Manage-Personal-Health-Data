@@ -59,7 +59,7 @@ exports.patientKnowsDoctor = async (req, res, next) => {
                 if (users[0]) {
                   io.to(users[0].socketId).volatile.emit(
                     "pushNotificationDoctorAdd",
-                    { patientName: name, patientId: req.body.patientId }
+                    { name: name, patientId: req.body.patientId, photo: req.body.photo }
                   );
                 }
                 res.send({ message: "Doctor added known list" });

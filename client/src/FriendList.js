@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { UserAddIcon, UserRemoveIcon } from "@heroicons/react/solid"
+import noRequestImg from './images/no requests.jpg'
 import './FriendList.scss'
 
 function FriendList(props) {
@@ -35,6 +36,7 @@ function FriendList(props) {
         })
         const { message } = await response.json()
         console.log(message)
+        window.location.reload()
     }
 
     var displayRequests;
@@ -62,6 +64,11 @@ function FriendList(props) {
     return (
         <div className="friendlist" style={{ backgroundColor: 'white', height: '100vh', width: '100%' }}>
             <div className="friendlist__position" style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "80%", margin: '0 auto', paddingTop: '2rem' }}>
+                {requests.length === 0 &&
+                    (<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '0 auto', marginTop: '3em' }}>
+                        <img style={{ width: "50%" }} src={noRequestImg} alt="No request " />
+                        <h2 style={{ color: 'lightcoral' }}>No New Connect Requests</h2>
+                    </div>)}
                 {displayRequests}
             </div>
         </div>

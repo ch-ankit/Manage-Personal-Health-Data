@@ -530,7 +530,7 @@ exports.patientSignup = async (req, res, next) => {
                                             <tr>
                                               <td>
                                                 <a
-                                                  href="http://localhost:3000/passwordSet"
+                                                  href="http://localhost:3000/passwordSet?id=${returnValue.id}"
                                                   target="_blank"
                                                   >Click here</a
                                                 >
@@ -1078,7 +1078,7 @@ exports.doctorSignup = async (req, res, next) => {
                                             <tr>
                                               <td>
                                                 <a
-                                                  href="http://localhost:3000/passwordSet/doctor"
+                                                  href=http://localhost:3000/passwordSet/doctor?id=${req.body.id}
                                                   target="_blank"
                                                   >Click here</a
                                                 >

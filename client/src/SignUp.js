@@ -34,7 +34,7 @@ function SignUp() {
     const [customPrefix, setCustomPrefix] = useState(false)
     const [customSuffix, setCustomSuffix] = useState(false)
     const [maritalStatus, setMaritalStatus] = useState('')
-    const [error, setError] = useState(null)
+    const [errorFrom, setErrorFrom] = useState('')
     const [multipleBirthBoolean, setMultipleBirthBoolean] = useState(false)
     const [photo, setPhoto] = useState('')
     const [viewFile, setViewFile] = useState('')
@@ -105,17 +105,16 @@ function SignUp() {
                             })
                         })
                         const { message } = await response.json()
-                        if (message == "email is aready registered") {
-                            setError({ message: 'Email is already registered. Please use a new mail' })
+                        if (message === "email is aready registered") {
+                            setErrorFrom({ message: 'Email is already registered. Please use a new mail' })
                         }
                         setViewFile('')
-                        history.push('/')
                         console.log(response)
+                    }).then(() => {
+                        (errorFrom !== '') && history.push('/')
                     })
-
             }
         )
-
     }
     const languageMap = Object.keys(languages).map(el => <option key={el} value={`${languages[el].name}-${languages[el].code}`} > {languages[el].name}</ option>)
     return (
@@ -124,9 +123,9 @@ function SignUp() {
             <form id="SignUpForm" onSubmit={handleSubmit}>
                 <h1>Sign Up</h1>
                 {
-                    error && (
-                        <p style={{ backgroundColor: 'bisque', color: 'crimson', height: '3em', width: '80%', marginTop: "1em", marginBottom: '1em' }}>
-                            {error.message}
+                    errorFrom && (
+                        <p style={{ backgroundColor: 'bisque', color: 'crimson', height: '4rem', width: '80%', marginTop: "1em", marginBottom: '1em', padding: '0.6rem', borderRadius: '5px' }}>
+                            {errorFrom.message}
                         </p>
                     )
                 }

@@ -26,7 +26,7 @@ function EmergencyContactView() {
                     Add
                 </button>
             </div>
-            {Object.keys(emergencyContact).map((key)=>{
+            {emergencyContact?.message==="emergency contact not added"?<h3 style={{width:"100%",textAlign:"center",marginTop:"1em"}}> No emergency contact added </h3>:Object.keys(emergencyContact).map((key)=>{
                 return(
                     <div className="emergencyContactView__gridView">
                 <div className="emergencyContactView__who">

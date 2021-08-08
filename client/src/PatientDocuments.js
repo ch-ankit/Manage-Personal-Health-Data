@@ -214,23 +214,23 @@ function PatientDocuments() {
                                      return(
                                         <tr className="patientDocuments__dataList" key={key}  >
                                             <td onClick={()=>{
-                                            dispatch(documentGet(temporaryData[key].filename));
+                                            dispatch(documentGet(temporaryData[key]));
                                             history.push('documentviewer'
                                             )}}>{temporaryData[key].reportTitle}</td>
                                             <td onClick={()=>{
-                                            dispatch(documentGet(temporaryData[key].filename));
+                                            dispatch(documentGet(temporaryData[key]));
                                             history.push('documentviewer'
                                             )}}>{temporaryData[key].date}</td>
                                             <td onClick={()=>{
-                                            dispatch(documentGet(temporaryData[key].filename));
+                                            dispatch(documentGet(temporaryData[key]));
                                             history.push('documentviewer'
                                             )}}>{temporaryData[key].symptoms}</td>
                                             <td onClick={()=>{
-                                            dispatch(documentGet(temporaryData[key].filename));
+                                            dispatch(documentGet(temporaryData[key]));
                                             history.push('documentviewer'
                                             )}}>{temporaryData[key].category}</td>
                                             <td onClick={()=>{
-                                            dispatch(documentGet(temporaryData[key].filename));
+                                            dispatch(documentGet(temporaryData[key]));
                                             history.push('documentviewer'
                                             )}}>{temporaryData[key].hospitalName}</td>
                                             <td className="patientDocuments__shareIcon"

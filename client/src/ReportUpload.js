@@ -31,7 +31,7 @@ console.log(documentName,report.value)
         <h1>Upload your report</h1>
         <form ref={form} onSubmit={handleMedicalUpload} encType="multipart/form-data">
           <input value={userData?.uId} name="id" style={{ display: "none" }} />
-          <input value={documentName.replace(".pdf","")} name="masterId" style={{ display: "none" }} />
+          <input value={documentName.filename.replace(".pdf","")} name="masterId" style={{ display: "none" }} />
           <input value={report.value} name="reportId" style={{ display: "none" }} />
           <input type="file" name="file" onChange={(e)=>setFile(e.target.files)} multiple />
           <button type="submit">Upload</button>

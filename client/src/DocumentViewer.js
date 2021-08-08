@@ -21,7 +21,6 @@ function DocumentViewer() {
   { console.log(documentName) }
   useEffect(() => {
     async function getToUploadData() {
-      console.log(documentName.filename.replace('.pdf', ''))
       const response = await fetch(`http://localhost:7000/report/toupload?id=${userData?.uId ?? patientData?.value ?? patientUidFromDocNots}&masterIdentifier=${documentName.filename.replace('.pdf', '')}`, {
         method: "GET"
       });

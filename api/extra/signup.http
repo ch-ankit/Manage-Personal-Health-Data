@@ -65,7 +65,7 @@ content-type: application/json
 }
 
 ###
-GET http://localhost:7000/signup/getcontact?id=20000507-334561
+GET http://localhost:7000/signup/getcontact?id=20000714-306348
 
 ###
 POST http://localhost:7000/signup/addcontact
@@ -85,7 +85,7 @@ content-type: application/json
     "postalCode":"dummy data",
     "gender":"dummy data",
     "workplace":"dummy data",
-    "id":"20000707-513569"
+    "id":"20000714-306348"
 }
 
 

@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react'
+import { useHistory } from "react-router";
 import storage from './firebaseConfig'
 import Nav from './Nav'
 import "./SignUp.scss"
@@ -33,9 +34,12 @@ function SignUp() {
     const [customPrefix, setCustomPrefix] = useState(false)
     const [customSuffix, setCustomSuffix] = useState(false)
     const [maritalStatus, setMaritalStatus] = useState('')
+    const [error, setError] = useState(null)
     const [multipleBirthBoolean, setMultipleBirthBoolean] = useState(false)
     const [photo, setPhoto] = useState('')
     const [viewFile, setViewFile] = useState('')
+
+    const history = useHistory()
 
     //Functions
     const handleChange = (e) => {
@@ -100,7 +104,12 @@ function SignUp() {
                                 photo: url
                             })
                         })
+                        const { message } = await response.json()
+                        if (message == "email is aready registered") {
+                            setError({ message: 'Email is already registered. Please use a new mail' })
+                        }
                         setViewFile('')
+                        history.push('/')
                         console.log(response)
                     })
 
@@ -114,7 +123,14 @@ function SignUp() {
             <Nav />
             <form id="SignUpForm" onSubmit={handleSubmit}>
                 <h1>Sign Up</h1>
-                <div className="signUp__customSelect" style={{ display: `${customPrefix ? 'none' : 'flex'}`,width:"80%" }}>
+                {
+                    error && (
+                        <p style={{ backgroundColor: 'bisque', color: 'crimson', height: '3em', width: '80%', marginTop: "1em", marginBottom: '1em' }}>
+                            {error.message}
+                        </p>
+                    )
+                }
+                <div className="signUp__customSelect" style={{ display: `${customPrefix ? 'none' : 'flex'}`, width: "80%" }}>
                     <select ref={prefix} defaultChecked="Prefix" id="prefix" >
                         <option value="Prefix" hidden > Please Select your Prefix</option>
                         <option value="Mr."> Mr.</option>
@@ -133,7 +149,7 @@ function SignUp() {
                 <input ref={firstName} type="text" id="name" placeholder="First Name" required />
                 <input ref={middleName} type="text" id="name" placeholder="Middle Name" />
                 <input ref={lastName} type="text" id="name" placeholder="Last Name" required />
-                <div className="signUp__customSelect" style={{ display: `${customSuffix ? 'none' : 'flex'}`,width:"80%" }}>
+                <div className="signUp__customSelect" style={{ display: `${customSuffix ? 'none' : 'flex'}`, width: "80%" }}>
                     <select ref={suffix} defaultChecked="Suffix" id="suffix" required>
                         <option value="Suffix" hidden > Please Select your Suffix</option>
                         <option value="Phd."> Phd.</option>
@@ -153,7 +169,7 @@ function SignUp() {
                 <input ref={state} type="text" id="address" placeholder="State" required />
                 <input ref={country} type="text" id="address" placeholder="Country" required />
                 <input ref={email} type="email" id="email" placeholder="Email" required />
-                <div className="signUp__customSelect" style={{width:'80%'}}>
+                <div className="signUp__customSelect" style={{ width: '80%' }}>
                     <select ref={language} defaultChecked="Language" id="language" required>
                         <option value="Language" hidden > Please Select preferred Language</option>
                         {languageMap}
@@ -177,16 +193,16 @@ function SignUp() {
                             <input ref={birthOrder} type='text' placeholder="Birth Order" />
                         </div> : ''
                 }
-                <div className="signUp__radio" style={{display:"flex",flexDirection:"column",width:"80%"}}>
-                    <h5 style={{alignSelf:"flex-start",padding:"0.5em 0"}}>Marital Status:</h5>
+                <div className="signUp__radio" style={{ display: "flex", flexDirection: "column", width: "80%" }}>
+                    <h5 style={{ alignSelf: "flex-start", padding: "0.5em 0" }}>Marital Status:</h5>
                     <div className="signUp__customSelect">
-                    <select ref={maritalStatusCode} defaultChecked="Marital Status" onChange={(e)=>{
+                        <select ref={maritalStatusCode} defaultChecked="Marital Status" onChange={(e) => {
                             e.preventDefault();
-                            switch(e.target.value){
+                            switch (e.target.value) {
                                 case "A":
                                     setMaritalStatus('Annuled');
                                     break;
-                                
+
                                 case "D":
                                     setMaritalStatus('Divorced');
                                     break;
@@ -194,7 +210,7 @@ function SignUp() {
                                 case "I":
                                     setMaritalStatus('Interlocutory');
                                     break;
-                                
+
                                 case "L":
                                     setMaritalStatus('Legally Separated')
                                     break;
@@ -220,7 +236,7 @@ function SignUp() {
                                     setMaritalStatus('unknown')
                                     break;
                             }
-                        }}id="Marital Status" required>
+                        }} id="Marital Status" required>
                             <option value="Marital Status" hidden > Please Select you status</option>
                             <option value="A" >Annuled</option>
                             <option value="D" >Divorced</option>

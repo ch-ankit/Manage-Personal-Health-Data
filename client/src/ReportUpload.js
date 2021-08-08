@@ -6,12 +6,12 @@ import "./ReportUpload.scss";
 
 function ReportUpload() {
   const form = useRef(null);
-  const [file, setFile]=useState([]);
+  const [file, setFile] = useState([]);
   const [numPages, setNumPages] = useState(null);
   const userData = useSelector((state) => state.user.value);
   const documentName = useSelector(state => state.user.documentName)
-  const report=useSelector(state=>state.user.report);
-console.log(documentName,report.value)
+  const report = useSelector(state => state.user.report);
+  console.log(documentName, report.value)
   const handleMedicalUpload = async (e) => {
     e.preventDefault();
     const formData = new FormData(form.current);
@@ -33,20 +33,20 @@ console.log(documentName,report.value)
           <input value={userData?.uId} name="id" style={{ display: "none" }} />
           <input value={documentName.filename.replace(".pdf","")} name="masterId" style={{ display: "none" }} />
           <input value={report.value} name="reportId" style={{ display: "none" }} />
-          <input type="file" name="file" onChange={(e)=>setFile(e.target.files)} multiple />
+          <input type="file" name="file" onChange={(e) => setFile(e.target.files)} multiple />
           <button type="submit">Upload</button>
         </form>
         <Document
-        file={file[0]}
-        onLoadSuccess={onDocumentLoadSuccess}
-        className="reportUpload__document"
-      >
-        {Array.apply(null, Array(numPages))
-          .map((x, i) => i + 1)
-          .map((page) => (
-            <Page pageNumber={page} className="reportUpload__page" />
-          ))}
-      </Document>
+          file={file[0]}
+          onLoadSuccess={onDocumentLoadSuccess}
+          className="reportUpload__document"
+        >
+          {Array.apply(null, Array(numPages))
+            .map((x, i) => i + 1)
+            .map((page) => (
+              <Page pageNumber={page} className="reportUpload__page" />
+            ))}
+        </Document>
       </div>
       {/* <div className="newreport__upload">
         <h1>Upload your Medical report</h1>

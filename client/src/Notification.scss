@@ -91,6 +91,11 @@
             outline:none;
             border:none;
             box-shadow:0 0 15px lightgreen;
+            cursor: pointer;
+
+            &:hover{
+                background-color: rgba(146, 240, 146,0.5);
+            }
         }
     }
     

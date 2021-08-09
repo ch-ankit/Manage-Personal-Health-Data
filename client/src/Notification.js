@@ -61,7 +61,7 @@ function Notification(props) {
                 console.log('Default case reached')
         }
         if (timeNumber !== null && timeUnit !== null) {
-            console.log(e, masterId)
+            console.log(e, masterId,accessTime)
             const response = await fetch(`http://localhost:7000/personal/requesteddocument`, {
                 method: 'POST',
                 headers: {
@@ -79,6 +79,7 @@ function Notification(props) {
             })
             const { message } = await response.json()
             console.log(message)
+            document.querySelector(".notification__sharePopup.active").classList.remove("active")
         } else {
             alert('Please select the Access time')
         }
@@ -152,7 +153,7 @@ function Notification(props) {
                         </select>
                     </div>
                     <div className="notification__popupButtons">
-                        <button>Close</button>
+                        <button type="button" onClick={()=>document.querySelector(".notification__sharePopup.active").classList.remove("active")}>Close</button>
                         <button type="submit">Share</button>
                     </div>
                 </form>

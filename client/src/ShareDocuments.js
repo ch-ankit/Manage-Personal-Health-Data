@@ -106,12 +106,6 @@ function ShareDocuments() {
                             <option value="min">min</option>
                         </select>
                     </div>
-
-                    OR
-                    <div className="shareDocuments__checkbox">
-                        <input type="checkbox" onChange={() => { }} />
-                        Live Share
-                    </div>
                 </div>
                 <div className="shareDocuments__searchBar">
                     <input type="search"
@@ -119,7 +113,7 @@ function ShareDocuments() {
                             if (e.target.value != '') {
                                 let tempData = [];
                                 Object.keys(doctorData).map((key) => {
-                                    if (doctorData[key].name.includes(e.target.value)) {
+                                    if (doctorData[key].name.toUpperCase().includes(e.target.value.toUpperCase())) {
                                         tempData = [...tempData, doctorData[key]];
                                     }
                                 })

@@ -20,12 +20,13 @@ function AboutUs(props) {
                 <i style={{textAlign:"center"}}>
                   A place to digitize your health<br></br>
                 </i>{" "}
-                MPHD is a FHIR based web pplication that stores the pdf format
+                MPHD is a FHIR based web application that stores the pdf format
                 of your health data. The document is scanned and categortized
                 under different heading. You can acess your medical record as
                 per timeline,body system,type of reports and other various
                 factors are considered for categorization. Also you can get a
-                list of all the medicines that you have consumed till now.
+                list of all the medicines that you have consumed till now.Also you
+                can connect with doctors and share the report with them.
               </p>
               <p class="lead text-muted" style={{fontSize:"1.2em",textAlign:"center"}}>
                 {" "}
@@ -153,8 +154,7 @@ function AboutUs(props) {
                       <div class="card-body text-center mt-4" style={{textAlign:"center"}}>
                         <h4 class="card-title">Ankit khatiwada</h4>
                         <p class="card-text ">
-                          He has worked on frontend mainly focusing on Gift
-                          Store and the admin pannel.
+                          He has worked on frontend mainly focusing on the report schemes and FHIR Standards.
                         </p>
                       </div>
                     </div>
@@ -193,7 +193,7 @@ function AboutUs(props) {
                         <h4 class="card-title">Babin Khatri</h4>
                         <p class="card-text">
                           He has worked on wonderful frontend designs on the
-                          user side and host side
+                          user side of doctor and patients.
                         </p>
                       </div>
                     </div>
@@ -204,7 +204,7 @@ function AboutUs(props) {
           </div>
         </div>
       </section>
-      <h2 class="text-center bg-success">What our customers say</h2>
+      <h2 class="text-center bg-success">What our customers say about us</h2>
       <div
         id="myCarousel"
         class="carousel slide text-center"
@@ -221,10 +221,10 @@ function AboutUs(props) {
           </div>
           <div class="item active" >
             <h4>
-              "One word... WOW!! The work on party palace interface is simple
+              "One word... WOW!! The user interface is simple
               and easy"
               <br />
-              <span>-Alfa House, Host</span>
+              <span>-Dr. Hari Bahadur, Doctor</span>
             </h4>
           </div>
         </div>
@@ -237,9 +237,9 @@ function AboutUs(props) {
               <h2 class="font-weight-light">Significance</h2>
               <div class="significance__content">
                 <p>
-                Our application generally focuses on organizing online weddings
-                and providing a common platform for users, party palace and
-                bands</p>
+                Our application connects the patient and the doctor and helps in transferring the reports among the connected doctors and the patients.
+              
+                </p>
                 <a href="/" class="btn btn-light px-5 rounded-pill shadow-sm">
                 Learn More
               </a>
@@ -267,8 +267,7 @@ function AboutUs(props) {
               <p class="features__content">
                 {" "}
                 Apart from the above features our application also provides a
-                platform for an online giftstore to purchase gifts for the
-                invited events.
+                platform for an online Chat System where patients can enquire about his/her problem.
               </p>
             </div>
           </div>

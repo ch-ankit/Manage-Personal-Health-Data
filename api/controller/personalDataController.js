@@ -60,8 +60,9 @@ exports.addContact = async (req, res, next) => {
     address: {
       use: "home",
       type: "postal/physical/both",
-      text: `${(req.body.city, req.body.district, req.body.state, req.body.country)
-        }`,
+      text: `${
+        (req.body.city, req.body.district, req.body.state, req.body.country)
+      }`,
       line: req.body.streetName,
       city: req.body.city,
       district: req.body.district,
@@ -110,7 +111,7 @@ exports.requestedDocument = async (req, res, next) => {
         returnData.title = el._fields[6];
         returnData.photo = el._fields[5];
         returnData.name = el._fields[4];
-        returnData.status = 'pending'
+        returnData.status = "pending";
         return returnData;
       });
       return data;
@@ -120,7 +121,7 @@ exports.requestedDocument = async (req, res, next) => {
 };
 
 exports.notifications = async (req, res, next) => {
-  console.log(req.query.patientId)
+  console.log(req.query.patientId);
   var session = driver.session();
   session
     .run(
@@ -149,7 +150,7 @@ exports.notifications = async (req, res, next) => {
 };
 
 exports.giveAcess = async (req, res, next) => {
-  console.log(req.body)
+  console.log(req.body);
   var session = driver.session();
   const io = req.app.get("socketServer");
   var query;
@@ -158,8 +159,9 @@ exports.giveAcess = async (req, res, next) => {
                MATCH(n1:Practitioner{value:$doctorId})
                MATCH(n1)-[r3:hasRequested]->(m)
                MATCH(n1)-[r4:hasAcess]->(m)
-               SET r3.status="granted",r4.terminated=0,r4.timeStamp=${Date.now() + parseInt(req.body.accessTime)
-      }
+               SET r3.status="granted",r4.terminated=0,r4.timeStamp=${
+                 Date.now() + parseInt(req.body.accessTime)
+               }
               `;
   } else {
     query = `MATCH(n:Patient{value:$patientId})-[:medicalRecord]->(m:masterIdentifier{value:$masterId})
@@ -312,8 +314,8 @@ exports.friendList = async (req, res, next) => {
   var query = `MATCH(l:Patient{value:"${req.query.patientId}"})-[:knows]->(n:Practitioner)
   MATCH (n)-[r:identifies{}]->(m:doctor{active:True})
   MATCH(n)-[r1:hasName{}]->(m1:name{})
-  MERGE(n)-[r2:photo]->(m2:photo{})
-  MERGE(n)-[r3:qualification{}]->(:qualification{}) return n.value,m.gender,m1,m2.url,r3.display,r3.text`;
+  MATCH(n)-[r2:photo]->(m2:photo{})
+  MATCH(n)-[r3:qualification{}]->(:qualification{}) return n.value,m.gender,m1,m2.url,r3.display,r3.text`;
   session
     .run(query)
     .then((result) => {
@@ -324,8 +326,9 @@ exports.friendList = async (req, res, next) => {
         returnData.photo = el._fields[3];
         returnData.qualifiction = el._fields[4];
         var nameObj = el._fields[2].properties;
-        returnData.name = `${nameObj.prefix}.${nameObj.given[0]} ${nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
-          }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
+        returnData.name = `${nameObj.prefix}.${nameObj.given[0]} ${
+          nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
+        }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
         return returnData;
       });
       return data;

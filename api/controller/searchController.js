@@ -56,10 +56,13 @@ exports.getPrescriptions = async (req, res, next) => {
 
 exports.doctorSearch = async (req, res, next) => {
   var session = driver.session();
-  var query = `MATCH (n:Practitioner{})-[r:identifies{}]->(m:doctor{active:True})
+  var query = `MATCH(l:Patient{value:"${req.query.patientId}"})-[:knows]->(l1)
+  MATCH (n:Practitioner{})-[r:identifies{}]->(m:doctor{active:True})
   MATCH(n)-[r1:hasName{}]->(m1:name{})
-  MERGE(n)-[r2:photo]->(m2:photo{})
-  MERGE(n)-[r3:qualification{}]->(:qualification{}) return n.value,m.gender,m1,m2.url,r3.display,r3.text`;
+  MATCH(n)-[r2:photo]->(m2:photo{})
+  MATCH(n)-[r3:qualification{}]->(:qualification{})
+  WHERE NOT l1=n 
+  RETURN n.value,m.gender,m1,m2.url,r3.display,r3.text`;
   session
     .run(query)
     .then((result) => {

@@ -7,7 +7,9 @@ function PasswordSet(props) {
     const userId = useRef(null)
     const password = useRef(null)
     const confirmPassword = useRef(null)
-    const [isValid, setIsValid] = useState(true)
+    const [isInValid, setIsInValid] = useState(null)
+    const [passwordLengthError, setPasswordLengthError] = useState(null)
+    const [passwordLengthInvalid, setPasswordLengthInvalid] = useState(null)
     const history = useHistory()
     const id = history.location.search.slice(4)
     //Functions
@@ -31,12 +33,21 @@ function PasswordSet(props) {
     }
     function isValidated() {
         console.log(password, confirmPassword)
-        if (password.current.value !== confirmPassword.current.value) {
-            setIsValid(false)
-            return false
+        if (password.current.value.length < 5) {
+            setPasswordLengthError('Password Length must be at least 6 characters')
+            setPasswordLengthInvalid(true)
+        } else {
+            setPasswordLengthInvalid(false)
         }
-        else {
+        if (password.current.value !== confirmPassword.current.value) {
+            setIsInValid(true)
+        } else {
+            setIsInValid(false)
+        }
+        if (!isInValid && !passwordLengthInvalid) {
             return true
+        } else {
+            return false
         }
     }
     return (
@@ -45,8 +56,9 @@ function PasswordSet(props) {
             <form onSubmit={handleSubmit} id="passwordSet">
                 <input ref={userId} value={id} type='text' id="userId" placeholder="User-ID" required disabled />
                 <input ref={password} type='password' id="password" placeholder="Password" required />
+                {passwordLengthInvalid && <span style={{ color: 'red' }}>*{passwordLengthError} </span>}
                 <input ref={confirmPassword} type='password' id="confirmPassword" placeholder="Confirm Password" required />
-                {!isValid && <span style={{ color: 'red' }}>*Passwords donot match!! </span>}
+                {isInValid && <span style={{ color: 'red' }}>*Passwords donot match!! </span>}
                 <button className="passwordset__button" type="submit" id='submit' form="passwordSet">Confirm</button>
             </form>
         </div>

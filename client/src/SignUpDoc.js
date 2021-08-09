@@ -31,6 +31,10 @@ function SignUp() {
     const [viewFile, setViewFile] = useState('')
     const [customPrefix, setCustomPrefix] = useState(false)
     const [customSuffix, setCustomSuffix] = useState(false)
+    const [dateError, setDateError] = useState(null)
+    const [emailError, setEmailError] = useState(null)
+    const [phoneError, setPhoneError] = useState(null)
+    const [nmcCheckError, setNmcCheckError] = useState(null)
 
     //Functions
     const handleChange = (e) => {
@@ -46,73 +50,116 @@ function SignUp() {
         }
     }
 
+    const formValidate = () => {
+        var returnValue = [];
+        //prefix check and set
+        if (prefix.current.value === null) {
+            prefix.current.value = 'Dr.'
+        }
+        //middle name check and set
+        if (middleName.current.value === null) {
+            middleName.current.value = ' '
+        }
+        //email validate
+        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email.current.value)) {
+            returnValue.push(true)
+        } else {
+            setEmailError('Invalid Email')
+            returnValue.push(false)
+        }
+        //validate phone no
+        if (/^\+[1-9]{1}[0-9]{3,14}$/.test(mobileNo.current.value)) {
+            returnValue.push(true)
+        } else {
+            setPhoneError('Invalid Phone Number')
+            returnValue.push(false)
+        }
+        var todayFullDate = new Date();
+        var year = todayFullDate.getFullYear()
+        var month = todayFullDate.getMonth() < 9 ? `0${todayFullDate.getMonth() + 1}` : todayFullDate.getMonth() + 1
+        var date = todayFullDate.getDate() < 10 ? `0${todayFullDate.getDate()}` : todayFullDate.getDate() < 10
+        todayFullDate = new Date(`${year}-${month}-${date}`)
+        var recievedDate = new Date(dob.current.value)
+        if (recievedDate > todayFullDate) {
+            setDateError('Please enter valid Date of birth')
+            returnValue.push(false)
+        } else {
+            returnValue.push(true)
+        }
+
+        return !returnValue.some(el => el === false)
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const uploadTask = storage.ref(`images/${photo.name}`).put(photo);
-        uploadTask.on(
-            "state_changed",
-            (snapshot) => {
-            },
-            (error) => {
-                console.log(error);
-                alert(error.message);
-            },
-            () => {
-                storage
-                    .ref("images")
-                    .child(photo.name)
-                    .getDownloadURL()
-                    .then(async (url) => {
-                        const system = language.current.value.split('-')
-                        const qualificationCodeSystem = 'https://nmc.org.np/searchPractitioner'
-                        const qualificationCodeCode = "R"
-                        const qualificationCodeDisplay = 'Qualified doctor'
-                        const qualificationCodetext = `Dr.${firstName.current.value} is a registered doctor in NMC`
-                        const qualificationIdentifierSystem = 'https://nmc.org.np/searchPractitioner'
-                        const qualificationIdentifierValue = id.current.value
-                        const issuer = "Nepal Medical Council"
-                        const response = await fetch('http://localhost:7000/signup/doctor', {
-                            method: 'POST',
-                            headers: {
-                                'Content-type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                firstName: firstName.current.value,
-                                lastName: lastName.current.value,
-                                middleName: middleName.current.value,
-                                prefix: prefix.current.value,
-                                suffix: suffix.current.value,
-                                dob: dob.current.value,
-                                mobileNo: mobileNo.current.value,
-                                email: email.current.value,
-                                streetName: streetName.current.value,
-                                houseNo: houseNo.current.value,
-                                state: state.current.value,
-                                district: district.current.value,
-                                city: city.current.value,
-                                country: country.current.value,
-                                language: system[0],
-                                languageCode: system[1],
-                                postalCode: postalCode.current.value,
-                                gender: gender.current.value,
-                                id: id.current.value,
-                                periodStart: periodStart.current.value,
-                                qualificationCodeSystem: qualificationCodeSystem,
-                                qualificationCodeCode: qualificationCodeCode,
-                                qualificationCodeDisplay: qualificationCodeDisplay,
-                                qualificationCodetext: qualificationCodetext,
-                                qualificationIdentifierSystem: qualificationIdentifierSystem,
-                                qualificationIdentifierValue: qualificationIdentifierValue,
-                                issuer: issuer,
-                                photo: photo
+        if (formValidate()) {
+            uploadTask.on(
+                "state_changed",
+                (snapshot) => {
+                },
+                (error) => {
+                    console.log(error);
+                    alert(error.message);
+                },
+                () => {
+                    storage
+                        .ref("images")
+                        .child(photo.name)
+                        .getDownloadURL()
+                        .then(async (url) => {
+                            const system = language.current.value.split('-')
+                            const qualificationCodeSystem = 'https://nmc.org.np/searchPractitioner'
+                            const qualificationCodeCode = "R"
+                            const qualificationCodeDisplay = 'Qualified doctor'
+                            const qualificationCodetext = `Dr.${firstName.current.value} is a registered doctor in NMC`
+                            const qualificationIdentifierSystem = 'https://nmc.org.np/searchPractitioner'
+                            const qualificationIdentifierValue = id.current.value
+                            const issuer = "Nepal Medical Council"
+                            const response = await fetch('http://localhost:7000/signup/doctor', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    firstName: firstName.current.value,
+                                    lastName: lastName.current.value,
+                                    middleName: middleName.current.value,
+                                    prefix: prefix.current.value,
+                                    suffix: suffix.current.value,
+                                    dob: dob.current.value,
+                                    mobileNo: mobileNo.current.value,
+                                    email: email.current.value,
+                                    streetName: streetName.current.value,
+                                    houseNo: houseNo.current.value,
+                                    state: state.current.value,
+                                    district: district.current.value,
+                                    city: city.current.value,
+                                    country: country.current.value,
+                                    language: system[0],
+                                    languageCode: system[1],
+                                    postalCode: postalCode.current.value,
+                                    gender: gender.current.value,
+                                    id: id.current.value,
+                                    periodStart: periodStart.current.value,
+                                    qualificationCodeSystem: qualificationCodeSystem,
+                                    qualificationCodeCode: qualificationCodeCode,
+                                    qualificationCodeDisplay: qualificationCodeDisplay,
+                                    qualificationCodetext: qualificationCodetext,
+                                    qualificationIdentifierSystem: qualificationIdentifierSystem,
+                                    qualificationIdentifierValue: qualificationIdentifierValue,
+                                    issuer: issuer,
+                                    photo: photo
+                                })
                             })
+                            const { message } = await response.json()
                         })
 
-                        console.log(response)
-                    })
-
-            }
-        )
+                }
+            )
+        } else {
+            alert('Data not valid')
+        }
 
     }
     const languageMap = Object.keys(languages).map(el => <option key={el} value={`${languages[el].name}-${languages[el].code}`} > {languages[el].name}</ option>)
@@ -171,18 +218,20 @@ function SignUp() {
                 <input ref={postalCode} type="text" id="postalCode" placeholder="Postal Code" required />
 
                 <input ref={email} type="email" id="email" placeholder="Email" required />
+                {emailError && <p style={{ color: 'red' }}>*{emailError}</p>}
                 <div className="signUpDoc__dob">
                     <label>D.O.B</label>
                     <input ref={dob} type="date" onChange={() => { console.log(dob.current.value) }} id="dob" placeholder="Date of Birth" required />
+                    {dateError && <p style={{ color: 'red' }}>*{dateError}</p>}
                 </div>
                 <input ref={mobileNo} type="text" id="mobileNo" placeholder="Contact Number" required />
-
+                {phoneError && <p style={{ color: 'red' }}>*{phoneError}</p>}
                 <input ref={id} type="text" id="id" placeholder="NMC Registration Number" required />
                 <div className="signUpDoc__nmcDate">
                     <label>NMC Registered Date</label>
                     <input ref={periodStart} type="date" id="nmcDate" placeholder="NMC Registered Date" required />
                 </div>
-                
+
                 <div className="signUp__select">
                     <div className="signUp__customSelect">
                         <select ref={language} defaultChecked="Language" id="language" required>

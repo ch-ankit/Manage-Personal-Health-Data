@@ -16,11 +16,7 @@ function SignUp() {
     const streetName = useRef(null)
     const dob = useRef(null);
     const email = useRef(null)
-    const emergencyContactName = useRef(null)
-    const emergencyContactNo = useRef(null)
-    const emergencyContactRltn = useRef(null)
     const gender = useRef(null)
-    const occupation = useRef(null)
     const language = useRef(null)
     const maritalStatusCode = useRef(null)
     const birthOrder = useRef(null)
@@ -38,6 +34,9 @@ function SignUp() {
     const [multipleBirthBoolean, setMultipleBirthBoolean] = useState(false)
     const [photo, setPhoto] = useState('')
     const [viewFile, setViewFile] = useState('')
+    const [dateError, setDateError] = useState(null)
+    const [emailError, setEmailError] = useState(null)
+    const [phoneError, setPhoneError] = useState(null)
 
     const history = useHistory()
 
@@ -55,68 +54,115 @@ function SignUp() {
         }
     }
 
+    const formValidate = () => {
+        var returnValue = [];
+        //prefix check and set
+        if (prefix.current.value === null) {
+            prefix.current.value = gender.current.value === 'Male' ? 'Mr' : 'Ms'
+        }
+        //middle name check and set
+        if (middleName.current.value === null) {
+            middleName.current.value = ''
+        }
+        //email validate
+        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email.current.value)) {
+            returnValue.push(true)
+        } else {
+            setEmailError('Invalid Email')
+            returnValue.push(false)
+        }
+        //validate phone no
+        if (/^\+[1-9]{1}[0-9]{3,14}$/.test(mobileNo.current.value)) {
+            returnValue.push(true)
+        } else {
+            setPhoneError('Invalid Phone Number')
+            returnValue.push(false)
+        }
+        var todayFullDate = new Date();
+        var year = todayFullDate.getFullYear()
+        var month = todayFullDate.getMonth() < 9 ? `0${todayFullDate.getMonth() + 1}` : todayFullDate.getMonth() + 1
+        var date = todayFullDate.getDate() < 10 ? `0${todayFullDate.getDate()}` : todayFullDate.getDate() < 10
+        todayFullDate = new Date(`${year}-${month}-${date}`)
+        var recievedDate = new Date(dob.current.value)
+        if (recievedDate > todayFullDate) {
+            setDateError('Please enter valid Date of birth')
+            returnValue.push(false)
+        } else {
+            returnValue.push(true)
+        }
+
+        return !returnValue.some(el => el === false)
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const uploadTask = storage.ref(`images/${photo.name}`).put(photo);
-        uploadTask.on(
-            "state_changed",
-            (snapshot) => {
-            },
-            (error) => {
-                console.log(error);
-                alert(error.message);
-            },
-            () => {
-                storage
-                    .ref("images")
-                    .child(photo.name)
-                    .getDownloadURL()
-                    .then(async (url) => {
-                        const system = language.current.value.split('-')
-                        const response = await fetch('http://localhost:7000/signup/patient', {
-                            method: 'POST',
-                            headers: {
-                                'Content-type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                city: city.current.value,
-                                district: district.current.value,
-                                state: state.current.value,
-                                country: country.current.value,
-                                mobileNo: mobileNo.current.value,
-                                houseNo: houseNo.current.value,
-                                streetName: streetName.current.value,
-                                dob: dob.current.value,
-                                email: email.current.value,
-                                gender: gender.current.value,
-                                language: system[0],
-                                languageCode: system[1],
-                                maritialStatus: maritalStatus,
-                                maritialStatusCode: maritalStatusCode.current.value,
-                                multipleBirthBoolean: multipleBirthBoolean,
-                                birthOrder: multipleBirthBoolean ? birthOrder.current.value : 1,
-                                firstName: firstName.current.value,
-                                middleName: middleName.current.value,
-                                lastName: lastName.current.value,
-                                prefix: prefix.current.value,
-                                suffix: suffix.current.value,
-                                postalCode: postalCode.current.value,
-                                photo: url
+        if (formValidate()) {
+            uploadTask.on(
+                "state_changed",
+                (snapshot) => {
+                },
+                (error) => {
+                    console.log(error);
+                    alert(error.message);
+                },
+                () => {
+                    storage
+                        .ref("images")
+                        .child(photo.name)
+                        .getDownloadURL()
+                        .then(async (url) => {
+                            const system = language.current.value.split('-')
+                            const response = await fetch('http://localhost:7000/signup/patient', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    city: city.current.value,
+                                    district: district.current.value,
+                                    state: state.current.value,
+                                    country: country.current.value,
+                                    mobileNo: mobileNo.current.value,
+                                    houseNo: houseNo.current.value,
+                                    streetName: streetName.current.value,
+                                    dob: dob.current.value,
+                                    email: email.current.value,
+                                    gender: gender.current.value,
+                                    language: system[0],
+                                    languageCode: system[1],
+                                    maritialStatus: maritalStatus,
+                                    maritialStatusCode: maritalStatusCode.current.value,
+                                    multipleBirthBoolean: multipleBirthBoolean,
+                                    birthOrder: multipleBirthBoolean ? birthOrder.current.value : 1,
+                                    firstName: firstName.current.value,
+                                    middleName: middleName.current.value,
+                                    lastName: lastName.current.value,
+                                    prefix: prefix.current.value,
+                                    suffix: suffix.current.value,
+                                    postalCode: postalCode.current.value,
+                                    photo: url
+                                })
                             })
+                            const { message } = await response.json()
+                            if (message === "email is aready registered") {
+                                setErrorFrom({ message: 'Email is already registered. Please use a new mail' })
+                            }
+                            setViewFile('')
+                            console.log(response)
+                        }).then(() => {
+                            (errorFrom !== '' || errorFrom !== null) && history.push('/')
                         })
-                        const { message } = await response.json()
-                        if (message === "email is aready registered") {
-                            setErrorFrom({ message: 'Email is already registered. Please use a new mail' })
-                        }
-                        setViewFile('')
-                        console.log(response)
-                    }).then(() => {
-                        (errorFrom !== '') && history.push('/')
-                    })
-            }
-        )
+                }
+            )
+        } else {
+            alert('Form not validated')
+        }
     }
-    const languageMap = Object.keys(languages).map(el => <option key={el} value={`${languages[el].name}-${languages[el].code}`} > {languages[el].name}</ option>)
+    const languageMap = Object.keys(languages).map(el =>
+        <option key={el} value={`${languages[el].name}-${languages[el].code}`} >
+            {languages[el].name}
+        </ option>)
     return (
         <div className="signUp">
             <Nav />
@@ -168,6 +214,7 @@ function SignUp() {
                 <input ref={state} type="text" id="address" placeholder="State" required />
                 <input ref={country} type="text" id="address" placeholder="Country" required />
                 <input ref={email} type="email" id="email" placeholder="Email" required />
+                {emailError && <p style={{ color: 'red' }}>*{emailError}</p>}
                 <div className="signUp__customSelect" style={{ width: '80%' }}>
                     <select ref={language} defaultChecked="Language" id="language" required>
                         <option value="Language" hidden > Please Select preferred Language</option>
@@ -234,6 +281,9 @@ function SignUp() {
                                 case "UNK":
                                     setMaritalStatus('unknown')
                                     break;
+                                default:
+                                    setMaritalStatus('Unmarried')
+                                    console.log('default switch case in sign up form')
                             }
                         }} id="Marital Status" required>
                             <option value="Marital Status" hidden > Please Select you status</option>
@@ -253,7 +303,9 @@ function SignUp() {
                 </div>
                 <input ref={postalCode} type="text" id="postalCode" placeholder="Postal Code" required />
                 <input ref={dob} type="date" onChange={() => { console.log(dob.current.value) }} id="dob" placeholder="Date of Birth" required />
+                {dateError && <p style={{ color: 'red' }}>*{dateError}</p>}
                 <input ref={mobileNo} type="text" id="contactInfo" placeholder="Mobile Number" required />
+                {phoneError && <p style={{ color: 'red' }}>*{phoneError}</p>}
                 <input type="file" accept="image/*" id="image" alt="Profile photo" onChange={handleChange} required />
                 <img src={viewFile} style={{ height: '81px', width: '256px' }} alt="Uploaded" />
                 <div className="signUp__select">

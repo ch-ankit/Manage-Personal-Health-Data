@@ -150,7 +150,7 @@ exports.notifications = async (req, res, next) => {
 };
 
 exports.giveAcess = async (req, res, next) => {
-  console.log(req.body);
+  console.log(parseInt(req.body.accessTime));
   var session = driver.session();
   const io = req.app.get("socketServer");
   var query;
@@ -160,7 +160,7 @@ exports.giveAcess = async (req, res, next) => {
                MATCH(n1)-[r3:hasRequested]->(m)
                MATCH(n1)-[r4:hasAcess]->(m)
                SET r3.status="granted",r4.terminated=0,r4.timeStamp=${
-                 Date.now() + parseInt(req.body.accessTime)
+                 (Date.now()/60000 + parseInt(req.body.accessTime)).toString()
                }
               `;
   } else {

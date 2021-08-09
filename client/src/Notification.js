@@ -15,6 +15,7 @@ function Notification(props) {
     const dispatch = useDispatch()
     const docData = useSelector(state => state.user.doctor)
     const userData = useSelector(state => state.user.value);
+    let tempData={}
     useEffect(() => {
         async function getNotifications() {
             const url = props.doctor ? `http://localhost:7000/doctor/getnotification?doctorId=${docData?.uId}` :
@@ -60,7 +61,7 @@ function Notification(props) {
                 console.log('Default case reached')
         }
         if (timeNumber !== null && timeUnit !== null) {
-            console.log(e, masterId)
+            console.log(e, masterId,accessTime)
             const response = await fetch(`http://localhost:7000/personal/requesteddocument`, {
                 method: 'POST',
                 headers: {
@@ -78,6 +79,7 @@ function Notification(props) {
             })
             const { message } = await response.json()
             console.log(message)
+            document.querySelector(".notification__sharePopup.active").classList.remove("active")
         } else {
             alert('Please select the Access time')
         }
@@ -115,7 +117,11 @@ function Notification(props) {
                     <h4>Document Title: {notification[el].title}</h4>
                     <div className="shareDocuments__selectTime">
                         <div style={{ display: 'flex', justifyContent: 'space-between', padding: '2em' }}>
-                            <button style={{ display: 'flex', justifyContent: 'space-between', backgroundColor: 'lightgreen', borderRadius: '1rem', padding: '0.5rem', cursor: 'pointer' }} onClick={() => userDecision(notification[el].doctorId, 'granted', notification[el].masterId)}>
+                            <button style={{ display: 'flex', justifyContent: 'space-between', backgroundColor: 'lightgreen', borderRadius: '1rem', padding: '0.5rem', cursor: 'pointer' }} onClick={() =>{
+                                tempData.doctorId=notification[el].doctorId;
+                                tempData.status='granted';
+                                tempData.masterId=notification[el].masterId
+                                document.querySelector(".notification__sharePopup").classList.toggle("active")} }>
                                 <span style={{ color: 'black' }}>Accept</span><CheckIcon className="friendlist__userIconAdd" />
                             </button>
                             <button style={{ display: 'flex', justifyContent: 'space-between', backgroundColor: 'red', borderRadius: '1rem', padding: '0.5rem', cursor: 'pointer' }} onClick={() => userDecision(notification[el].doctorId, 'rejected', notification[el].masterId)}>
@@ -127,7 +133,7 @@ function Notification(props) {
         })
     }
     return (
-        <div className='notification' style={{ backgroundColor: 'white', height: '100%', width: '100%' }}>
+        <div className='notification' style={{ backgroundColor: 'white', height: '100vh', width: '100%' }}>
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "80%", margin: '0 auto', position: 'relative', paddingTop: '2rem' }}>
                 <p style={{ position: 'absolute', right: '0', top: "1rem", border: 'black 1px solid', padding: '2px' }} onClick={markRead}>Mark all as Read</p>
                 {notification.length === 0 && (
@@ -136,14 +142,21 @@ function Notification(props) {
                         <h2 style={{ color: 'lightcoral' }}>All caught Up!!</h2>
                     </div>)}
                 {displayNotifications}
-                <div className="notification__shareTime">
-                    <input ref={timeNumber} type="number" />
-                    <select ref={timeUnit}>
-                        <option value="day">day</option>
-                        <option value="hr">hr</option>
-                        <option value="min">min</option>
-                    </select>
-                </div>
+                <form className="notification__sharePopup" onSubmit={(e)=>{e.preventDefault();userDecision(tempData.doctorId, tempData.status, tempData.masterId)}}>
+                    <h2>Share</h2>
+                    <div className="notification__shareTime">
+                        <input ref={timeNumber} type="number" />
+                        <select ref={timeUnit}>
+                            <option value="day">day</option>
+                            <option value="hr">hr</option>
+                            <option value="min">min</option>
+                        </select>
+                    </div>
+                    <div className="notification__popupButtons">
+                        <button type="button" onClick={()=>document.querySelector(".notification__sharePopup.active").classList.remove("active")}>Close</button>
+                        <button type="submit">Share</button>
+                    </div>
+                </form>
             </div>
         </div>
     );

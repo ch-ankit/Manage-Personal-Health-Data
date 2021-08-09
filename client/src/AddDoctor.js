@@ -60,7 +60,7 @@ function AddDoctor(props) {
               if (e.target.value != "") {
                 let tempData = [];
                 Object.keys(doctorData).map((key) => {
-                  if (doctorData[key].name.includes(e.target.value)) {
+                  if (doctorData[key].name.toUpperCase().includes(e.target.value.toUpperCase())) {
                     tempData = [...tempData, doctorData[key]];
                   }
                 });

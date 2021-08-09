@@ -151,7 +151,7 @@ function SignUp() {
                             setViewFile('')
                             console.log(response)
                         }).then(() => {
-                            (errorFrom !== '' || errorFrom !== null) && history.push('/')
+                            (errorFrom !== '' && errorFrom !== null) && history.push('/')
                         })
                 }
             )

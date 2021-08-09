@@ -51,7 +51,48 @@
         mix-blend-mode: exclusion;
     }
 
-    &__shareTime {
-        display: none;
+    &__sharePopup{
+        position: absolute;
+        top:0;
+        transform: translateY(-200%);
+        width: 80%;
+        height: 50vh;
+        background-color: white;
+        border:1px solid lightgreen;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+        input{
+            width: 80%;
+            height: 2.5em;
+        }
+        select{
+            width: 20%;
+            height: 2.5em;
+        }
+
+        &.active{
+            transform: translateY(0%);
+        }
     }
+    &__shareTime{
+        width: 60%;
+    }
+    &__popupButtons{
+        width: 100%;
+        display: flex;
+        justify-content: space-evenly;
+
+        button{
+            height: 2.5em;
+            width: 30%;
+            border-radius: 10em;
+            outline:none;
+            border:none;
+            box-shadow:0 0 15px lightgreen;
+        }
+    }
+    
 }
+

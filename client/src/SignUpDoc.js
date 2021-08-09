@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react'
+import { useHistory } from "react-router";
 import storage from './firebaseConfig'
 import Nav from './Nav'
 import "./SignUpDoc.scss"
@@ -34,7 +35,9 @@ function SignUp() {
     const [dateError, setDateError] = useState(null)
     const [emailError, setEmailError] = useState(null)
     const [phoneError, setPhoneError] = useState(null)
+    const [errorFrom, setErrorFrom] = useState('')
     const [nmcCheckError, setNmcCheckError] = useState(null)
+    const history = useHistory()
 
     //Functions
     const handleChange = (e) => {
@@ -80,8 +83,15 @@ function SignUp() {
         var date = todayFullDate.getDate() < 10 ? `0${todayFullDate.getDate()}` : todayFullDate.getDate() < 10
         todayFullDate = new Date(`${year}-${month}-${date}`)
         var recievedDate = new Date(dob.current.value)
+        var nmcStartedDate = new Date(periodStart.current.value)
         if (recievedDate > todayFullDate) {
             setDateError('Please enter valid Date of birth')
+            returnValue.push(false)
+        } else {
+            returnValue.push(true)
+        }
+        if (nmcStartedDate > todayFullDate) {
+            setNmcCheckError('Please enter a valid Date')
             returnValue.push(false)
         } else {
             returnValue.push(true)
@@ -153,6 +163,11 @@ function SignUp() {
                                 })
                             })
                             const { message } = await response.json()
+                            if (message === "") {
+                                setErrorFrom({ message: 'ID is already Registered' })
+                            }
+                        }).then(() => {
+                            (errorFrom !== '' || errorFrom !== null) && history.push('/')
                         })
 
                 }
@@ -230,8 +245,8 @@ function SignUp() {
                 <div className="signUpDoc__nmcDate">
                     <label>NMC Registered Date</label>
                     <input ref={periodStart} type="date" id="nmcDate" placeholder="NMC Registered Date" required />
+                    {nmcCheckError && <p style={{ color: 'red' }}>*{nmcCheckError}</p>}
                 </div>
-
                 <div className="signUp__select">
                     <div className="signUp__customSelect">
                         <select ref={language} defaultChecked="Language" id="language" required>

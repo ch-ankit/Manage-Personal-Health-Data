@@ -26,7 +26,7 @@ function AddDoctor(props) {
         }
         return getDoctor();
     }, [])
-    const addDoctor = async (doctorId) => {
+    const addDoctor = async (doctorId, name) => {
         const sendData = JSON.stringify({
             patientId: userData.uId,
             doctorId: doctorId,
@@ -42,6 +42,7 @@ function AddDoctor(props) {
         const { message } = await response.json()
         console.log(message)
         socket.current.volatile.emit('doctorAdd', sendData)
+        alert(`Connect request sent to ${name}`)
     }
     return (
         <div className="addDoctor" style={{ backgroundColor: 'white', height: '94.5vh', width: '100%' }}>
@@ -74,7 +75,7 @@ function AddDoctor(props) {
                             </div>
                             <p>{temporaryData[key].name}</p>
                             <button className="addDoctor__searchedData__button"
-                                onClick={(e) => { addDoctor(temporaryData[key].doctorId) }}>
+                                onClick={(e) => { addDoctor(temporaryData[key].doctorId, temporaryData[key].name) }}>
                                 Connect to Doctor
                             </button>
                         </div>

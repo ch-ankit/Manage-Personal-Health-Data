@@ -1,5 +1,6 @@
 import React, { lazy } from 'react'
 import { Suspense } from 'react';
+import { useSelector } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch, useHistory ,Redirect} from 'react-router-dom'
 import AddDoctor from './AddDoctor';
 import DoctorLanding from './DoctorLanding';
@@ -26,6 +27,9 @@ const RecentPatientDocuments = lazy(() => import("./RecentPatientDocuments"));
 const SharedDocuments = lazy(() => import("./SharedDocuments"));
 function App() {
   const history=useHistory()
+  const doctorData=useSelector(state=>state.user.doctor);
+  const userData=useSelector(state=>state.user.value);
+
   return (
     <div className="app" >
       <Router>
@@ -39,6 +43,7 @@ function App() {
               <HomeNav />
               <HomeDrawer doctor={false} />
               <Switch>
+                {!userData && <Redirect to="/"/>  }
                 <Route exact path='/home'>
                   <HomePage />
                 </Route>
@@ -63,6 +68,7 @@ function App() {
               <HomeNav doctor={true} />
               <HomeDrawer doctor={true} />
               <Switch>
+              {!doctorData && <Redirect to="/"/>  }
                 <Route exact path="/Doctor">
                   <DoctorLanding />
                 </Route>

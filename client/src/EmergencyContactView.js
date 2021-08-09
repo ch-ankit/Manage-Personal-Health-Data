@@ -7,7 +7,7 @@ function EmergencyContactView() {
     const [emergencyContact, setemergencyContact] = useState([])
     useEffect(() => {
         async function getEmergencyContact(){
-            const response=await fetch(`http://localhost:7000/signup/getcontact?id=${userData.uId}`,{
+            const response=await fetch(`http://localhost:7000/signup/getcontact?id=${userData?.uId}`,{
                 method:"GET"
             });
             const data=await response.json();

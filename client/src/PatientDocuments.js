@@ -58,7 +58,7 @@ function PatientDocuments() {
                                 if(temporaryData.length == 0){
                                     let temp=[]
                                     Object.keys(searchedData).map((key)=>{
-                                    if(searchedData[key].reportTitle.includes(e.target.value)){
+                                    if(searchedData[key].reportTitle.toUpperCase().includes(e.target.value.toUpperCase())){
                                         console.log('Hello')
                                         temp.push(searchedData[key]);
                                     }
@@ -69,7 +69,7 @@ function PatientDocuments() {
                                     let temporary=temporaryData;
                                     let temp=[]
                                     Object.keys(temporary).map((key)=>{
-                                        if(temporary[key].reportTitle.includes(e.target.value)){
+                                        if(temporary[key].reportTitle.toUpperCase().includes(e.target.value.toUpperCase())){
                                             temp.push(temporary[key]);
                                         }
                                         settemporaryData(temp)
@@ -84,7 +84,7 @@ function PatientDocuments() {
                                 if(temporaryData.length == 0){
                                     let temp=[]
                                     Object.keys(searchedData).map((key)=>{
-                                    if(searchedData[key].bodyPart.includes(e.target.value)){
+                                    if(searchedData[key].bodyPart.toUpperCase().includes(e.target.value.toUpperCase())){
                                         temp.push(searchedData[key]);
                                     }
                                     settemporaryData(temp)
@@ -94,7 +94,7 @@ function PatientDocuments() {
                                     let temporary=temporaryData;
                                     let temp=[]
                                     Object.keys(temporary).map((key)=>{
-                                        if(temporary[key].bodyPart.includes(e.target.value)){
+                                        if(temporary[key].bodyPart.toUpperCase().includes(e.target.value.toUpperCase())){
                                             temp.push(temporary[key]);
                                         }
                                         settemporaryData(temp)
@@ -109,7 +109,7 @@ function PatientDocuments() {
                                 if(temporaryData.length == 0){
                                     let temp=[]
                                     Object.keys(searchedData).map((key)=>{
-                                    if(searchedData[key].symptoms.includes(e.target.value)){
+                                    if(searchedData[key].symptoms.toUpperCase().includes(e.target.value.toUpperCase())){
                                         temp.push(searchedData[key]);
                                     }
                                     settemporaryData(temp)
@@ -119,7 +119,7 @@ function PatientDocuments() {
                                     let temporary=temporaryData;
                                     let temp=[]
                                     Object.keys(temporary).map((key)=>{
-                                        if(temporary[key].symptoms.includes(e.target.value)){
+                                        if(temporary[key].symptoms.toUpperCase().includes(e.target.value.toUpperCase())){
                                             temp.push(temporary[key]);
                                         }
                                         settemporaryData(temp)
@@ -184,16 +184,41 @@ function PatientDocuments() {
                                 }}else{setReportDate2(e.target.value);settemporaryData([])}
                         }} />
                         <select onChange={(e)=>{
-
-                        }}>
-                            <option>Health and Respirotary</option>
-                            <option>Psychiatry procedure or service</option>
-                            <option>Counselling</option>
-                            <option>Education</option>
-                            <option>Surgical procedure</option>
-                            <option>Diagnostic procedure</option>
-                            <option>Chiropractic manipulation</option>
-                            <option>Social service procedure</option>
+                            console.log(e.target.value)
+                            if(e.target.value != ''){
+                                console.log('Hello')
+                                console.log(temporaryData.length)
+                                if(temporaryData.length == 0){
+                                    let temp=[]
+                                    Object.keys(searchedData).map((key)=>{
+                                        console.log(searchedData[key].category,e.target.value)
+                                    if(searchedData[key].category.toUpperCase().includes(e.target.value.toUpperCase())){
+                                        temp.push(searchedData[key]);
+                                    }
+                                    settemporaryData(temp)
+                                })
+                                }
+                                else{
+                                    
+                                    let temporary=temporaryData;
+                                    let temp=[]
+                                    Object.keys(temporary).map((key)=>{
+                                        console.log(searchedData[key].category,e.target.value)
+                                        if(temporary[key].category.toUpperCase().includes(e.target.value.toUpperCase())){
+                                            temp.push(temporary[key]);
+                                        }
+                                        settemporaryData(temp)
+                                    })
+                                }}else{settemporaryData([])}
+                        }} >
+                            <option value="Health and Respirotary">Health and Respirotary</option>
+                            <option value="Psychiatry procedure or service">Psychiatry procedure or service</option>
+                            <option value="Counselling">Counsellinsg</option>
+                            <option value="Education">Education</option>
+                            <option value="Surgical procedure">Surgical procedure</option>
+                            <option value="Diagnostic procedure">Diagnostic procedure</option>
+                            <option value="Chiropractic manipulation">Chiropractic manipulation</option>
+                            <option value="Social service procedure">Social service procedure</option>
                         </select>
                         <SearchIcon className="searchIcon" onClick={()=>setDummy(!dummy)} />
                     </div>
@@ -206,6 +231,13 @@ function PatientDocuments() {
                                     <td>Symptoms</td>
                                     <td>Category</td>
                                     <td>Hospital</td>
+                                    <td className="patientDocuments__headShareIcon"
+                                            onClick={()=>{
+                                                console.log(temporaryData)
+                                                dispatch(shareDocs(temporaryData));
+                                                document.querySelector('.patientDocument__alert').classList.toggle("active");
+                                            }}
+                                            ><ShareIcon className="shareIcon" /> </td>
                                 </tr>
                             </thead>
                             <tbody>

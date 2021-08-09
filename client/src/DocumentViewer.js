@@ -35,7 +35,7 @@ function DocumentViewer() {
   return (
     <div className="documentViewer">
       <Document
-        file={`http://localhost:7000/record?recordName=${documentName.filename}&patientId=${userData?.uId ?? patientData?.value ?? patientUidFromDocNots}`}
+        file={`http://localhost:7000/record?recordName=${documentName.filename.replace(".pdf",'').concat(".pdf")}&patientId=${userData?.uId ?? patientData?.value ?? patientUidFromDocNots}`}
         onLoadSuccess={onDocumentLoadSuccess}
         className="documentViewer__document"
       >

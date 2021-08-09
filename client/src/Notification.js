@@ -88,7 +88,9 @@ function Notification(props) {
         displayNotifications = Object.keys(notification).map(el => {
             return <Link style={{ width: "100%" }} onClick={() => {
                 dispatch(patientDataDoctorNotification(notification[el].patientId))
-                dispatch(documentGet(notification[el].documentId.concat(".pdf")))
+                dispatch(documentGet({
+                    filename:(notification[el].documentId.concat(".pdf"))
+                }))
                 dispatch(recentPatients(notification[el].patientId));
             }} key={el} to="/Doctor/documentViewer" >
                 <div className={`${notification[el].markAsRead === "false" ? "notification__display" : "notification__displayRed"}`}>

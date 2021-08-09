@@ -16,9 +16,10 @@ $green:lightgreen;
         align-items: center;
         li{
             width: 100%;
-            box-shadow: 0 0 15px rgba(54, 53, 53,0.4);
+            box-shadow: -2px 0 10px rgba(54, 53, 53,0.4);
             height: 8%;
             display: flex;
+            border-radius: 100em;
             justify-content: center;
             align-items: center;
             cursor:pointer;

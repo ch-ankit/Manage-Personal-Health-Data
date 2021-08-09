@@ -52,8 +52,11 @@ export const userSlice = createSlice({
     },
     shareDocs: (state, action) => {
       console.log(state.shareDocuments)
-      state.shareDocuments = [...state.shareDocuments, action.payload];
-      const data = JSON.stringify([...state.shareDocuments, action.payload]);
+      console.log([...state.shareDocuments, action.payload])
+      let tempdata=state.shareDocuments;
+      tempdata=tempdata.concat(action.payload)
+      state.shareDocuments = tempdata;
+      const data = JSON.stringify(tempdata);
       window.localStorage.setItem('shareDocuments', data);
     },
     deleteShareDocs: (state, action) => {

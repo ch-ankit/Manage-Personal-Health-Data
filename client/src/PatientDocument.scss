@@ -87,6 +87,19 @@
             background-color: rgba(182, 179, 179, 0.6);
         }
     }
+    &s__headShareIcon{
+        position: absolute;
+        cursor: pointer;
+        .shareIcon{
+            width:1.5em;
+            height: 1em;
+            margin-left: 5px;
+            box-shadow: 0 0 10px rgba(70, 65, 65,0.5);
+        }
+        &:hover{
+            background-color: rgba(182, 179, 179, 0.6);
+        }
+    }
     &__alert{
         position: absolute;
         background-color: white;

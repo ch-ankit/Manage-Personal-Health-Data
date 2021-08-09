@@ -53,11 +53,14 @@ function ReccentPatientDocuments() {
                 <h4>Documents</h4>
                 {Object.keys(documents).map((key) => {
                     return (
-                        <div style={{ width: "100%", display: "flex", alignItems: "center", position: "relative" }}>
+                        <div key={key} style={{ width: "100%", display: "flex", alignItems: "center", position: "relative" }}>
                             <div key={key}
                                 className={`recentPatientDocuments__list ${documents[key].terminationStatus === 1 && "recentPatientDocuments__terminatedList"} ${Math.floor(documents[key].timeStamp - Date.now() / 60000) < 0 && "recentPatientDocuments__timeUpList"} `}
                                 onClick={() => {
-                                    dispatch(documentGet(documents[key].documentId.concat(".pdf")));
+                                    dispatch(documentGet({filename:documents[key].documentId,
+                                        patientId:documents[key].patientId,
+                                        doctorId:documents[key].doctorId
+                                    }));
                                     history.push("/Doctor/documentViewer")
                                     console.log(documents[key].documentId.concat(".pdf"))
                                 }}

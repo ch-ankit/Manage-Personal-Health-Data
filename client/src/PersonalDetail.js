@@ -31,8 +31,8 @@ function PersonalDetail() {
     const [maritalStatus, setMaritalStatus] = useState('')
     const [multipleBirthBoolean, setMultipleBirthBoolean] = useState(false)
     const maritalStatusCode=useRef(null)
-    const [viewFile, setViewFile] = useState(userData.photo);
-    const [photo, setPhoto] = useState(userData.photo);
+    const [viewFile, setViewFile] = useState(userData?.photo);
+    const [photo, setPhoto] = useState(userData?.photo);
     const password=useRef(null);
     const dispatch=useDispatch();
 
@@ -270,7 +270,7 @@ function PersonalDetail() {
                     <div className="personalDetail__customSelect" style={{ display: `${customPrefix ? 'none' : 'flex'}`,width:"80%" }}>
                     <label>Prefix</label>
                     <select ref={prefix}  id="prefix" >
-                        <option selected="selected">{userData.prefix}</option>
+                        <option selected="selected">{userData?.prefix}</option>
                         <option value="Mr."> Mr.</option>
                         <option value="Mrs.">Mrs.</option>
                         <option value="Ms.">Ms.</option>
@@ -298,7 +298,7 @@ function PersonalDetail() {
                     <div className="personalDetail__customSelect" style={{ display: `${customSuffix ? 'none' : 'flex'}`,width:"80%" }}>
                         <label>Suffix</label>
                         <select ref={suffix} id="suffix" required>
-                            <option selected="selected">{userData.suffix}</option>
+                            <option selected="selected">{userData?.suffix}</option>
                             <option value="Phd."> Phd.</option>
                             <option value="MD">MD</option>
                             <option value="MS">MS</option>
@@ -312,27 +312,27 @@ function PersonalDetail() {
                     <div className="personalDetail__changeAddress">
                         {console.log(userData)}
                         <label>Street Name   
-                            <input ref={streetName} type="text" defaultValue={userData.addressbothline[1]} id="address" placeholder="Street" required />
+                            <input ref={streetName} type="text" defaultValue={userData?.addressbothline[1]} id="address" placeholder="Street" required />
                         </label>
                         <label>
                             House No
-                            <input ref={houseNo} type="text" defaultValue={userData.addressbothline[0]} id="address" placeholder="House/Appartment Number" required />
+                            <input ref={houseNo} type="text" defaultValue={userData?.addressbothline[0]} id="address" placeholder="House/Appartment Number" required />
                         </label>
                         <label>
                             City
-                            <input ref={city} type="text" defaultValue={userData.addressbothcity} id="address" placeholder="City" required />
+                            <input ref={city} type="text" defaultValue={userData?.addressbothcity} id="address" placeholder="City" required />
                         </label>    
                         <label>
                             District
-                            <input ref={district} type="text" defaultValue={userData.addressbothdistrict} id="address" placeholder="District" required />
+                            <input ref={district} type="text" defaultValue={userData?.addressbothdistrict} id="address" placeholder="District" required />
                         </label>
                         <label>
                             State
-                            <input ref={state} type="text" defaultValue={userData.addressbothstate} id="address" placeholder="State" required />
+                            <input ref={state} type="text" defaultValue={userData?.addressbothstate} id="address" placeholder="State" required />
                         </label>
                         <label>
                             Country
-                            <input ref={country} type="text" defaultValue={userData.addressbothcountry} id="address" placeholder="Country" required />
+                            <input ref={country} type="text" defaultValue={userData?.addressbothcountry} id="address" placeholder="Country" required />
                         </label>
                     </div>
 
@@ -342,18 +342,18 @@ function PersonalDetail() {
                     <div className="personalDetail__customSelect" style={{width:'80%'}}>
                         <label htmlFor="">Language</label>
                         <select ref={language}  id="language" required>
-                            <option selected="selected" >{userData.language}</option>
+                            <option selected="selected" >{userData?.language}</option>
                             {languageMap}
                         </select>
                     </div>
                     <div className="personalDetail__radio">
                     <h5>Multiple Birth?</h5>
                     <label htmlFor="yes">
-                        <input type="radio" style={{height:"2.5em",marginTop:"0.5rem"}} defaultChecked={userData.multipleBirthBoolean} id="yes" value={true} name="Marital Status" onClick={() => { setMultipleBirthBoolean(true) }} required />
+                        <input type="radio" style={{height:"2.5em",marginTop:"0.5rem"}} defaultChecked={userData?.multipleBirthBoolean} id="yes" value={true} name="Marital Status" onClick={() => { setMultipleBirthBoolean(true) }} required />
                         Yes
                     </label>
                     <label htmlFor="no">
-                        <input type="radio" style={{height:"2.5em",marginTop:"0.5rem"}} defaultChecked={!userData.multipleBirthBoolean}  id="no" value={false} name="Marital Status" onClick={() => { setMultipleBirthBoolean(false) }} required />
+                        <input type="radio" style={{height:"2.5em",marginTop:"0.5rem"}} defaultChecked={!userData?.multipleBirthBoolean}  id="no" value={false} name="Marital Status" onClick={() => { setMultipleBirthBoolean(false) }} required />
                         No
                     </label>
                 </div>

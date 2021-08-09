@@ -49,7 +49,9 @@ function PatientDocuments() {
             {console.log(temporaryData)}
             <div className="patientDocument__content">
                 <div className="patientDocument__documents">
+                    <h2 style={{marginTop:"1em"}}>Search by</h2>
                     <div className="patientDocument__searchBar">
+                        <label>Record
                         <input  type="search" onChange={(e)=>{
                             console.log(e.target.value)
                             if(e.target.value != ''){
@@ -76,6 +78,8 @@ function PatientDocuments() {
                                     })
                                 }}else{settemporaryData([])}
                         }} placeholder="Record Type" />
+                        </label>
+                        <label>Body site
                         <input onChange={(e)=>{
                             console.log(e.target.value)
                             if(e.target.value != ''){
@@ -101,6 +105,8 @@ function PatientDocuments() {
                                     })
                                 }}else{settemporaryData([])}
                         }}  type="text" placeholder="Body Site"/>
+                        </label>
+                        <label>Symptoms
                         <input onChange={(e)=>{
                             console.log(e.target.value)
                             if(e.target.value != ''){
@@ -126,7 +132,9 @@ function PatientDocuments() {
                                     })
                                 }}else{settemporaryData([])}
                         }}  type="text" placeholder="Symptoms"/>
-                        <input type="date" onChange={(e)=>{
+                        </label>
+                        <label>Start Date
+                        <input type="date" className="startDate" onChange={(e)=>{
                             console.log(e.target.value)
                             if(e.target.value != '' && reportDate2 !=''){
                                 console.log('Hello')
@@ -155,6 +163,8 @@ function PatientDocuments() {
                                 }}else{setReportDate1(e.target.value);settemporaryData([])}
                         }}
                          />
+                        </label>
+                        <label>End Date
                          <input type="date" onChange={(e)=>{
                             console.log(e.target.value)
                             if(e.target.value != '' && reportDate1 !=''){
@@ -183,6 +193,8 @@ function PatientDocuments() {
                                     })
                                 }}else{setReportDate2(e.target.value);settemporaryData([])}
                         }} />
+                        </label>
+                        <label>Category
                         <select onChange={(e)=>{
                             console.log(e.target.value)
                             if(e.target.value != ''){
@@ -211,6 +223,7 @@ function PatientDocuments() {
                                     })
                                 }}else{settemporaryData([])}
                         }} >
+                            <option selected="selected" hidden>Select any one</option>
                             <option value="Health and Respirotary">Health and Respirotary</option>
                             <option value="Psychiatry procedure or service">Psychiatry procedure or service</option>
                             <option value="Counselling">Counsellinsg</option>
@@ -220,7 +233,7 @@ function PatientDocuments() {
                             <option value="Chiropractic manipulation">Chiropractic manipulation</option>
                             <option value="Social service procedure">Social service procedure</option>
                         </select>
-                        <SearchIcon className="searchIcon" onClick={()=>setDummy(!dummy)} />
+                        </label>
                     </div>
                     <div className="patientDocuments__details">
                         <table>

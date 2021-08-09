@@ -5,6 +5,7 @@ import {TrashIcon} from "@heroicons/react/outline"
 function SharedDocuments() {
     const [sharedDocuments, setsharedDocuments] = useState([])
     const userData=useSelector(state=>state.user.value);
+    const [dummy, setdummy] = useState(true);
     useEffect(() => {
         async function getSharedDocuments(){
             const response=await fetch(`http://localhost:7000/share/recentdocuments?patientId=${userData.uId}`,{
@@ -15,7 +16,7 @@ function SharedDocuments() {
             setsharedDocuments(data)
         }
         return getSharedDocuments() 
-    }, [])
+    }, [dummy])
     async function terminateShare(data){
         const response=await fetch("http://localhost:7000/share/terminate",{
             method:"POST",
@@ -28,6 +29,7 @@ function SharedDocuments() {
                 masterId:data.masterId
             })
         })
+        setdummy(!dummy)
     }
     return (
         <div className="sharedDocuments">

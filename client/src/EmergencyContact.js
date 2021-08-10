@@ -1,6 +1,7 @@
 import React, { useRef } from 'react'
-import {useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import "./EmergencyContact.scss"
+import { setDummy } from './features/counterSlice';
 function EmergencyContact() {
     const gender = useRef(null);
     const relationship=useRef(null);
@@ -16,6 +17,7 @@ function EmergencyContact() {
     const postalCode=useRef(null);
     const workplace=useRef(null);
     const userData=useSelector(state=>state.user.value);
+    const dispatch=useDispatch();
     const uploadEmergencyContact=async (e)=>{
         e.preventDefault();
         console.log(userData.uId)
@@ -45,6 +47,8 @@ function EmergencyContact() {
         console.log(response)
         const data=await response.json();
         console.log(data)
+        dispatch(setDummy())
+        alert("Added Emergency Contact")
     }
     return (
         <div className="emergencyContact">

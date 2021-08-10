@@ -14,7 +14,7 @@ function HomeDrawer(props) {
                 <li
                     onClick={() => {
                         document.querySelector(".homeDrawer").classList.remove("active")
-                        history.push("/home")
+                        doctor?history.push("/doctor"):history.push("/home")
                     }}
                 >Profile</li>
                 {
@@ -26,16 +26,16 @@ function HomeDrawer(props) {
                         Add Doctor
                     </li>)
                 }
-                <li
+                { !doctor &&<li
                     onClick={() => {
                         document.querySelector(".homeDrawer").classList.remove("active")
                         history.push("/home/lastVisited")
                     }}
-                >Recent Documents</li>
+                >Recent Documents</li>}
                 {doctor ?
                     (<li onClick={() => {
                         document.querySelector(".homeDrawer").classList.remove("active")
-                        history.push('/doc/patients')
+                        history.push('/doctor/patients')
                     }}>
                         Patients
                     </li>) :
@@ -44,18 +44,19 @@ function HomeDrawer(props) {
                         history.push('/home/documents')
                     }}>My Documents</li>)
                 }
-                 <li onClick={() => {
+                {!doctor && <li onClick={() => {
                     document.querySelector(".homeDrawer").classList.remove("active")
                     history.push('/home/shareDocuments')
-                }}>To be Shared</li>
+                }}>To be Shared</li>}
+                {!doctor &&
                  <li onClick={() => {
                     document.querySelector(".homeDrawer").classList.remove("active")
                     history.push('/home/sharedDocuments')
-                }}>Shared Documents</li>
-                <li onClick={() => {
+                }}>Shared Documents</li>}
+                {!doctor && <li onClick={() => {
                     document.querySelector(".homeDrawer").classList.remove("active")
                     history.push('/home/uploadRecord')
-                }}>Upload Records</li>
+                }}>Upload Records</li>}
                 <li>
                 <a
                     href="https://dokchat.herokuapp.com/"

@@ -10,7 +10,9 @@ export const userSlice = createSlice({
     report: JSON.parse(window.localStorage.getItem('report')),
     shareDocuments: window.localStorage.getItem('shareDocuments') === "" || window.localStorage.getItem('shareDocuments') === null ? [] : JSON.parse(window.localStorage.getItem('shareDocuments')),
     recentPatient: JSON.parse(window.localStorage.getItem('recentPatient')),
-    patientDataForNotification: JSON.parse(window.localStorage.getItem('patientDataForNotification'))
+    patientDataForNotification: JSON.parse(window.localStorage.getItem('patientDataForNotification')),
+    dummy: JSON.parse(window.localStorage.getItem('dummy')) ?? false
+
   },
   reducers: {
     loginUser: (state, action) => {
@@ -79,10 +81,15 @@ export const userSlice = createSlice({
       state.patientDataForNotification = action.payload
       const data = JSON.stringify(action.payload);
       window.localStorage.setItem("patientDataForNotification", data);
+    },
+    setDummy:(state)=>{
+      state.dummy=!state.dummy;
+      const data = JSON.stringify(!state.dummy);
+      window.localStorage.setItem("dummy", data);
     }
-  }
+  },
 });
 
-export const { loginDoc, loginUser, logoutDoctor, logoutUser, darkmode, documentGet, reportGet, shareDocs, removeShareDocs, deleteShareDocs, recentPatients, patientDataDoctorNotification } = userSlice.actions;
+export const { loginDoc, loginUser, logoutDoctor, logoutUser, darkmode, documentGet, reportGet, shareDocs, removeShareDocs, deleteShareDocs, recentPatients, patientDataDoctorNotification ,setDummy} = userSlice.actions;
 export const userEmail = (state) => state.user.value
 export default userSlice.reducer;

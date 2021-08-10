@@ -7,7 +7,7 @@
     &__greeting{
         padding-left: 2rem;
         width: 80%;
-        height:3em;
+        height:fit-content;
         margin: 0 auto;
         border-radius: 1000em;
         box-shadow: 0 0 15px lightgreen;
@@ -96,5 +96,24 @@
         align-items: center;
         justify-content:space-evenly ;
         background-color: white;
+    }
+}
+@media screen and (max-width:600px) {
+    .doctorLanding__content{
+        flex-direction: column;
+        align-items: center;
+    }
+    .doctorLanding__recentPatients{
+        width: 100%;
+    }
+
+    .doctorLanding__patients{
+        width: 80%;
+        margin: 0 auto;
+        margin-bottom: 2em;
+    }
+
+    .doctorLanding__profile{
+        width: 80%;
     }
 }

@@ -5,6 +5,8 @@ import "./EmergencyContactView.scss"
 function EmergencyContactView() {
     const userData = useSelector((state) => state.user.value);
     const [emergencyContact, setemergencyContact] = useState([])
+    const dummy=useSelector(state=>state.user.dummy);
+    console.log(dummy)
     useEffect(() => {
         async function getEmergencyContact(){
             const response=await fetch(`http://localhost:7000/signup/getcontact?id=${userData?.uId}`,{
@@ -15,7 +17,7 @@ function EmergencyContactView() {
             setemergencyContact(data);
         }
         return  getEmergencyContact();
-    }, [])
+    }, [dummy])
     return (
         <div className="emergencyContactView">
             <div className="emergencyContactView__button">

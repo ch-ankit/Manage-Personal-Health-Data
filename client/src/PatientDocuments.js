@@ -16,6 +16,12 @@ function PatientDocuments() {
     const [reportDate1, setReportDate1] = useState('');
     const dispatch = useDispatch();
     let [temporaryStatus, settemporaryStatus] = useState(false);
+    const record=useRef('');
+    const bodySite=useRef('');
+    const symptoms=useRef('');
+    const date1=useRef('');
+    const date2=useRef('');
+    const Category=useRef('')
 
    
 
@@ -31,6 +37,330 @@ function PatientDocuments() {
     }
         return searchData();
     },[]);
+    function search(){
+        console.log(record.current.value,bodySite.current.value,symptoms.current.value,Category.current.value)
+        if(record.current.value != '' && bodySite.current.value !='' && symptoms.current.value !=''
+            && date1.current.value !='' && date2.current.value !='' && Category.current.value !='Select any one'){
+                let temp=[]
+                Object.keys(searchedData).map((key)=>{
+                    if((parseInt(searchedData[key].date.split('-').join(''))>= parseInt(date1.current.value.split('-').join(''))) 
+                    && (parseInt(searchedData[key].date.split('-').join(''))<= parseInt(date2.current.value.split('-').join(''))) 
+                    && searchedData[key].reportTitle.toUpperCase().includes(record.current.value.toUpperCase()) && searchedData[key].category.toUpperCase().includes(Category.current.value.toUpperCase()) && searchedData[key].bodyPart.toUpperCase().includes(bodySite.current.value.toUpperCase()) && searchedData[key].symptoms.toUpperCase().includes(symptoms.current.value.toUpperCase())){
+                        temp.push(searchedData[key]);
+                    }
+                    console.log(temp);
+                    settemporaryData(temp)
+                })
+            }
+            else if(record.current.value != '' && bodySite.current.value !='' && symptoms.current.value !=''
+             && Category.current.value !='Select any one'){
+                let temp=[]
+                Object.keys(searchedData).map((key)=>{
+                    if(searchedData[key].reportTitle.toUpperCase().includes(record.current.value.toUpperCase()) && searchedData[key].category.toUpperCase().includes(Category.current.value.toUpperCase()) && searchedData[key].bodyPart.toUpperCase().includes(bodySite.current.value.toUpperCase()) && searchedData[key].symptoms.toUpperCase().includes(symptoms.current.value.toUpperCase())){
+                        temp.push(searchedData[key]);
+                    }
+                    console.log(temp);
+                    settemporaryData(temp)
+                })
+             }
+            else if(record.current.value != '' && bodySite.current.value !=''
+                && date1.current.value !='' && date2.current.value !=''){
+                    console.log(record.current.value != '' && bodySite.current.value !=''
+                        && date1.current.value !='' && date2.current.value !='')
+                    let temp=[]
+                Object.keys(searchedData).map((key)=>{
+                    if((parseInt(searchedData[key].date.split('-').join(''))>= parseInt(date1.current.value.split('-').join(''))) 
+                    && (parseInt(searchedData[key].date.split('-').join(''))<= parseInt(date2.current.value.split('-').join(''))) 
+                    && searchedData[key].reportTitle.toUpperCase().includes(record.current.value.toUpperCase()) && searchedData[key].bodyPart.toUpperCase().includes(bodySite.current.value.toUpperCase())){
+                        temp.push(searchedData[key]);
+                    }
+                    console.log(temp);
+                    settemporaryData(temp)
+                })
+                }
+            else if(record.current.value != '' && symptoms.current.value !=''
+                    && date1.current.value !='' && date2.current.value !=''){
+                        let temp=[]
+                        Object.keys(searchedData).map((key)=>{
+                            if((parseInt(searchedData[key].date.split('-').join(''))>= parseInt(date1.current.value.split('-').join(''))) 
+                            && (parseInt(searchedData[key].date.split('-').join(''))<= parseInt(date2.current.value.split('-').join(''))) 
+                            && searchedData[key].reportTitle.toUpperCase().includes(record.current.value.toUpperCase()) && searchedData[key].symptoms.toUpperCase().includes(symptoms.current.value.toUpperCase())){
+                                temp.push(searchedData[key]);
+                            }
+                            console.log(temp);
+                            settemporaryData(temp)
+                        })
+                    }
+            else if(record.current.value != '' && date1.current.value !='' && date2.current.value !='' && Category.current.value !='Select any one')
+            {
+                let temp=[]
+                Object.keys(searchedData).map((key)=>{
+                    if((parseInt(searchedData[key].date.split('-').join(''))>= parseInt(date1.current.value.split('-').join(''))) 
+                    && (parseInt(searchedData[key].date.split('-').join(''))<= parseInt(date2.current.value.split('-').join(''))) 
+                    && searchedData[key].reportTitle.toUpperCase().includes(record.current.value.toUpperCase()) && searchedData[key].category.toUpperCase().includes(Category.current.value.toUpperCase())){
+                        temp.push(searchedData[key]);
+                    }
+                    console.log(temp);
+                    settemporaryData(temp)
+                })
+            }
+            else if( bodySite.current.value !='' && symptoms.current.value !=''
+                && date1.current.value !='' && date2.current.value !='')
+            {
+                let temp=[]
+                Object.keys(searchedData).map((key)=>{
+                    if((parseInt(searchedData[key].date.split('-').join(''))>= parseInt(date1.current.value.split('-').join(''))) 
+                    && (parseInt(searchedData[key].date.split('-').join(''))<= parseInt(date2.current.value.split('-').join(''))) 
+                    && searchedData[key].bodyPart.toUpperCase().includes(bodySite.current.value.toUpperCase()) && searchedData[key].symptoms.toUpperCase().includes(symptoms.current.value.toUpperCase())){
+                        temp.push(searchedData[key]);
+                    }
+                    console.log(temp);
+                    settemporaryData(temp)
+                })
+            }
+            else if( bodySite.current.value !='' && date1.current.value !='' && date2.current.value !='' && Category.current.value !='Select any one')
+            {
+                let temp=[]
+                Object.keys(searchedData).map((key)=>{
+                    if((parseInt(searchedData[key].date.split('-').join(''))>= parseInt(date1.current.value.split('-').join(''))) 
+                    && (parseInt(searchedData[key].date.split('-').join(''))<= parseInt(date2.current.value.split('-').join(''))) 
+                    && searchedData[key].category.toUpperCase().includes(Category.current.value.toUpperCase()) && searchedData[key].bodyPart.toUpperCase().includes(bodySite.current.value.toUpperCase())){
+                        temp.push(searchedData[key]);
+                    }
+                    console.log(temp);
+                    settemporaryData(temp)
+                })
+            }
+            else if(symptoms.current.value !='' && date1.current.value !='' && date2.current.value !='' && Category.current.value !='Select any one')
+            {
+                let temp=[]
+                Object.keys(searchedData).map((key)=>{
+                    if((parseInt(searchedData[key].date.split('-').join(''))>= parseInt(date1.current.value.split('-').join(''))) 
+                    && (parseInt(searchedData[key].date.split('-').join(''))<= parseInt(date2.current.value.split('-').join(''))) 
+                    && searchedData[key].category.toUpperCase().includes(Category.current.value.toUpperCase()) && searchedData[key].symptoms.toUpperCase().includes(symptoms.current.value.toUpperCase())){
+                        temp.push(searchedData[key]);
+                    }
+                    console.log(temp);
+                    settemporaryData(temp)
+                })
+            }
+            else if(record.current.value != '' && bodySite.current.value !='' && symptoms.current.value !=''){
+                let temp=[]
+                Object.keys(searchedData).map((key)=>{
+                    if( searchedData[key].reportTitle.toUpperCase().includes(record.current.value.toUpperCase()) 
+                    && searchedData[key].bodyPart.toUpperCase().includes(bodySite.current.value.toUpperCase()) && searchedData[key].symptoms.toUpperCase().includes(symptoms.current.value.toUpperCase())){
+                        temp.push(searchedData[key]);
+                    }
+                    console.log(temp);
+                    settemporaryData(temp)
+                })
+                }
+            else if(record.current.value != '' && symptoms.current.value !='' && Category.current.value !='Select any one'){
+                let temp=[]
+                Object.keys(searchedData).map((key)=>{
+                    if(searchedData[key].reportTitle.toUpperCase().includes(record.current.value.toUpperCase()) && searchedData[key].category.toUpperCase().includes(Category.current.value.toUpperCase()) && searchedData[key].symptoms.toUpperCase().includes(symptoms.current.value.toUpperCase())){
+                        temp.push(searchedData[key]);
+                    }
+                    console.log(temp);
+                    settemporaryData(temp)
+                })
+            }
+            else if( bodySite.current.value !='' && symptoms.current.value !='' && Category.current.value !='Select any one'){
+                let temp=[]
+                Object.keys(searchedData).map((key)=>{
+                    if(searchedData[key].category.toUpperCase().includes(Category.current.value.toUpperCase()) && searchedData[key].bodyPart.toUpperCase().includes(bodySite.current.value.toUpperCase()) && searchedData[key].symptoms.toUpperCase().includes(symptoms.current.value.toUpperCase())){
+                        temp.push(searchedData[key]);
+                    }
+                    console.log(temp);
+                    settemporaryData(temp)
+                })
+            }
+            else if(record.current.value != '' && bodySite.current.value !='' && Category.current.value !='Select any one'){
+                let temp=[]
+                Object.keys(searchedData).map((key)=>{
+                    if(searchedData[key].reportTitle.toUpperCase().includes(record.current.value.toUpperCase()) && searchedData[key].category.toUpperCase().includes(Category.current.value.toUpperCase()) && searchedData[key].bodyPart.toUpperCase().includes(bodySite.current.value.toUpperCase())){
+                        temp.push(searchedData[key]);
+                    }
+                    console.log(temp);
+                    settemporaryData(temp)
+                })
+            }
+            else if(record.current.value != '' && date1.current.value !='' && date2.current.value !=''){
+                let temp=[]
+                Object.keys(searchedData).map((key)=>{
+                    if((parseInt(searchedData[key].date.split('-').join(''))>= parseInt(date1.current.value.split('-').join(''))) 
+                    && (parseInt(searchedData[key].date.split('-').join(''))<= parseInt(date2.current.value.split('-').join(''))) 
+                    && searchedData[key].reportTitle.toUpperCase().includes(record.current.value.toUpperCase()) ){
+                        temp.push(searchedData[key]);
+                    }
+                    console.log(temp);
+                    settemporaryData(temp)
+                })
+            }
+            else if( bodySite.current.value !='' && date1.current.value !='' && date2.current.value !=''){
+                let temp=[]
+                Object.keys(searchedData).map((key)=>{
+                    if((parseInt(searchedData[key].date.split('-').join(''))>= parseInt(date1.current.value.split('-').join(''))) 
+                    && (parseInt(searchedData[key].date.split('-').join(''))<= parseInt(date2.current.value.split('-').join(''))) 
+                    && searchedData[key].bodyPart.toUpperCase().includes(bodySite.current.value.toUpperCase())){
+                        temp.push(searchedData[key]);
+                    }
+                    console.log(temp);
+                    settemporaryData(temp)
+                })
+            }
+            else if(symptoms.current.value !='' && date1.current.value !='' && date2.current.value !='' ){
+                let temp=[]
+                Object.keys(searchedData).map((key)=>{
+                    if((parseInt(searchedData[key].date.split('-').join(''))>= parseInt(date1.current.value.split('-').join(''))) 
+                    && (parseInt(searchedData[key].date.split('-').join(''))<= parseInt(date2.current.value.split('-').join(''))) 
+                    && searchedData[key].symptoms.toUpperCase().includes(symptoms.current.value.toUpperCase())){
+                        temp.push(searchedData[key]);
+                    }
+                    console.log(temp);
+                    settemporaryData(temp)
+                })
+            }
+            else if( date1.current.value !='' && date2.current.value !='' && Category.current.value !='Select any one'){
+                let temp=[]
+                Object.keys(searchedData).map((key)=>{
+                    if((parseInt(searchedData[key].date.split('-').join(''))>= parseInt(date1.current.value.split('-').join(''))) 
+                    && (parseInt(searchedData[key].date.split('-').join(''))<= parseInt(date2.current.value.split('-').join(''))) 
+                    && searchedData[key].category.toUpperCase().includes(Category.current.value.toUpperCase())){
+                        temp.push(searchedData[key]);
+                    }
+                    console.log(temp);
+                    settemporaryData(temp)
+                })
+            }
+            else if(record.current.value != '' && bodySite.current.value !='')
+            {
+                let temp=[]
+                Object.keys(searchedData).map((key)=>{
+                    if(searchedData[key].reportTitle.toUpperCase().includes(record.current.value.toUpperCase()) && searchedData[key].bodyPart.toUpperCase().includes(bodySite.current.value.toUpperCase())){
+                        temp.push(searchedData[key]);
+                    }
+                    console.log(temp);
+                    settemporaryData(temp)
+                })
+            }
+            else if(record.current.value != '' && symptoms.current.value !='')
+            {
+                let temp=[]
+                Object.keys(searchedData).map((key)=>{
+                    if(searchedData[key].reportTitle.toUpperCase().includes(record.current.value.toUpperCase()) && searchedData[key].symptoms.toUpperCase().includes(symptoms.current.value.toUpperCase())){
+                        temp.push(searchedData[key]);
+                    }
+                    console.log(temp);
+                    settemporaryData(temp)
+                })
+            }
+            else if(record.current.value != '' && Category.current.value !='Select any one')
+            {
+                let temp=[]
+                Object.keys(searchedData).map((key)=>{
+                    console.log(searchedData[key].reportTitle.toUpperCase() ,searchedData[key].category.toUpperCase())
+                    console.log()
+                    if(searchedData[key].reportTitle.toUpperCase().includes(record.current.value.toUpperCase()) && searchedData[key].category.toUpperCase().includes(Category.current.value.toUpperCase())){
+                        temp.push(searchedData[key]);
+                    }
+                    console.log(temp);
+                    settemporaryData(temp)
+                })
+            }
+            else if(bodySite.current.value !='' && symptoms.current.value !='')
+            {
+                let temp=[]
+                Object.keys(searchedData).map((key)=>{
+                    console.log(bodySite.current.value,symptoms.current.value)
+                    console.log(searchedData[key].bodyPart.toUpperCase().includes(),searchedData[key].symptoms.toUpperCase())
+                    if(searchedData[key].bodyPart.toUpperCase().includes(bodySite.current.value.toUpperCase()) && searchedData[key].symptoms.toUpperCase().includes(symptoms.current.value.toUpperCase())){
+                        temp.push(searchedData[key]);
+                        console.log("helo")
+                    }
+                    console.log(temp);
+                    settemporaryData(temp)
+                })
+            }
+            else if(bodySite.current.value !='' &&  Category.current.value !='Select any one')
+            {
+                let temp=[]
+                Object.keys(searchedData).map((key)=>{
+                    if(searchedData[key].category.toUpperCase().includes(Category.current.value.toUpperCase()) && searchedData[key].bodyPart.toUpperCase().includes(bodySite.current.value.toUpperCase())){
+                        temp.push(searchedData[key]);
+                    }
+                    console.log(temp);
+                    settemporaryData(temp)
+                })
+            }
+            else if(symptoms.current.value !='' && Category.current.value !='Select any one')
+            {
+                let temp=[]
+                Object.keys(searchedData).map((key)=>{
+                    if(searchedData[key].category.toUpperCase().includes(Category.current.value.toUpperCase())  && searchedData[key].symptoms.toUpperCase().includes(symptoms.current.value.toUpperCase())){
+                        temp.push(searchedData[key]);
+                    }
+                    console.log(temp);
+                    settemporaryData(temp)
+                })
+            }
+            else if (date1.current.value !='' && date2.current.value !='')
+            {
+                let temp=[]
+                Object.keys(searchedData).map((key)=>{
+                    if((parseInt(searchedData[key].date.split('-').join(''))>= parseInt(date1.current.value.split('-').join(''))) 
+                    && (parseInt(searchedData[key].date.split('-').join(''))<= parseInt(date2.current.value.split('-').join(''))) 
+                    ){
+                        temp.push(searchedData[key]);
+                    }
+                    console.log(temp);
+                    settemporaryData(temp)
+                })            
+            }
+            else if(record.current.value !=''){
+                let temp=[]
+                Object.keys(searchedData).map((key)=>{
+                    if(searchedData[key].reportTitle.toUpperCase().includes(record.current.value.toUpperCase())){
+                        temp.push(searchedData[key]);
+                    }
+                    console.log(temp);
+                    settemporaryData(temp)
+                })
+            }
+            else if(bodySite.current.vaue !=''){
+                let temp=[]
+                Object.keys(searchedData).map((key)=>{
+                    if(searchedData[key].bodyPart.toUpperCase().includes(bodySite.current.value.toUpperCase())){
+                        temp.push(searchedData[key]);
+                    }
+                    console.log(temp);
+                    settemporaryData(temp)
+                })
+            }
+            else if(symptoms.current.value !=''){
+                let temp=[]
+                Object.keys(searchedData).map((key)=>{
+                    if(searchedData[key].symptoms.toUpperCase().includes(symptoms.current.value.toUpperCase())){
+                        temp.push(searchedData[key]);
+                    }
+                    console.log(temp);
+                    settemporaryData(temp)
+                })
+            }
+            else if(Category.current.value !='Select any one'){
+                let temp=[]
+                Object.keys(searchedData).map((key)=>{
+                    if(searchedData[key].category.toUpperCase().includes(Category.current.value.toUpperCase())){
+                        temp.push(searchedData[key]);
+                    }
+                    console.log(temp);
+                    settemporaryData(temp)
+                })
+            }
+            else{
+
+            }
+    }
     return (
         <div className="patientDocument">
             <div className="patientDocument__alert">
@@ -54,184 +384,23 @@ function PatientDocuments() {
                     <h2 style={{marginTop:"1em"}}>Search by</h2>
                     <div className="patientDocument__searchBar">
                         <label>Record
-                        <input  type="search" onChange={(e)=>{
-                            console.log(e.target.value)
-                            if(e.target.value != ''){
-                                console.log('Hello')
-                                console.log(temporaryData.length)
-                                if(temporaryData.length == 0 && !temporaryStatus){
-                                    let temp=[]
-                                    Object.keys(searchedData).map((key)=>{
-                                    if(searchedData[key].reportTitle.toUpperCase().includes(e.target.value.toUpperCase())){
-                                        console.log('Hello')
-                                        temp.push(searchedData[key]);
-                                    }
-                                    settemporaryData(temp)
-                                })
-                                settemporaryStatus(true);
-                                }
-                                else{
-                                    let temporary=temporaryData;
-                                    let temp=[]
-                                    Object.keys(temporary).map((key)=>{
-                                        if(temporary[key].reportTitle.toUpperCase().includes(e.target.value.toUpperCase())){
-                                            temp.push(temporary[key]);
-                                        }
-                                        settemporaryData(temp)
-                                    })
-                                }}else{settemporaryData([]);settemporaryStatus(false)}
-                        }} placeholder="Record Type" />
+                        <input ref={record} type="search"  placeholder="Record Type" />
                         </label>
                         <label>Body site
-                        <input onChange={(e)=>{
-                            console.log(e.target.value)
-                            if(e.target.value != ''){
-                                console.log('Hello')
-                                console.log(temporaryData.length)
-                                if(temporaryData.length == 0 && !temporaryStatus){
-                                    let temp=[]
-                                    Object.keys(searchedData).map((key)=>{
-                                    if(searchedData[key].bodyPart.toUpperCase().includes(e.target.value.toUpperCase())){
-                                        temp.push(searchedData[key]);
-                                    }
-                                    settemporaryData(temp)
-                                    settemporaryStatus(true)
-                                })
-                                }
-                                else{
-                                    let temporary=temporaryData;
-                                    let temp=[]
-                                    Object.keys(temporary).map((key)=>{
-                                        if(temporary[key].bodyPart.toUpperCase().includes(e.target.value.toUpperCase())){
-                                            temp.push(temporary[key]);
-                                        }
-                                        settemporaryData(temp)
-                                    })
-                                }}else{settemporaryData([]);settemporaryStatus(false)}
-                        }}  type="text" placeholder="Body Site"/>
+                        <input ref={bodySite} type="text" placeholder="Body Site"/>
                         </label>
                         <label>Symptoms
-                        <input onChange={(e)=>{
-                            console.log(e.target.value)
-                            if(e.target.value != ''){
-                                console.log('Hello')
-                                console.log(temporaryData.length)
-                                if(temporaryData.length == 0 && !temporaryStatus){
-                                    let temp=[]
-                                    Object.keys(searchedData).map((key)=>{
-                                    if(searchedData[key].symptoms.toUpperCase().includes(e.target.value.toUpperCase())){
-                                        temp.push(searchedData[key]);
-                                    }
-                                    settemporaryData(temp)
-                                    settemporaryStatus(true)
-                                })
-                                }
-                                else{
-                                    let temporary=temporaryData;
-                                    let temp=[]
-                                    Object.keys(temporary).map((key)=>{
-                                        if(temporary[key].symptoms.toUpperCase().includes(e.target.value.toUpperCase())){
-                                            temp.push(temporary[key]);
-                                        }
-                                        settemporaryData(temp)
-                                    })
-                                }}else{settemporaryData([]);settemporaryStatus(false)}
-                        }}  type="text" placeholder="Symptoms"/>
+                        <input ref={symptoms}  type="text" placeholder="Symptoms"/>
                         </label>
                         <label>Start Date
-                        <input type="date" className="startDate" onChange={(e)=>{
-                            console.log(e.target.value)
-                            if(e.target.value != '' && reportDate2 !=''){
-                                console.log('Hello')
-                                console.log(temporaryData.length)
-                                setReportDate1(e.target.value)
-                                if(temporaryData.length == 0 && !temporaryStatus){
-                                    let temp=[]
-                                    Object.keys(searchedData).map((key)=>{
-                                    if((parseInt(searchedData[key].date.split('-').join(''))>= parseInt(e.target.value.split('-').join(''))) 
-                                    && (parseInt(searchedData[key].date.split('-').join(''))<= parseInt(reportDate2.split('-').join('')))){
-                                        temp.push(searchedData[key]);
-                                    }
-                                    settemporaryData(temp)
-                                    settemporaryStatus(true)
-                                })
-                                }
-                                else{
-                                    let temporary=temporaryData;
-                                    let temp=[]
-                                    Object.keys(temporary).map((key)=>{
-                                        if((parseInt(searchedData[key].date.split('-').join(''))>= parseInt(e.target.value.split('-').join(''))) 
-                                        && (parseInt(searchedData[key].date.split('-').join(''))<= parseInt(reportDate2.split('-').join('')))){
-                                            temp.push(temporary[key]);
-                                        }
-                                        settemporaryData(temp)
-                                    })
-                                }}else{setReportDate1(e.target.value);settemporaryData([]);settemporaryStatus(false)}
-                        }}
+                        <input type="date" ref={date1} className="startDate" 
                          />
                         </label>
                         <label>End Date
-                         <input type="date" onChange={(e)=>{
-                            console.log(e.target.value)
-                            if(e.target.value != '' && reportDate1 !=''){
-                                console.log('Hello')
-                                console.log(temporaryData.length)
-                                setReportDate2(e.target.value);
-                                if(temporaryData.length == 0 && !temporaryStatus){
-                                    let temp=[]
-                                    Object.keys(searchedData).map((key)=>{
-                                    if((parseInt(searchedData[key].date.split('-').join(''))<= parseInt(e.target.value.split('-').join(''))) 
-                                    && (parseInt(searchedData[key].date.split('-').join(''))>= parseInt(reportDate1.split('-').join('')))){
-                                        temp.push(searchedData[key]);
-                                    }
-                                    settemporaryData(temp)
-                                    settemporaryStatus(true)
-                                })
-                                }
-                                else{
-                                    let temporary=temporaryData;
-                                    let temp=[]
-                                    Object.keys(temporary).map((key)=>{
-                                        if((parseInt(searchedData[key].date.split('-').join(''))<= parseInt(e.target.value.split('-').join(''))) 
-                                    && (parseInt(searchedData[key].date.split('-').join(''))>= parseInt(reportDate1.split('-').join('')))){
-                                            temp.push(temporary[key]);
-                                        }
-                                        settemporaryData(temp)
-                                    })
-                                }}else{setReportDate2(e.target.value);settemporaryData([]);settemporaryStatus(false)}
-                        }} />
+                         <input type="date" ref={date2} />
                         </label>
                         <label>Category
-                        <select onChange={(e)=>{
-                            console.log(e.target.value)
-                            if(e.target.value != ''){
-                                console.log('Hello')
-                                console.log(temporaryStatus)
-                                console.log(temporaryData.length)
-                                if(temporaryData.length == 0 ){
-                                    let temp=[]
-                                    Object.keys(searchedData).map((key)=>{
-                                        console.log(searchedData[key].category,e.target.value)
-                                    if(searchedData[key].category.toUpperCase().includes(e.target.value.toUpperCase())){
-                                        temp.push(searchedData[key]);
-                                    }
-                                    settemporaryData(temp)
-                                    settemporaryStatus(true)
-                                })
-                                }
-                                else{
-                                    
-                                    let temporary=temporaryData;
-                                    let temp=[]
-                                    Object.keys(temporary).map((key)=>{
-                                        console.log(searchedData[key].category,e.target.value)
-                                        if(temporary[key].category.toUpperCase().includes(e.target.value.toUpperCase())){
-                                            temp.push(temporary[key]);
-                                        }
-                                        settemporaryData(temp)
-                                    })
-                                }}else{settemporaryData([]);settemporaryStatus(false)}
-                        }} >
+                        <select ref={Category} defaultValue="" >
                             <option selected="selected" hidden>Select any one</option>
                             <option value="Health and Respirotary">Health and Respirotary</option>
                             <option value="Psychiatry procedure or service">Psychiatry procedure or service</option>
@@ -243,6 +412,7 @@ function PatientDocuments() {
                             <option value="Social service procedure">Social service procedure</option>
                         </select>
                         </label>
+                        <button onClick={()=>{search()}}>Search</button>
                     </div>
                     <div className="patientDocuments__details">
                         <table>

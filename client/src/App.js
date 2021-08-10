@@ -25,6 +25,7 @@ const ReportView = lazy(() => import('./ReportView'));
 const ShareDocuments = lazy(() => import("./ShareDocuments"));
 const RecentPatientDocuments = lazy(() => import("./RecentPatientDocuments"));
 const SharedDocuments = lazy(() => import("./SharedDocuments"));
+const Patients=lazy(()=>import("./Patients"))
 function App() {
   const history=useHistory()
   const doctorData=useSelector(state=>state.user.doctor);
@@ -77,6 +78,7 @@ function App() {
                 <Route path="/Doctor/reportView" component={ReportView} />
                 <Route path="/Doctor/notifications" render={() => <Notification doctor={true} />} />
                 <Route path="/Doctor/friendList" component={FriendList} />
+                <Route path="/Doctor/patients" component={Patients} />
                 <Route path="/Doctor/*">
                   <Redirect to="/pageNotFound" />
                 </Route>

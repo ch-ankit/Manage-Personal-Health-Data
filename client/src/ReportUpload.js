@@ -20,6 +20,7 @@ function ReportUpload() {
       body: formData,
     });
     console.log(response);
+    alert("Report upload successful")
   };
   console.log(userData.uId);
   function onDocumentLoadSuccess({ numPages }) {

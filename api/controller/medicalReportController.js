@@ -66,10 +66,14 @@ exports.addReport = async (req, res, next) => {
       reportId = req.body.reportId;
       reportFileName = `${req.body.reportId}.pdf`;
       if (err instanceof multer.MulterError) {
-        return res.status(500).json(err);
+        return res.status(500).send({
+          message: "A Multer error occurred when uploading.,Try Again ",
+        });
         // A Multer error occurred when uploading.
       } else if (err) {
-        return res.status(500).json(err);
+        return res.status(500).send({
+          message: "An unknown error occurred when uploading,Try Again ",
+        });
         // An unknown error occurred when uploading.
       }
 
@@ -198,8 +202,10 @@ exports.addReport = async (req, res, next) => {
                   medicalData.issued = /Date:\s(.*?)Report Type:/i.exec(
                     reportData
                   )[1];
-                  medicalData.partOfType =
-                    /Report Type:\s(.*?)Reference:/i.exec(reportData)[1];
+                  medicalData.partOfType = /Report\s(.*?)Reference:/i
+                    .exec(reportData)[1]
+                    .split("Type:")
+                    .pop();
                   medicalData.referenceRangeText =
                     /TestReference:\s(.*?)Status:/i.exec(reportData)[1];
                   medicalData.status = /Status:\s(.*?)Category:/i.exec(

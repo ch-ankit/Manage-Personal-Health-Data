@@ -70,7 +70,6 @@ exports.doctorSearch = async (req, res, next) => {
   session
     .run(query)
     .then((result) => {
-      console.log(result.records);
       var data = result.records.map((el) => {
         var returnData = {};
         console.log(el._fields[5]);
@@ -80,7 +79,7 @@ exports.doctorSearch = async (req, res, next) => {
         returnData.qualifiction = el._fields[4];
         returnData.status = el._fields[5];
         var nameObj = el._fields[2].properties;
-        returnData.name = `${nameObj.prefix}.${nameObj.given[0]} ${
+        returnData.name = `${nameObj.prefix}${nameObj.given[0]} ${
           nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
         }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
         return returnData;

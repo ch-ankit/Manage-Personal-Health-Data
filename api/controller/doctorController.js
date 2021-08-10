@@ -18,8 +18,9 @@ exports.recentPatient = async (req, res, next) => {
         returnData.visitDate = el._fields[3];
         returnData.sharedDate = el._fields[4];
         var nameObj = el._fields[1].properties;
-        returnData.name = `${nameObj.prefix}.${nameObj.given[0]} ${nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
-          }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
+        returnData.name = `${nameObj.prefix}${nameObj.given[0]} ${
+          nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
+        }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
         return returnData;
       });
       return data;
@@ -132,8 +133,9 @@ exports.toAddList = async (req, res, next) => {
         returnData.patientId = el._fields[0];
         returnData.photo = el._fields[2];
         var nameObj = el._fields[1].properties;
-        returnData.name = `${nameObj.prefix}.${nameObj.given[0]} ${nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
-          }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
+        returnData.name = `${nameObj.prefix}${nameObj.given[0]} ${
+          nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
+        }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
         return returnData;
       });
       return data;
@@ -147,7 +149,9 @@ exports.toAddList = async (req, res, next) => {
 exports.addPatient = async (req, res, next) => {
   var session = driver.session();
   const io = req.app.get("socketServer");
-  var query = `MATCH (n:Patient{value:"${req.body.patientId}"})-[r:knows{}]->(m:Practitioner{value:"${req.body.doctorId}"})
+  var query = `MATCH (n:Patient{value:"${
+    req.body.patientId
+  }"})-[r:knows{}]->(m:Practitioner{value:"${req.body.doctorId}"})
                SET r.status="${req.body.status}", r.since="${Date()}"
                `;
   session
@@ -177,13 +181,15 @@ exports.addPatient = async (req, res, next) => {
               doctorId: req.body.doctorId,
               name: `Dr. ${req.body.firstName} ${req.body.lastName}`,
               time: strTime,
-              photo: req.body
+              photo: req.body,
             });
             var session = driver.session();
             session
               .run(
                 `MATCH(n:Patient{value:"${req.body.patientId}"})
-            MERGE(n)-[:hasNotification]->(:notification{doctorId:"${req.body.doctorId}",doctorName:"${`Dr. ${req.body.firstName} ${req.body.lastName}`}",time:"${strTime}", viewed:"false"})`,
+            MERGE(n)-[:hasNotification]->(:notification{doctorId:"${
+              req.body.doctorId
+            }",doctorName:"${`Dr. ${req.body.firstName} ${req.body.lastName}`}",time:"${strTime}", viewed:"false"})`,
                 {}
               )
               .then(() => {
@@ -198,7 +204,9 @@ exports.addPatient = async (req, res, next) => {
             session
               .run(
                 `MATCH(n:Patient{value:"${req.body.patientId}"})
-                MERGE(n)-[:hasNotification]->(:notification{doctorId:"${req.body.doctorId}",doctorName:"${`Dr. ${req.body.firstName} ${req.body.lastName}`}",time:"${strTime}", viewed:"false"})`,
+                MERGE(n)-[:hasNotification]->(:notification{doctorId:"${
+                  req.body.doctorId
+                }",doctorName:"${`Dr. ${req.body.firstName} ${req.body.lastName}`}",time:"${strTime}", viewed:"false"})`,
                 {}
               )
               .then(() => {
@@ -207,8 +215,8 @@ exports.addPatient = async (req, res, next) => {
               .catch((err) => next(err));
           }
         })
-        .catch((err) => console.log(err))
-      res.send({ message: "Patient Added to known list" })
+        .catch((err) => console.log(err));
+      res.send({ message: "Patient Added to known list" });
     })
     .catch((err) => {
       next(err);
@@ -216,11 +224,13 @@ exports.addPatient = async (req, res, next) => {
 };
 
 exports.requestDocument = async (req, res, next) => {
-  console.log(req.body)
+  console.log(req.body);
   var session = driver.session();
   const io = req.app.get("socketServer");
   var query = `MATCH(n:Patient{value:$patientId})-[:medicalRecord]->(m:masterIdentifier{value:$masterId})
-               MATCH(n1:Practitioner{value:$doctorId})-[r1:hasAcess]->(m) WHERE r1.terminated=1 OR r1.timeStamp<${Date.now() / 60000}
+               MATCH(n1:Practitioner{value:$doctorId})-[r1:hasAcess]->(m) WHERE r1.terminated=1 OR r1.timeStamp<${
+                 Date.now() / 60000
+               }
                MERGE(n1)-[:hasRequested{masterId:$masterId,doctorId:$doctorId,requestedTime:"${Date()}",status:"pending",name:$name,photo:$photo,title:$title}]->(m)
               `;
   var params = {
@@ -229,7 +239,7 @@ exports.requestDocument = async (req, res, next) => {
     doctorId: req.body.doctorId,
     name: req.body.name,
     photo: req.body.photo,
-    title: req.body.title
+    title: req.body.title,
   };
   session
     .run(query, params)
@@ -261,12 +271,12 @@ exports.requestDocument = async (req, res, next) => {
               time: strTime,
               requestedDate: Date(),
               photo: req.body.photo,
-              status: 'pending',
-              name: req.body.name
+              status: "pending",
+              name: req.body.name,
             });
           }
         })
-        .catch((err) => console.log(err))
+        .catch((err) => console.log(err));
     })
     .then(() => res.send({ message: "Request Added" }))
     .catch((err) => next(err));

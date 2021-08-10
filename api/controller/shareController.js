@@ -37,9 +37,11 @@ exports.patientKnowsDoctor = async (req, res, next) => {
           )
           .then((result) => {
             var nameObj = result.records[0]._fields[0].properties;
-            var name = `${nameObj.prefix}.${nameObj.given[0]} ${nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
-              }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`
-              }`;
+            var name = `${nameObj.prefix}${nameObj.given[0]} ${
+              nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
+            }${nameObj.family}${
+              nameObj.suffix == "" ? "" : `,${nameObj.suffix}`
+            }`;
             var session = driver.session();
             session
               .run(`MATCH (n:Socketuser) return n;`)
@@ -59,7 +61,11 @@ exports.patientKnowsDoctor = async (req, res, next) => {
                 if (users[0]) {
                   io.to(users[0].socketId).volatile.emit(
                     "pushNotificationDoctorAdd",
-                    { name: name, patientId: req.body.patientId, photo: req.body.photo }
+                    {
+                      name: name,
+                      patientId: req.body.patientId,
+                      photo: req.body.photo,
+                    }
                   );
                 }
                 res.send({ message: "Doctor added known list" });
@@ -109,7 +115,9 @@ exports.patientKnowsDoctor = async (req, res, next) => {
 exports.doctorAcceptsPatient = async (req, res, next) => {
   var session = driver.session();
   const io = req.app.get("socketServer");
-  var query = `MATCH (n:Patient{value:"${req.body.patientId}"})-[r:knows{}]->(m:Practitioner{value:"${req.body.doctorId}"})
+  var query = `MATCH (n:Patient{value:"${
+    req.body.patientId
+  }"})-[r:knows{}]->(m:Practitioner{value:"${req.body.doctorId}"})
                SET r.status="${req.body.status}", r.since="${Date()}"
                `;
   session
@@ -161,13 +169,17 @@ exports.doctorAcceptsPatient = async (req, res, next) => {
               name: `Dr. ${req.body.firstName} ${req.body.lastName}`,
               time: strTime,
               photo: req.body.photo,
-              status: req.body.status
+              status: req.body.status,
             });
             var session = driver.session();
             session
               .run(
                 `MATCH(n:Patient{value:"${req.body.patientId}"})
-            MERGE(n)-[:hasNotification]->(:notification{photo:"${req.body.photo}",status:"${req.body.status}",doctorId:"${req.body.doctorId}",doctorName:"${`Dr. ${req.body.firstName} ${req.body.lastName}`}",time:"${strTime}", viewed:"false"})`,
+            MERGE(n)-[:hasNotification]->(:notification{photo:"${
+              req.body.photo
+            }",status:"${req.body.status}",doctorId:"${
+                  req.body.doctorId
+                }",doctorName:"${`Dr. ${req.body.firstName} ${req.body.lastName}`}",time:"${strTime}", viewed:"false"})`,
                 {}
               )
               .then(() => {
@@ -182,7 +194,11 @@ exports.doctorAcceptsPatient = async (req, res, next) => {
             session
               .run(
                 `MATCH(n:Patient{value:"${req.body.patientId}"})
-                MERGE(n)-[:hasNotification]->(:notification{photo:"${req.body.photo}",status:"${req.body.status}",doctorId:"${req.body.doctorId}",doctorName:"${`Dr. ${req.body.firstName} ${req.body.lastName}`}",time:"${strTime}", viewed:"false"})`,
+                MERGE(n)-[:hasNotification]->(:notification{photo:"${
+                  req.body.photo
+                }",status:"${req.body.status}",doctorId:"${
+                  req.body.doctorId
+                }",doctorName:"${`Dr. ${req.body.firstName} ${req.body.lastName}`}",time:"${strTime}", viewed:"false"})`,
                 {}
               )
               .then(() => {
@@ -191,8 +207,8 @@ exports.doctorAcceptsPatient = async (req, res, next) => {
               .catch((err) => next(err));
           }
         })
-        .catch((err) => console.log(err))
-      res.send({ message: "Patient Added to known list" })
+        .catch((err) => console.log(err));
+      res.send({ message: "Patient Added to known list" });
     })
     .catch((err) => {
       next(err);
@@ -207,10 +223,11 @@ exports.shareFile = async (req, res, next) => {
                MATCH(n)-[r1:hasName]->(m1:name)              
                MATCH(n2:Practitioner{value:$doctorId})
                MERGE(n2)-[r2:hasAcess{recordId:m.value,patientId:n.value,timeStamp:${(
-      Date.now() / 60000 +
-      parseInt(req.body.accessTime)
-    ).toString()},sharedDate:"${Date()}",accessTime:"${req.body.accessTime
-    }",terminated:0,accessedDate:""}]->(m)
+                 Date.now() / 60000 +
+                 parseInt(req.body.accessTime)
+               ).toString()},sharedDate:"${Date()}",accessTime:"${
+    req.body.accessTime
+  }",terminated:0,accessedDate:""}]->(m)
                 return n.value,r.value,m.value,r2.timeStamp,r2.acessedDate,m1
                 `;
   session
@@ -221,8 +238,9 @@ exports.shareFile = async (req, res, next) => {
     })
     .then((result) => {
       var nameObj = result.records[0]._fields[5].properties;
-      var name = `${nameObj.prefix}.${nameObj.given[0]} ${nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
-        }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
+      var name = `${nameObj.prefix}${nameObj.given[0]} ${
+        nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
+      }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
       return name;
     })
     .then((name) => {
@@ -322,9 +340,11 @@ exports.getSharedFile = async (req, res, next) => {
           .then()
           .catch((err) => next(err));
         res.send({
-          message: `${result.records[0]._fields[2]} has  access to ${result.records[0]._fields[0]
-            }'s document: ${result.records[0]._fields[1]} for ${result.records[0]._fields[3] - Date.now() / 60000
-            }`,
+          message: `${result.records[0]._fields[2]} has  access to ${
+            result.records[0]._fields[0]
+          }'s document: ${result.records[0]._fields[1]} for ${
+            result.records[0]._fields[3] - Date.now() / 60000
+          }`,
         });
       } else {
         res.send({
@@ -355,8 +375,9 @@ exports.sharedDocuments = async (req, res, next) => {
         returnData.timeStamp = el._fields[4];
         returnData.doctorId = el._fields[5];
         var nameObj = el._fields[3].properties;
-        returnData.name = `${nameObj.prefix}.${nameObj.given[0]} ${nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
-          }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
+        returnData.name = `${nameObj.prefix}${nameObj.given[0]} ${
+          nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
+        }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
         return returnData;
       });
       return data;
@@ -388,8 +409,9 @@ exports.sharedDocumentsHistory = async (req, res, next) => {
         returnData.timeStamp = el._fields[4];
         returnData.timeStamp = el._fields[5];
         var nameObj = el._fields[3].properties;
-        returnData.name = `${nameObj.prefix}.${nameObj.given[0]} ${nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
-          }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
+        returnData.name = `${nameObj.prefix}${nameObj.given[0]} ${
+          nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
+        }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
         return returnData;
       });
       return data;

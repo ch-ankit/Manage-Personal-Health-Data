@@ -159,9 +159,10 @@ exports.giveAcess = async (req, res, next) => {
                MATCH(n1:Practitioner{value:$doctorId})
                MATCH(n1)-[r3:hasRequested]->(m)
                MATCH(n1)-[r4:hasAcess]->(m)
-               SET r3.status="granted",r4.terminated=0,r4.timeStamp=${
-                 (Date.now()/60000 + parseInt(req.body.accessTime)).toString()
-               }
+               SET r3.status="granted",r4.terminated=0,r4.timeStamp=${(
+                 Date.now() / 60000 +
+                 parseInt(req.body.accessTime)
+               ).toString()}
               `;
   } else {
     query = `MATCH(n:Patient{value:$patientId})-[:medicalRecord]->(m:masterIdentifier{value:$masterId})
@@ -326,7 +327,7 @@ exports.friendList = async (req, res, next) => {
         returnData.photo = el._fields[3];
         returnData.qualifiction = el._fields[4];
         var nameObj = el._fields[2].properties;
-        returnData.name = `${nameObj.prefix}.${nameObj.given[0]} ${
+        returnData.name = `${nameObj.prefix}${nameObj.given[0]} ${
           nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
         }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
         return returnData;

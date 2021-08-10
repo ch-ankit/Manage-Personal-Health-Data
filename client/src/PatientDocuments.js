@@ -17,7 +17,7 @@ function PatientDocuments() {
     const dispatch = useDispatch();
     let [temporaryStatus, settemporaryStatus] = useState(false);
     const record=useRef('');
-    const bodySite=useRef('');
+    const bodySite=useRef(null);
     const symptoms=useRef('');
     const date1=useRef('');
     const date2=useRef('');
@@ -327,7 +327,7 @@ function PatientDocuments() {
                     settemporaryData(temp)
                 })
             }
-            else if(bodySite.current.vaue !=''){
+            else if(bodySite.current.vaue !=null){
                 let temp=[]
                 Object.keys(searchedData).map((key)=>{
                     if(searchedData[key].bodyPart.toUpperCase().includes(bodySite.current.value.toUpperCase())){
@@ -413,6 +413,14 @@ function PatientDocuments() {
                         </select>
                         </label>
                         <button onClick={()=>{search()}}>Search</button>
+                        <button onClick={()=>{
+                            record.current.value='';
+                            bodySite.current.value=null;
+                            symptoms.current.value="";
+                            date1.current.value='';
+                            date2.current.value='';
+                            Category.current.value="Select any one"
+                        }}>Clear</button>
                     </div>
                     <div className="patientDocuments__details">
                         <table>

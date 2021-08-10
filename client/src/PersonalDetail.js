@@ -277,7 +277,6 @@ function PersonalDetail() {
                         <option value="Dr.">Dr.</option>
                         <option value="Er.">Er.</option>
                         <option value="Prof.">Prof.</option>
-                        <option value="custom" onClick={() => setCustomPrefix(true)}>Custom</option>
                     </select>
                 </div>
                 {
@@ -297,12 +296,11 @@ function PersonalDetail() {
                     </div>
                     <div className="personalDetail__customSelect" style={{ display: `${customSuffix ? 'none' : 'flex'}`,width:"80%" }}>
                         <label>Suffix</label>
-                        <select ref={suffix} id="suffix" required>
+                        <select ref={suffix} id="suffix">
                             <option selected="selected">{userData?.suffix}</option>
                             <option value="Phd."> Phd.</option>
                             <option value="MD">MD</option>
                             <option value="MS">MS</option>
-                            <option value="custom" onClick={() => setCustomSuffix(true)}>Custom</option>
                         </select>
                     </div>
                     {

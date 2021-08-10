@@ -4,7 +4,7 @@
     background-color: white;
     position: relative;
     overflow-y: scroll;
-    overflow-x: scroll;
+    overflow-x: hidden;
     &__document{
         display: flex;
         flex-direction: column;
@@ -32,6 +32,11 @@
         &None{
             display: none;
         }
+    }
+    &__document{
+        width: fit-content;
+        margin: 0 auto;
+        background-color: aqua;
     }
 
     &__reports{

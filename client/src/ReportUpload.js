@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { reportGet } from "./features/counterSlice";
 import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
 import "./ReportUpload.scss";
+import { useHistory } from "react-router-dom";
 
 function ReportUpload() {
   const form = useRef(null);
@@ -12,6 +13,7 @@ function ReportUpload() {
   const documentName = useSelector(state => state.user.documentName)
   const report = useSelector(state => state.user.report);
   console.log(documentName, report.value)
+  const history=useHistory()
   const handleMedicalUpload = async (e) => {
     e.preventDefault();
     const formData = new FormData(form.current);

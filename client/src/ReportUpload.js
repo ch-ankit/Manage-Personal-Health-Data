@@ -20,7 +20,10 @@ function ReportUpload() {
       body: formData,
     });
     console.log(response);
-    alert("Report upload successful")
+    alert(response)
+    if(response.status==200){
+      history.push("/home/lastVisited")
+    }
   };
   console.log(userData.uId);
   function onDocumentLoadSuccess({ numPages }) {

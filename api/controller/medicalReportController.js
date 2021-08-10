@@ -190,6 +190,7 @@ exports.addReport = async (req, res, next) => {
                   reportData = reportData + text;
                   //console.log(reportData);
                   reportData.replace(/\r\n/g, " ");
+                  console.log(reportData);
                   medicalData.masterIdentifierValue = masterId;
                   medicalData.deviceReference =
                     /Device Reference:\s(.*?)Medical/i.exec(reportData)[1];
@@ -206,8 +207,11 @@ exports.addReport = async (req, res, next) => {
                     .exec(reportData)[1]
                     .split("Type:")
                     .pop();
-                  medicalData.referenceRangeText =
-                    /TestReference:\s(.*?)Status:/i.exec(reportData)[1];
+                  medicalData.referenceRangeText = /Report\s(.*?)Status:/i
+                    .exec(reportData)[1]
+                    .split(`${medicalData.partOfType}Reference:`)
+                    .pop();
+                  console.log(medicalData.referenceRangeText);
                   medicalData.status = /Status:\s(.*?)Category:/i.exec(
                     reportData
                   )[1];
@@ -221,7 +225,12 @@ exports.addReport = async (req, res, next) => {
                     reportData
                   )[1];
                   medicalData.specimenIdentifierValue =
-                    /Specimen:\s(.*?)Performed By:/i.exec(reportData)[1];
+                    /Focus:\s(.*?)Performed By:/i
+                      .exec(reportData)[1]
+                      .split("Specimen:")
+                      .pop()
+                      .trim();
+                  console.log(medicalData.specimenIdentifierValue);
                   medicalData.performerIdentifierValue =
                     /Performed By:\s(.*?)S./i.exec(reportData)[1].slice(0, 7);
                   medicalData.performerDisplay = /Performed By:\s(.*?)Bio/i

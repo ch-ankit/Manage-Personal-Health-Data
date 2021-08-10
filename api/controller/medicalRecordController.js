@@ -438,8 +438,15 @@ exports.addRecord = async (req, res, next) => {
                       .replace(/ - /g, "-")
                       .split(".");
                   medicalData.testCommonName = medicalData.testCommonName.map(
-                    (str) => str.trim()
+                    (str) =>
+                      str
+                        .trim()
+                        .replace(
+                          "Glucose [Mass/Volume] in Serum, Plasma or Blood",
+                          "Gulcose Test"
+                        )
                   );
+                  console.log(medicalData.testCommonName);
                   var testcode = [];
 
                   fs.createReadStream("./references/CommonLabResultsSi.csv")

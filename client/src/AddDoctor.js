@@ -8,7 +8,8 @@ function AddDoctor(props) {
   const [temporaryData, setTemporaryData] = useState([]);
   const userData = useSelector((state) => state.user.value);
   const socket = useRef();
-
+  let darkMode = useSelector((state) => state.user.darkMode)
+  
   useEffect(() => {
     socket.current = io("http://localhost:7000", {
       path: "/notification/",
@@ -75,16 +76,42 @@ function AddDoctor(props) {
       </div>
       <div className="addDoctor__searchedData">
         {Object.keys(temporaryData).map((key) => {
+          if(temporaryData[key].status === "accepted"){
           return (
             <div key={key} className="addDoctor__doctorInfo">
               <div className="addDoctor__imgBox">
                 <img
                   src={temporaryData[key].photo}
                   alt="Doctor img"
-                  className="addDoctor__doctorImage"
+                  className={`addDoctor__doctorImage ${darkMode && "addDoctor__imgDark"}`}
                 />
               </div>
               <p>{temporaryData[key].name}</p>
+              <button
+                  className="addDoctor__searchedData__button"
+                  style={{backgroundColor:"white"}}
+                  disabled
+                >
+                  Connected
+                </button>
+            </div>
+          );}else{
+            return (
+              <div key={key} className="addDoctor__doctorInfo">
+                <div className="addDoctor__imgBox">
+                  <img
+                    src={temporaryData[key].photo}
+                    alt="Doctor img"
+                    className={`addDoctor__doctorImage ${darkMode && "addDoctor__imgDark"}`}
+                  />
+                </div>
+                <p>{temporaryData[key].name}</p>
+                {temporaryData[key].status==="rejected"?(<button
+                  className="addDoctor__searchedData__button"
+                  style={{backgroundColor:"red"}}
+                  disabled
+                >
+                  Rejected</button>):(
               <button
                 className="addDoctor__searchedData__button"
                 onClick={(e) => {
@@ -93,8 +120,11 @@ function AddDoctor(props) {
               >
                 Connect to Doctor
               </button>
-            </div>
-          );
+                )}
+              </div>
+            );
+          }
+
         })}
       </div>
     </div>

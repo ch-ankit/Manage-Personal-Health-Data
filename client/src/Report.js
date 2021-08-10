@@ -17,6 +17,9 @@ function Report() {
       body: formData,
     });
     console.log(response);
+    const data=await response.json();
+    console.log(data)
+    alert(data.message)
   };
   const handleMedicalUpload = async (e) => {
     e.preventDefault();
@@ -26,6 +29,7 @@ function Report() {
       body: formData,
     });
     console.log(response);
+    
   };
   console.log(userData.uId);
   function onDocumentLoadSuccess({ numPages }) {

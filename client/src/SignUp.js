@@ -176,15 +176,15 @@ function SignUp() {
                     )
                 }
                 <div className="signUp__customSelect" style={{ display: `${customPrefix ? 'none' : 'flex'}`, width: "80%" }}>
-                    <select ref={prefix} defaultChecked="Prefix" id="prefix" >
-                        <option value="Prefix" hidden > Please Select your Prefix</option>
+                    <select ref={prefix} defaultChecked="" id="prefix" >
+                        <option value="" hidden > Please Select your Prefix</option>
                         <option value="Mr."> Mr.</option>
                         <option value="Mrs.">Mrs.</option>
                         <option value="Ms.">Ms.</option>
                         <option value="Dr.">Dr.</option>
                         <option value="Er.">Er.</option>
                         <option value="Prof.">Prof.</option>
-                        <option value="custom" onClick={() => setCustomPrefix(true)}>Custom</option>
+                        {/* <option value="custom" onClick={() => setCustomPrefix(true)}>Custom</option> */}
                     </select>
                 </div>
                 {
@@ -195,12 +195,12 @@ function SignUp() {
                 <input ref={middleName} type="text" id="name" placeholder="Middle Name" />
                 <input ref={lastName} type="text" id="name" placeholder="Last Name" required />
                 <div className="signUp__customSelect" style={{ display: `${customSuffix ? 'none' : 'flex'}`, width: "80%" }}>
-                    <select ref={suffix} defaultChecked="Suffix" id="suffix" required>
-                        <option value="Suffix" hidden > Please Select your Suffix</option>
+                    <select ref={suffix} defaultChecked="" id="suffix" required>
+                        <option value="" hidden > Please Select your Suffix</option>
                         <option value="Phd."> Phd.</option>
                         <option value="MD">MD</option>
                         <option value="MS">MS</option>
-                        <option value="custom" onClick={() => setCustomSuffix(true)}>Custom</option>
+                        {/* <option value="custom" onClick={() => setCustomSuffix(true)}>Custom</option> */}
                     </select>
                 </div>
                 {

@@ -204,8 +204,8 @@ function SignUp() {
             style={{ display: `${customPrefix ? "none" : "flex"}` }}
           >
             <div className="signUp__customSelect">
-              <select ref={prefix} defaultChecked="Prefix" id="prefix">
-                <option value="Prefix" hidden>
+              <select ref={prefix} defaultChecked="" id="prefix">
+                <option value="" hidden>
                   Prefix
                 </option>
                 <option value="Mr."> Mr.</option>
@@ -214,9 +214,9 @@ function SignUp() {
                 <option value="Dr.">Dr.</option>
                 <option value="Er.">Er.</option>
                 <option value="Prof.">Prof.</option>
-                <option value="custom" onClick={() => setCustomPrefix(true)}>
+                {/* <option value="custom" onClick={() => setCustomPrefix(true)}>
                   Custom
-                </option>
+                </option> */}
               </select>
             </div>
           </div>
@@ -256,17 +256,17 @@ function SignUp() {
             style={{ display: `${customSuffix ? "none" : "flex"}` }}
           >
             <div className="signUp__customSelect">
-              <select ref={suffix} defaultChecked="Suffix" id="suffix">
-                <option value="Suffix" hidden>
+              <select ref={suffix} defaultChecked="" id="suffix">
+                <option value="" hidden>
                   {" "}
                   Please Select your Suffix
                 </option>
                 <option value="Phd."> Phd.</option>
                 <option value="MD">MD</option>
                 <option value="MS">MS</option>
-                <option value="custom" onClick={() => setCustomSuffix(true)}>
+                {/* <option value="custom" onClick={() => setCustomSuffix(true)}>
                   Custom
-                </option>
+                </option> */}
               </select>
             </div>
           </div>

@@ -131,7 +131,7 @@ function HomeNav(props) {
         displayNotifications = Object.keys(notifier).map(el =>
             <Link key={el} to={props.doctor ? "/Doctor/notifications" : "/home/notifications"}>
                 <div style={{ display: 'flex', backgroundColor: 'white', border: '1px solid lightgreen' }}>
-                    <img className="homeNav__notifications__displayPic" src={notifier[el].photo} alt="Patient Display" />
+                    <img className={`homeNav__notifications__displayPic ${darkMode && "homeNav__notifyimgDark"}`} src={notifier[el].photo} alt="Patient Display" />
                     {props.doctor ? <li>{notifier[el].patientName} shared a document with you</li> : <li>{notifier[el].name} has requested access to {notifier[el].title} record</li>}
                 </div>
             </Link>
@@ -141,7 +141,7 @@ function HomeNav(props) {
         displayFriendNotifications = Object.keys(friendNotifier).map(el =>
             <Link key={el} to={props.doctor ? "/Doctor/friendList" : "/home/friendList"}>
                 <div style={{ display: 'flex', backgroundColor: 'white', border: '1px solid lightgreen' }}>
-                    <img className="homeNav__notifications__displayPic" src={friendNotifier[el].photo} alt="Patient Display" />
+                    <img className={`homeNav__notifications__displayPic ${darkMode && "homeNav__notifyimgDark"}`} src={friendNotifier[el].photo} alt="Patient Display" />
                     {props.doctor ? <li>{friendNotifier[el].name} sent you a Connect Request</li> : <li>{friendNotifier[el].name} ${friendNotifier[el].status} your Connect Request</li>}
                 </div>
             </Link>)

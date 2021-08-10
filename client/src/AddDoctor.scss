@@ -34,10 +34,13 @@
             padding: 0.5rem;
             font-size: 1rem;
             cursor: pointer;
-            background-color: lightpink;
+            background-color: wdite;
             border: none;
             border-radius: 15px;
-            box-shadow: 0 9px #999;
+            border: 1px solid lightgreen;
+            margin-top: 0.6em;
+            color: black;
+            box-shadow: 0 0 15px rgba(37, 37, 37,0.5);
             &:hover {
                 background-color: lightgreen;
             }
@@ -52,5 +55,8 @@
             width: 100%;
             object-fit: contain;
         }
+    }
+    &__imgDark{
+        mix-blend-mode: exclusion;
     }
 }

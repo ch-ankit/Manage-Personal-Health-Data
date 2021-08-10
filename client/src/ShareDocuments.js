@@ -13,6 +13,7 @@ function ShareDocuments() {
     const [temporaryData, settemporaryData] = useState([])
     const timeNumber = useRef(null);
     const timeUnit = useRef(null)
+    let darkMode = useSelector((state) => state.user.darkMode)
     useEffect(() => {
         async function getDoctor() {
             const response = await fetch(`http://localhost:7000/personal/friendList?patientId=${userData.uId}`, {
@@ -130,7 +131,7 @@ function ShareDocuments() {
                         return (
                             <div key={key} className="shareDocuments__doctorInfo">
                                 <div className="shareDocuments__imgBox">
-                                    <img src={temporaryData[key].photo} alt="Doctor Photo" className="shareDocuments__doctorImage" />
+                                    <img src={temporaryData[key].photo} alt="Doctor Photo" className={`shareDocuments__doctorImage ${darkMode && "shareDocuments__imageDark"}`} />
                                 </div>
                                 <p>{temporaryData[key].name}</p>
                                 <button

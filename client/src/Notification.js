@@ -15,6 +15,7 @@ function Notification(props) {
     const dispatch = useDispatch()
     const docData = useSelector(state => state.user.doctor)
     const userData = useSelector(state => state.user.value);
+    const [dummy,setdummy]=useState(true);
     let tempData={}
     useEffect(() => {
         async function getNotifications() {
@@ -28,7 +29,7 @@ function Notification(props) {
             console.log(data)
         }
         return getNotifications()
-    }, [])
+    }, [dummy])
 
     const markRead = async (e) => {
         const url = props.doctor && `http://localhost:7000/doctor/getnotification?doctorId=${docData?.uId}`
@@ -79,7 +80,10 @@ function Notification(props) {
             })
             const { message } = await response.json()
             console.log(message)
-            document.querySelector(".notification__sharePopup.active").classList.remove("active")
+            if(decision==="granted"){
+                document.querySelector(".notification__sharePopup.active").classList.remove("active")
+            }
+            setdummy(!dummy);
         } else {
             alert('Please select the Access time')
         }
@@ -110,7 +114,7 @@ function Notification(props) {
             return (
                 <div className="friendlist__requests">
                     <div style={{ height: "7em", width: "7em" }}>
-                        <img src={notification[el].photo} className={`friendlist__patientPhoto  ${darkMode && "friendlist__imgDark"}`} alt="Doctor Dp" />
+                        <img src={notification[el].photo} style={{width:"100%",height:"100%"}} className={`friendlist__patientPhoto  ${darkMode && "friendlist__imgDark"}`} alt="Doctor Dp" />
                     </div>
                     <h2>{notification[el].name}</h2>
                     <h4>Doctor Identifier: {notification[el].doctorId}</h4>

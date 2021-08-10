@@ -15,6 +15,8 @@ function PatientDocuments() {
     const [reportDate2,setReportDate2]=useState('');
     const [reportDate1, setReportDate1] = useState('');
     const dispatch = useDispatch();
+    let [temporaryStatus, settemporaryStatus] = useState(false);
+
    
 
     const [dummy,setDummy]=useState(false);
@@ -57,7 +59,7 @@ function PatientDocuments() {
                             if(e.target.value != ''){
                                 console.log('Hello')
                                 console.log(temporaryData.length)
-                                if(temporaryData.length == 0){
+                                if(temporaryData.length == 0 && !temporaryStatus){
                                     let temp=[]
                                     Object.keys(searchedData).map((key)=>{
                                     if(searchedData[key].reportTitle.toUpperCase().includes(e.target.value.toUpperCase())){
@@ -66,6 +68,7 @@ function PatientDocuments() {
                                     }
                                     settemporaryData(temp)
                                 })
+                                settemporaryStatus(true);
                                 }
                                 else{
                                     let temporary=temporaryData;
@@ -76,7 +79,7 @@ function PatientDocuments() {
                                         }
                                         settemporaryData(temp)
                                     })
-                                }}else{settemporaryData([])}
+                                }}else{settemporaryData([]);settemporaryStatus(false)}
                         }} placeholder="Record Type" />
                         </label>
                         <label>Body site
@@ -85,13 +88,14 @@ function PatientDocuments() {
                             if(e.target.value != ''){
                                 console.log('Hello')
                                 console.log(temporaryData.length)
-                                if(temporaryData.length == 0){
+                                if(temporaryData.length == 0 && !temporaryStatus){
                                     let temp=[]
                                     Object.keys(searchedData).map((key)=>{
                                     if(searchedData[key].bodyPart.toUpperCase().includes(e.target.value.toUpperCase())){
                                         temp.push(searchedData[key]);
                                     }
                                     settemporaryData(temp)
+                                    settemporaryStatus(true)
                                 })
                                 }
                                 else{
@@ -103,7 +107,7 @@ function PatientDocuments() {
                                         }
                                         settemporaryData(temp)
                                     })
-                                }}else{settemporaryData([])}
+                                }}else{settemporaryData([]);settemporaryStatus(false)}
                         }}  type="text" placeholder="Body Site"/>
                         </label>
                         <label>Symptoms
@@ -112,13 +116,14 @@ function PatientDocuments() {
                             if(e.target.value != ''){
                                 console.log('Hello')
                                 console.log(temporaryData.length)
-                                if(temporaryData.length == 0){
+                                if(temporaryData.length == 0 && !temporaryStatus){
                                     let temp=[]
                                     Object.keys(searchedData).map((key)=>{
                                     if(searchedData[key].symptoms.toUpperCase().includes(e.target.value.toUpperCase())){
                                         temp.push(searchedData[key]);
                                     }
                                     settemporaryData(temp)
+                                    settemporaryStatus(true)
                                 })
                                 }
                                 else{
@@ -130,7 +135,7 @@ function PatientDocuments() {
                                         }
                                         settemporaryData(temp)
                                     })
-                                }}else{settemporaryData([])}
+                                }}else{settemporaryData([]);settemporaryStatus(false)}
                         }}  type="text" placeholder="Symptoms"/>
                         </label>
                         <label>Start Date
@@ -140,7 +145,7 @@ function PatientDocuments() {
                                 console.log('Hello')
                                 console.log(temporaryData.length)
                                 setReportDate1(e.target.value)
-                                if(temporaryData.length == 0){
+                                if(temporaryData.length == 0 && !temporaryStatus){
                                     let temp=[]
                                     Object.keys(searchedData).map((key)=>{
                                     if((parseInt(searchedData[key].date.split('-').join(''))>= parseInt(e.target.value.split('-').join(''))) 
@@ -148,6 +153,7 @@ function PatientDocuments() {
                                         temp.push(searchedData[key]);
                                     }
                                     settemporaryData(temp)
+                                    settemporaryStatus(true)
                                 })
                                 }
                                 else{
@@ -160,7 +166,7 @@ function PatientDocuments() {
                                         }
                                         settemporaryData(temp)
                                     })
-                                }}else{setReportDate1(e.target.value);settemporaryData([])}
+                                }}else{setReportDate1(e.target.value);settemporaryData([]);settemporaryStatus(false)}
                         }}
                          />
                         </label>
@@ -171,7 +177,7 @@ function PatientDocuments() {
                                 console.log('Hello')
                                 console.log(temporaryData.length)
                                 setReportDate2(e.target.value);
-                                if(temporaryData.length == 0){
+                                if(temporaryData.length == 0 && !temporaryStatus){
                                     let temp=[]
                                     Object.keys(searchedData).map((key)=>{
                                     if((parseInt(searchedData[key].date.split('-').join(''))<= parseInt(e.target.value.split('-').join(''))) 
@@ -179,6 +185,7 @@ function PatientDocuments() {
                                         temp.push(searchedData[key]);
                                     }
                                     settemporaryData(temp)
+                                    settemporaryStatus(true)
                                 })
                                 }
                                 else{
@@ -191,7 +198,7 @@ function PatientDocuments() {
                                         }
                                         settemporaryData(temp)
                                     })
-                                }}else{setReportDate2(e.target.value);settemporaryData([])}
+                                }}else{setReportDate2(e.target.value);settemporaryData([]);settemporaryStatus(false)}
                         }} />
                         </label>
                         <label>Category
@@ -199,8 +206,9 @@ function PatientDocuments() {
                             console.log(e.target.value)
                             if(e.target.value != ''){
                                 console.log('Hello')
+                                console.log(temporaryStatus)
                                 console.log(temporaryData.length)
-                                if(temporaryData.length == 0){
+                                if(temporaryData.length == 0 ){
                                     let temp=[]
                                     Object.keys(searchedData).map((key)=>{
                                         console.log(searchedData[key].category,e.target.value)
@@ -208,6 +216,7 @@ function PatientDocuments() {
                                         temp.push(searchedData[key]);
                                     }
                                     settemporaryData(temp)
+                                    settemporaryStatus(true)
                                 })
                                 }
                                 else{
@@ -221,7 +230,7 @@ function PatientDocuments() {
                                         }
                                         settemporaryData(temp)
                                     })
-                                }}else{settemporaryData([])}
+                                }}else{settemporaryData([]);settemporaryStatus(false)}
                         }} >
                             <option selected="selected" hidden>Select any one</option>
                             <option value="Health and Respirotary">Health and Respirotary</option>

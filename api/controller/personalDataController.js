@@ -1,5 +1,6 @@
 const driver = require("./../database");
 const bcrypt = require("bcrypt");
+
 exports.getContact = async (req, res, next) => {
   const session = driver.session();
   const query = `MATCH(n:Patient{value:"${req.query.id}"})-[r:contact]->(m:relationship)-[:coding]->(:coding)
@@ -12,7 +13,7 @@ exports.getContact = async (req, res, next) => {
         var data = result.records.map((el) => {
           var returnData = {};
           returnData.gender = el._fields[0];
-          returnData.text = el._fields[1];
+          returnData.relationship = el._fields[1];
           returnData.given = el._fields[2];
           returnData.family = el._fields[3];
           returnData.contactNo = el._fields[4];
@@ -24,10 +25,15 @@ exports.getContact = async (req, res, next) => {
         });
         return data;
       } else {
+        console.log("emergency contact not added");
         return { message: "emergency contact not added" };
       }
     })
-    .then((data) => res.send(data))
+    .then((data) => {
+      console.log(data);
+      console.log("emergency contact retrived");
+      res.send(data);
+    })
     .catch((err) => next(err));
 };
 
@@ -60,9 +66,14 @@ exports.addContact = async (req, res, next) => {
     address: {
       use: "home",
       type: "postal/physical/both",
-      text: `${
-        (req.body.city, req.body.district, req.body.state, req.body.country)
-      }`,
+      text:
+        req.body.city +
+        "," +
+        req.body.district +
+        "," +
+        req.body.state +
+        "," +
+        req.body.country,
       line: req.body.streetName,
       city: req.body.city,
       district: req.body.district,
@@ -85,6 +96,7 @@ exports.addContact = async (req, res, next) => {
   session
     .run(query, params)
     .then(() => {
+      console.log("contact added");
       res.send({ message: "contact added sucessfully" });
     })
     .catch((err) => console.log(err));
@@ -159,9 +171,10 @@ exports.giveAcess = async (req, res, next) => {
                MATCH(n1:Practitioner{value:$doctorId})
                MATCH(n1)-[r3:hasRequested]->(m)
                MATCH(n1)-[r4:hasAcess]->(m)
-               SET r3.status="granted",r4.terminated=0,r4.timeStamp=${
-                 (Date.now()/60000 + parseInt(req.body.accessTime)).toString()
-               }
+               SET r3.status="granted",r4.terminated=0,r4.timeStamp=${(
+                 Date.now() / 60000 +
+                 parseInt(req.body.accessTime)
+               ).toString()}
               `;
   } else {
     query = `MATCH(n:Patient{value:$patientId})-[:medicalRecord]->(m:masterIdentifier{value:$masterId})
@@ -326,7 +339,7 @@ exports.friendList = async (req, res, next) => {
         returnData.photo = el._fields[3];
         returnData.qualifiction = el._fields[4];
         var nameObj = el._fields[2].properties;
-        returnData.name = `${nameObj.prefix}.${nameObj.given[0]} ${
+        returnData.name = `${nameObj.prefix}${nameObj.given[0]} ${
           nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
         }${nameObj.family}${nameObj.suffix == "" ? "" : `,${nameObj.suffix}`}`;
         return returnData;

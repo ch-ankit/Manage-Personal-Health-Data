@@ -5,4 +5,4 @@ GET http://localhost:7000/search?patientId=20000707-513569
 GET http://localhost:7000/search/medicine?patientId=20000707-513569
 
 ###
-GET http://localhost:7000/search/doctor?patientId=20000707-513569
+GET http://localhost:7000/search/doctor?patientId=19990719-156761

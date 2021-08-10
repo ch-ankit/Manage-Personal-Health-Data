@@ -3,11 +3,9 @@ var path = require("path");
 var pdfReader = require("pdfreader");
 const csv = require("csv-parser");
 var driver = require("./database");
-const mapCategoryCode = require('./references/categoryType.js')
-const mapBodySystem = require('./references/bodySite.js')
-const mapRecordTypeCode = require('./references/recordType.js')
-
-
+const mapCategoryCode = require("./references/categoryType.js");
+const mapBodySystem = require("./references/bodySite.js");
+const mapRecordTypeCode = require("./references/recordType.js");
 
 var y;
 var text;
@@ -223,7 +221,7 @@ var medicalData = {
 };
 
 fs.readFile(
-  `${path.resolve()}//public//medicalRecords//20000707-513569//1628345620284.pdf`,
+  "C:\\Users\\nbhn3\\OneDrive\\Desktop\\medicalRecords\\Ankit K\\Blood Sugar\\Observation_Record_BloodSugar.pdf",
   (err, pdfBuffer) => {
     // pdfBuffer contains the file content
     new pdfReader.PdfReader().parseBuffer(
@@ -235,8 +233,9 @@ fs.readFile(
           reportData = reportData + text;
           reportData.replace(/\r|\n/g, " ");
           console.log(reportData);
-          medicalData.custodian.display = `${reportData.split("HOSPITAL")[0]
-            }HOSPITAL`;
+          medicalData.custodian.display = `${
+            reportData.split("HOSPITAL")[0]
+          }HOSPITAL`;
           //console.log(medicalData.custodian.display);
           medicalData.masterIdentifier.value =
             /Date Time:\s(.*?)Name of Doctor/i
@@ -256,7 +255,7 @@ fs.readFile(
           //   .run(query, params)
           //   .then((result) => {
           //     var nameObj = result.records[0]._fields[0].properties;
-          //     var name = `${nameObj.prefix}.${nameObj.given[0]} ${
+          //     var name = `${nameObj.prefix}${nameObj.given[0]} ${
           //       nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
           //     }${nameObj.family}${
           //       nameObj.suffix == "" ? "" : `,${nameObj.suffix}`
@@ -300,8 +299,10 @@ fs.readFile(
           // console.log(medicalData.content);
           medicalData.context.event[0].coding[0].display =
             /Body Site:\s(.*?)Record Type/i.exec(reportData)[1];
-          medicalData.context.event[0].coding[0].code = mapBodySystem(medicalData.context.event[0].coding[0].display)
-          console.log(medicalData.context.event[0].coding);
+          medicalData.context.event[0].coding[0].code = mapBodySystem(
+            medicalData.context.event[0].coding[0].display
+          );
+          //console.log(medicalData.context.event[0].coding);
           medicalData.category[0].coding[0].code =
             /Category:\s(.*?) Report Status/i.exec(reportData)[1];
           // console.log(medicalData.category[0].coding[0]);
@@ -309,7 +310,9 @@ fs.readFile(
             .exec(reportData)[1]
             .replace(/ - /g, "-")
             .trim();
-          medicalData.type.coding[0].code = mapRecordTypeCode(medicalData.type.text)
+          medicalData.type.coding[0].code = mapRecordTypeCode(
+            medicalData.type.text
+          );
           // console.log(medicalData.type.coding[0])
           medicalData.context.period.start = reportData.substring(
             reportData.indexOf("Onset:") + 7,
@@ -321,7 +324,15 @@ fs.readFile(
             .replace(/1.|2|3|4|5|6|7|8|9|0/g, "")
             .replace(/ - /g, "-")
             .split(".");
-          x = x.map((str) => str.trim());
+          x = x.map((str) =>
+            str
+              .trim()
+              .replace(
+                "Glucose [Mass/Volume] in Serum, Plasma or Blood",
+                "Gulcose Test"
+              )
+          );
+
           medicalData.symptoms = reportData
             .substring(reportData.indexOf("Onset:") + 17)
             .split(`${medicalData.custodian.display}`)[0]
@@ -369,9 +380,9 @@ fs.readFile(
           medicalData.toReport.Diastolic = / Diastolic:\s(.*?)Symptoms/i.exec(
             reportData
           )[1];
-          // console.log(medicalData.toReport);
+          console.log(x);
           var testcode = [];
-          fs.createReadStream('./references/CommonLabResultsSi.csv')
+          fs.createReadStream("./references/CommonLabResultsSi.csv")
             .pipe(csv())
             .on("data", (row) => {
               if (x.includes(row["Short Name"].trim())) {
@@ -524,81 +535,90 @@ fs.readFile(
 //   componentInterpretationCodingCode: "--",
 //   componentInterpretationText: "--",
 // };
-// fs.readFile(`${path.resolve()}//public//ReportSample.pdf`, (err, pdfBuffer) => {
-//   // pdfBuffer contains the file content
-//   new pdfReader.PdfReader().parseBuffer(pdfBuffer, function (err, item) {
-//     if (err) console.log(err);
-//     else if (!item) {
-//       // console.log(text);
-//       if (isTable === true) {
-//         tableData.push(rowData);
-//         rowData = [];
-//       }
-//       // //console.log(tableData);
-//       reportData = reportData + text;
-//       //console.log(reportData);
-//       reportData.replace(/\r\n/g, " ");
-//       medicalData.deviceReference = /Device Reference:\s(.*?)Medical/i.exec(
-//         reportData
-//       )[1];
-//       medicalData.identifierValue = /Report Id:\s(.*?)Master ReportId:/i.exec(
-//         reportData
-//       )[1];
-//       medicalData.derivedFromIdentifierValue =
-//         /Master ReportId:\s(.*?)Patient Id:/i.exec(reportData)[1];
-//       medicalData.subjectIdentifierValue =
-//         "20000101-687825"; /*/Patient\s(.*?)Date:/i
-//             .exec(reportData)[1]
-//             .slice(3);*/
-//       medicalData.effectiveDateTime = /Date:\s(.*?)Report Type:/i.exec(
-//         reportData
-//       )[1];
-//       medicalData.issued = /Date:\s(.*?)Report Type:/i.exec(reportData)[1];
-//       medicalData.partOfType = /Report Type:\s(.*?)Reference:/i.exec(
-//         reportData
-//       )[1];
-//       medicalData.referenceRangeText = /TestReference:\s(.*?)Status:/i.exec(
-//         reportData
-//       )[1];
-//       medicalData.status = /Status:\s(.*?)Category:/i.exec(reportData)[1];
-//       medicalData.categoryCoding = /Category:\s(.*?)Code:/i.exec(reportData)[1];
-//       medicalData.codeCodingCode = /Code:\s(.*?)Focus:/i.exec(reportData)[1];
-//       medicalData.focusReference = /Focus:\s(.*?)Specimen:/i.exec(
-//         reportData
-//       )[1];
-//       medicalData.specimenIdentifierValue =
-//         /Specimen:\s(.*?)Performed By:/i.exec(reportData)[1];
-//       medicalData.performerIdentifierValue = /Performed By:\s(.*?)S./i
-//         .exec(reportData)[1]
-//         .slice(0, 7);
-//       medicalData.performerDisplay = /Performed By:\s(.*?)Bio/i
-//         .exec(reportData)[1]
-//         .slice(7)
-//         .replace("S.No.", "");
-//       console.log(medicalData);
-//       //historyTodatabase(medicalData, next);
-//     } else if (item.text) {
-//       if (text === undefined) {
-//         text = item.text;
-//       } else if (y === item.y) {
-//         if (isTable == true) {
-//           rowData.push(item.text);
-//         }
-//         text = text + item.text;
-//       } else {
+// fs.readFile(
+//   `C:\\Users\\nbhn3\\OneDrive\\Desktop\\medicalReports\\gulcosetest.pdf`,
+//   (err, pdfBuffer) => {
+//     // pdfBuffer contains the file content
+//     new pdfReader.PdfReader().parseBuffer(pdfBuffer, function (err, item) {
+//       if (err) console.log(err);
+//       else if (!item) {
+//         // console.log(text);
 //         if (isTable === true) {
 //           tableData.push(rowData);
 //           rowData = [];
 //         }
-
-//         if (text.includes("S.No.")) {
-//           isTable = true;
-//         }
+//         // //console.log(tableData);
 //         reportData = reportData + text;
-//         text = item.text;
-//       }
+//         //console.log(reportData);
+//         reportData.replace(/\r\n/g, " ");
+//         console.log(reportData);
+//         medicalData.deviceReference = /Device Reference:\s(.*?)Medical/i.exec(
+//           reportData
+//         )[1];
+//         medicalData.identifierValue = /Report Id:\s(.*?)Master ReportId:/i.exec(
+//           reportData
+//         )[1];
+//         medicalData.derivedFromIdentifierValue =
+//           /Master ReportId:\s(.*?)Patient Id:/i.exec(reportData)[1];
+//         medicalData.subjectIdentifierValue =
+//           "20000101-687825"; /*/Patient\s(.*?)Date:/i
+//             .exec(reportData)[1]
+//             .slice(3);*/
+//         medicalData.effectiveDateTime = /Date:\s(.*?)Report Type:/i.exec(
+//           reportData
+//         )[1];
+//         medicalData.issued = /Date:\s(.*?)Report Type:/i.exec(reportData)[1];
+//         medicalData.partOfType = /Report\s(.*?)Reference:/i
+//           .exec(reportData)[1]
+//           .split("Type:")
+//           .pop();
+//         medicalData.referenceRangeText = /Test Reference:\s(.*?)Status:/i.exec(
+//           reportData
+//         )[1];
 
-//       y = item.y;
-//     }
-//   });
-// });
+//         medicalData.status = /Status:\s(.*?)Category:/i.exec(reportData)[1];
+//         medicalData.categoryCoding = /Category:\s(.*?)Code:/i.exec(
+//           reportData
+//         )[1];
+//         medicalData.codeCodingCode = /Code:\s(.*?)Focus:/i.exec(reportData)[1];
+//         medicalData.focusReference = /Focus:\s(.*?)Specimen:/i.exec(
+//           reportData
+//         )[1];
+
+//         medicalData.specimenIdentifierValue =
+//           /Specimen:\s(.*?)Performed By:/i.exec(reportData)[1];
+//         medicalData.performerIdentifierValue = /Performed By:\s(.*?)S./i
+//           .exec(reportData)[1]
+//           .slice(0, 7);
+//         medicalData.performerDisplay = /Performed By:\s(.*?)Bio/i
+//           .exec(reportData)[1]
+//           .slice(7)
+//           .replace("S.No.", "");
+//         // console.log(medicalData);
+//         //historyTodatabase(medicalData, next);
+//       } else if (item.text) {
+//         if (text === undefined) {
+//           text = item.text;
+//         } else if (y === item.y) {
+//           if (isTable == true) {
+//             rowData.push(item.text);
+//           }
+//           text = text + item.text;
+//         } else {
+//           if (isTable === true) {
+//             tableData.push(rowData);
+//             rowData = [];
+//           }
+
+//           if (text.includes("S.No.")) {
+//             isTable = true;
+//           }
+//           reportData = `${reportData} ${text}`;
+//           text = item.text;
+//         }
+
+//         y = item.y;
+//       }
+//     });
+//   }
+// );

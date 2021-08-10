@@ -66,10 +66,14 @@ exports.addReport = async (req, res, next) => {
       reportId = req.body.reportId;
       reportFileName = `${req.body.reportId}.pdf`;
       if (err instanceof multer.MulterError) {
-        return res.status(500).json(err);
+        return res.status(500).send({
+          message: "A Multer error occurred when uploading.,Try Again ",
+        });
         // A Multer error occurred when uploading.
       } else if (err) {
-        return res.status(500).json(err);
+        return res.status(500).send({
+          message: "An unknown error occurred when uploading,Try Again ",
+        });
         // An unknown error occurred when uploading.
       }
 
@@ -186,6 +190,7 @@ exports.addReport = async (req, res, next) => {
                   reportData = reportData + text;
                   //console.log(reportData);
                   reportData.replace(/\r\n/g, " ");
+                  console.log(reportData);
                   medicalData.masterIdentifierValue = masterId;
                   medicalData.deviceReference =
                     /Device Reference:\s(.*?)Medical/i.exec(reportData)[1];
@@ -198,10 +203,15 @@ exports.addReport = async (req, res, next) => {
                   medicalData.issued = /Date:\s(.*?)Report Type:/i.exec(
                     reportData
                   )[1];
-                  medicalData.partOfType =
-                    /Report Type:\s(.*?)Reference:/i.exec(reportData)[1];
-                  medicalData.referenceRangeText =
-                    /TestReference:\s(.*?)Status:/i.exec(reportData)[1];
+                  medicalData.partOfType = /Report\s(.*?)Reference:/i
+                    .exec(reportData)[1]
+                    .split("Type:")
+                    .pop();
+                  medicalData.referenceRangeText = /Report\s(.*?)Status:/i
+                    .exec(reportData)[1]
+                    .split(`${medicalData.partOfType}Reference:`)
+                    .pop();
+                  console.log(medicalData.referenceRangeText);
                   medicalData.status = /Status:\s(.*?)Category:/i.exec(
                     reportData
                   )[1];
@@ -215,7 +225,12 @@ exports.addReport = async (req, res, next) => {
                     reportData
                   )[1];
                   medicalData.specimenIdentifierValue =
-                    /Specimen:\s(.*?)Performed By:/i.exec(reportData)[1];
+                    /Focus:\s(.*?)Performed By:/i
+                      .exec(reportData)[1]
+                      .split("Specimen:")
+                      .pop()
+                      .trim();
+                  console.log(medicalData.specimenIdentifierValue);
                   medicalData.performerIdentifierValue =
                     /Performed By:\s(.*?)S./i.exec(reportData)[1].slice(0, 7);
                   medicalData.performerDisplay = /Performed By:\s(.*?)Bio/i

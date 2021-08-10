@@ -4,20 +4,21 @@ var multer = require("multer");
 const fs = require("fs");
 var pdfReader = require("pdfreader");
 const csv = require("csv-parser");
-const mapCategoryCode = require('./../references/categoryType.js')
-const mapBodySystem = require('./../references/bodySite.js')
-const mapRecordTypeCode = require('./../references/recordType.js')
-
+const mapCategoryCode = require("./../references/categoryType.js");
+const mapBodySystem = require("./../references/bodySite.js");
+const mapRecordTypeCode = require("./../references/recordType.js");
 
 exports.getRecord = async (req, res, next) => {
   try {
     res.sendFile(
-      `${path.resolve()}//public//medicalRecords//${req.query.patientId}//${req.query.recordName
+      `${path.resolve()}//public//medicalRecords//${req.query.patientId}//${
+        req.query.recordName
       }`
     );
     var session = driver.session();
     session.run(
-      `MATCH(n:Patient{value:"${req.query.patientId
+      `MATCH(n:Patient{value:"${
+        req.query.patientId
       }"})-[r:medicalRecord{}]->(m:masterIdentifier{value:"${req.query.recordName.replace(
         /.pdf/g,
         ""
@@ -42,11 +43,15 @@ exports.addRecord = async (req, res, next) => {
       console.log(recordFileName, patientId);
       if (err instanceof multer.MulterError) {
         console.log(err);
-        return res.status(500).json(err);
+        return res.status(500).send({
+          message: "A Multer error occurred when uploading,Try Again ",
+        });
         // A Multer error occurred when uploading.
       } else if (err) {
         console.log(err);
-        return res.status(500).json(err);
+        return res.status(500).send({
+          message: " An unknown error occurred when uploading,Try Again ",
+        });
         // An unknown error occurred when uploading.
       }
 
@@ -287,8 +292,9 @@ exports.addRecord = async (req, res, next) => {
                   reportData = reportData + text;
                   reportData.replace(/\r|\n/g, " ");
                   // console.log(reportData);
-                  medicalData.custodian.display = `${reportData.split("HOSPITAL")[0]
-                    }HOSPITAL`;
+                  medicalData.custodian.display = `${
+                    reportData.split("HOSPITAL")[0]
+                  }HOSPITAL`;
                   //console.log(medicalData.custodian.display);
                   medicalData.masterIdentifier.value = recordFolderName;
                   // /Date Time:\s(.*?)Name of Doctor/i
@@ -309,7 +315,7 @@ exports.addRecord = async (req, res, next) => {
                   //   .run(query, params)
                   //   .then((result) => {
                   //     var nameObj = result.records[0]._fields[0].properties;
-                  //     var name = `${nameObj.prefix}.${nameObj.given[0]} ${
+                  //     var name = `${nameObj.prefix}${nameObj.given[0]} ${
                   //       nameObj.given[1] === "" ? "" : `${nameObj.given[1]} `
                   //     }${nameObj.family}${
                   //       nameObj.suffix == "" ? "" : `,${nameObj.suffix}`
@@ -353,17 +359,23 @@ exports.addRecord = async (req, res, next) => {
                   // console.log(medicalData.content);
                   medicalData.context.event[0].coding[0].display =
                     /Body Site:\s(.*?)Record Type/i.exec(reportData)[1];
-                  medicalData.context.event[0].coding[0].code = mapBodySystem(medicalData.context.event[0].coding[0].display)
+                  medicalData.context.event[0].coding[0].code = mapBodySystem(
+                    medicalData.context.event[0].coding[0].display
+                  );
                   // console.log(medicalData.context.event[0].coding);
                   medicalData.category[0].coding[0].code =
                     /Category:\s(.*?) Report Status/i.exec(reportData)[1];
-                  medicalData.category[0].coding[0].display = mapCategoryCode(medicalData.category[0].coding[0].code)
+                  medicalData.category[0].coding[0].display = mapCategoryCode(
+                    medicalData.category[0].coding[0].code
+                  );
                   console.log(medicalData.category[0].coding[0]);
                   medicalData.type.text = /Record Type:\s(.*?)Category/i
                     .exec(reportData)[1]
                     .replace(/ - /g, "-")
                     .trim();
-                  medicalData.type.coding[0].code = mapRecordTypeCode(medicalData.type.text)
+                  medicalData.type.coding[0].code = mapRecordTypeCode(
+                    medicalData.type.text
+                  );
 
                   medicalData.context.period.start = reportData.substring(
                     reportData.indexOf("Onset:") + 7,
@@ -426,15 +438,24 @@ exports.addRecord = async (req, res, next) => {
                       .replace(/ - /g, "-")
                       .split(".");
                   medicalData.testCommonName = medicalData.testCommonName.map(
-                    (str) => str.trim()
+                    (str) =>
+                      str
+                        .trim()
+                        .replace(
+                          "Glucose [Mass/Volume] in Serum, Plasma or Blood",
+                          "Gulcose Test"
+                        )
                   );
+                  console.log(medicalData.testCommonName);
                   var testcode = [];
 
                   fs.createReadStream("./references/CommonLabResultsSi.csv")
                     .pipe(csv())
                     .on("data", (row) => {
                       if (
-                        medicalData.testCommonName.includes(row["Short Name"].trim())
+                        medicalData.testCommonName.includes(
+                          row["Short Name"].trim()
+                        )
                       ) {
                         testcode.push(row["LOINC #"]);
                       }
@@ -486,76 +507,126 @@ async function historyTodatabase(recordObj, next) {
   var session = driver.session();
   var params = recordObj;
   var query = `MATCH(n:Patient{value:"${params.subject.identifier.value}"})
-      MERGE(n)-[:medicalRecord{lastVisited:"${Date.now()}",status:"${params.status
-    }",resourceType:"${params.resourceType}",date:"${params.date}",description:"${params.description
-    }"}]->(m:masterIdentifier{use:"${params.masterIdentifier.use}",system:"${params.masterIdentifier.system
-    }",value:"${params.masterIdentifier.value}"})-[:type{text:"${params.masterIdentifier.type.text
-    }"}]->(:coding{system:"${params.masterIdentifier.type.coding[0].system
-    }",code:"${params.masterIdentifier.type.coding[0].code}"})
-      MERGE(m)-[:type{text:"${params.type.text}"}]->(:coding{system:"${params.type.coding[0].system
-    }",code:"${params.type.coding[0].code}"})
-      MERGE(m)-[:category]->(:coding{system:"${params.category[0].coding[0].system
-    }",code:"${params.category[0].coding[0].code}",display:"${params.category[0].coding[0].display
-    }"})
-      MERGE(m)-[:subject{reference:"${params.subject.reference}",type:"${params.subject.type
-    }",display:"${params.subject.display}"}]->(:identifier{system:"${params.subject.identifier.system
-    }",value:"${params.subject.identifier.value}"})
-      MERGE(m)-[:author{display:"${params.author[0].display}",reference:"${params.author[0].reference
-    }",type:"${params.author[0].type}"}]->(:identifier{system:"${params.author[0].identifier.system
-    }",value:"${params.author[0].identifier.value}"})
-      MERGE(m)-[:authenticator{display:"${params.authenticator.display
-    }",reference:"${params.authenticator.reference}",type:"${params.authenticator.type
-    }"}]->(:identifier{system:"${params.authenticator.identifier.system
-    }",value:"${params.authenticator.identifier.value}"})
-      MERGE(m)-[:custodian{display:"${params.custodian.display}",reference:"${params.custodian.reference
-    }",type:"${params.custodian.type}"}]->(:identifier{system:"${params.custodian.identifier.system
-    }",value:"${params.custodian.identifier.value}"})
-      MERGE(m)-[:relatesTo{code:"${params.relatesTo[0].code
-    }"}]->(:target{reference:"${params.relatesTo[0].target.reference
-    }"})-[:identifies]->(:identifier{system:"${params.relatesTo[0].target.identifier.system
-    }",value:"${params.relatesTo[0].target.identifier.value}"})
-      MERGE(m)-[:securityLabel{text:"${params.securityLabel[0].text
-    }"}]->(:coding{system:"${params.securityLabel[0].coding[0].system
-    }",code:"${params.securityLabel[0].coding[0].code}"})
-      MERGE(m)-[:content{system:"${params.content[0].format.system}",code:"${params.content[0].format.code
-    }",display:"${params.content[0].format.display
-    }"}]->(:attachment{contentType:"${params.content[0].attachment.contentType
-    }",language:"${params.content[0].attachment.language}",data:"${params.content[0].attachment.data
-    }",url:"${params.content[0].attachment.url}",size:"${params.content[0].attachment.size
-    }",hash:"${params.content[0].attachment.hash}",title:"${params.content[0].attachment.title
-    }",creation:"${params.content[0].attachment.creation}"})
-      MERGE(m)-[:context]->(a:context{start:"${params.context.period.start
-    }",end:"${params.context.period.end}"})
-      Merge(a)-[:encounter{reference:"${params.context.encounter[0].reference
-    }",display:"${params.context.encounter[0].display
-    }"}]->(:identifier{system:"${params.context.encounter[0].identifier.system
-    }",value:"${params.context.encounter[0].identifier.value}"})
-      Merge(a)-[:event{text:"${params.context.event[0].text
-    }"}]->(:coding{system:"${params.context.event[0].coding[0].system
-    }",code:"${params.context.event[0].coding[0].code}",display:"${params.context.event[0].coding[0].display
-    }"})
-      Merge(a)-[:facilityType{text:"${params.context.facilityType.text
-    }"}]->(:coding{system:"${params.context.facilityType.coding[0].system
-    }",value:"${params.context.facilityType.coding[0].value}"})
-      Merge(a)-[:practiceSetting{text:"${params.context.practiceSetting.text
-    }"}]->(:coding{system:"${params.context.practiceSetting.coding[0].system
-    }",value:"${params.context.practiceSetting.coding[0].value}"})
-      Merge(a)-[:sourcePatientInfo{reference:"${params.context.sourcePatientInfo.reference
-    }",display:"${params.context.sourcePatientInfo.display
-    }"}]->(:identifier{system:"${params.context.sourcePatientInfo.identifier.system
-    }",value:"${params.context.sourcePatientInfo.identifier.value}"})
-      Merge(a)-[:related{reference:"${params.context.related[0].reference
-    }",display:"${params.context.related[0].display
-    }"}]->(:identifier{system:"${params.context.related[0].identifier.system
-    }",value:"${params.context.related[0].identifier.value}"})
+      MERGE(n)-[:medicalRecord{lastVisited:"${Date.now()}",status:"${
+    params.status
+  }",resourceType:"${params.resourceType}",date:"${params.date}",description:"${
+    params.description
+  }"}]->(m:masterIdentifier{use:"${params.masterIdentifier.use}",system:"${
+    params.masterIdentifier.system
+  }",value:"${params.masterIdentifier.value}"})-[:type{text:"${
+    params.masterIdentifier.type.text
+  }"}]->(:coding{system:"${
+    params.masterIdentifier.type.coding[0].system
+  }",code:"${params.masterIdentifier.type.coding[0].code}"})
+      MERGE(m)-[:type{text:"${params.type.text}"}]->(:coding{system:"${
+    params.type.coding[0].system
+  }",code:"${params.type.coding[0].code}"})
+      MERGE(m)-[:category]->(:coding{system:"${
+        params.category[0].coding[0].system
+      }",code:"${params.category[0].coding[0].code}",display:"${
+    params.category[0].coding[0].display
+  }"})
+      MERGE(m)-[:subject{reference:"${params.subject.reference}",type:"${
+    params.subject.type
+  }",display:"${params.subject.display}"}]->(:identifier{system:"${
+    params.subject.identifier.system
+  }",value:"${params.subject.identifier.value}"})
+      MERGE(m)-[:author{display:"${params.author[0].display}",reference:"${
+    params.author[0].reference
+  }",type:"${params.author[0].type}"}]->(:identifier{system:"${
+    params.author[0].identifier.system
+  }",value:"${params.author[0].identifier.value}"})
+      MERGE(m)-[:authenticator{display:"${
+        params.authenticator.display
+      }",reference:"${params.authenticator.reference}",type:"${
+    params.authenticator.type
+  }"}]->(:identifier{system:"${
+    params.authenticator.identifier.system
+  }",value:"${params.authenticator.identifier.value}"})
+      MERGE(m)-[:custodian{display:"${params.custodian.display}",reference:"${
+    params.custodian.reference
+  }",type:"${params.custodian.type}"}]->(:identifier{system:"${
+    params.custodian.identifier.system
+  }",value:"${params.custodian.identifier.value}"})
+      MERGE(m)-[:relatesTo{code:"${
+        params.relatesTo[0].code
+      }"}]->(:target{reference:"${
+    params.relatesTo[0].target.reference
+  }"})-[:identifies]->(:identifier{system:"${
+    params.relatesTo[0].target.identifier.system
+  }",value:"${params.relatesTo[0].target.identifier.value}"})
+      MERGE(m)-[:securityLabel{text:"${
+        params.securityLabel[0].text
+      }"}]->(:coding{system:"${
+    params.securityLabel[0].coding[0].system
+  }",code:"${params.securityLabel[0].coding[0].code}"})
+      MERGE(m)-[:content{system:"${params.content[0].format.system}",code:"${
+    params.content[0].format.code
+  }",display:"${
+    params.content[0].format.display
+  }"}]->(:attachment{contentType:"${
+    params.content[0].attachment.contentType
+  }",language:"${params.content[0].attachment.language}",data:"${
+    params.content[0].attachment.data
+  }",url:"${params.content[0].attachment.url}",size:"${
+    params.content[0].attachment.size
+  }",hash:"${params.content[0].attachment.hash}",title:"${
+    params.content[0].attachment.title
+  }",creation:"${params.content[0].attachment.creation}"})
+      MERGE(m)-[:context]->(a:context{start:"${
+        params.context.period.start
+      }",end:"${params.context.period.end}"})
+      Merge(a)-[:encounter{reference:"${
+        params.context.encounter[0].reference
+      }",display:"${
+    params.context.encounter[0].display
+  }"}]->(:identifier{system:"${
+    params.context.encounter[0].identifier.system
+  }",value:"${params.context.encounter[0].identifier.value}"})
+      Merge(a)-[:event{text:"${
+        params.context.event[0].text
+      }"}]->(:coding{system:"${
+    params.context.event[0].coding[0].system
+  }",code:"${params.context.event[0].coding[0].code}",display:"${
+    params.context.event[0].coding[0].display
+  }"})
+      Merge(a)-[:facilityType{text:"${
+        params.context.facilityType.text
+      }"}]->(:coding{system:"${
+    params.context.facilityType.coding[0].system
+  }",value:"${params.context.facilityType.coding[0].value}"})
+      Merge(a)-[:practiceSetting{text:"${
+        params.context.practiceSetting.text
+      }"}]->(:coding{system:"${
+    params.context.practiceSetting.coding[0].system
+  }",value:"${params.context.practiceSetting.coding[0].value}"})
+      Merge(a)-[:sourcePatientInfo{reference:"${
+        params.context.sourcePatientInfo.reference
+      }",display:"${
+    params.context.sourcePatientInfo.display
+  }"}]->(:identifier{system:"${
+    params.context.sourcePatientInfo.identifier.system
+  }",value:"${params.context.sourcePatientInfo.identifier.value}"})
+      Merge(a)-[:related{reference:"${
+        params.context.related[0].reference
+      }",display:"${
+    params.context.related[0].display
+  }"}]->(:identifier{system:"${
+    params.context.related[0].identifier.system
+  }",value:"${params.context.related[0].identifier.value}"})
       Merge(m)-[:hasSymptoms{}]->(:symptoms{symptoms:"${params.symptoms}"})
-      Merge(m)-[:prescriptions{}]->(:prescriptions{prescriptions:"${params.prescriptions
-    }"})
-      Merge(m)-[:vitals{Pulse:"${params.toReport.Pulse}",Temperature:"${params.toReport.Temperature
-    }",Height:"${params.toReport.Height}",Weight:"${params.toReport.Weight
-    }",BMI:"${params.toReport.BMI}",SPO2:"${params.toReport.SPO2}",Respiration:"${params.toReport.Respiration
-    }",Systolic:"${params.toReport.Systolic}",Diastolic:"${params.toReport.Diastolic
-    }"}]->(:allergy{allergies:"${params.toReport.allergy}"})
+      Merge(m)-[:prescriptions{}]->(:prescriptions{prescriptions:"${
+        params.prescriptions
+      }"})
+      Merge(m)-[:vitals{Pulse:"${params.toReport.Pulse}",Temperature:"${
+    params.toReport.Temperature
+  }",Height:"${params.toReport.Height}",Weight:"${
+    params.toReport.Weight
+  }",BMI:"${params.toReport.BMI}",SPO2:"${params.toReport.SPO2}",Respiration:"${
+    params.toReport.Respiration
+  }",Systolic:"${params.toReport.Systolic}",Diastolic:"${
+    params.toReport.Diastolic
+  }"}]->(:allergy{allergies:"${params.toReport.allergy}"})
       `;
   query = query.concat(
     params.identifier[0].value

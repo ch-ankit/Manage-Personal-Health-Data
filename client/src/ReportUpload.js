@@ -22,7 +22,8 @@ function ReportUpload() {
       body: formData,
     });
     console.log(response);
-    alert(response)
+    const data=await response.json()
+    alert(data.message)
     if(response.status==200){
       history.push("/home/lastVisited")
     }

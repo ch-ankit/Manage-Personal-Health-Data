@@ -2,12 +2,14 @@ import React, { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import "./Report.scss";
 import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
+import { useHistory } from "react-router-dom";
 
 function Report() {
   const [numPages, setNumPages] = useState(null);
   const form = useRef(null);
   const userData = useSelector((state) => state.user.value);
   const [file,setFile]=useState([]);
+  const history=useHistory()
 
   const handleUpload = async (e) => {
     e.preventDefault();
@@ -20,6 +22,9 @@ function Report() {
     const data=await response.json();
     console.log(data)
     alert(data.message)
+    if(response.status==200){
+      history.push("/home/lastVisited")
+    }
   };
   const handleMedicalUpload = async (e) => {
     e.preventDefault();
@@ -29,6 +34,8 @@ function Report() {
       body: formData,
     });
     console.log(response);
+    
+
     
   };
   console.log(userData.uId);

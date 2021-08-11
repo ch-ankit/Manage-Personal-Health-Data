@@ -30,12 +30,12 @@ function EmergencyContactView() {
             </div>
             {emergencyContact?.message==="emergency contact not added"?<h3 style={{width:"100%",textAlign:"center",marginTop:"1em"}}> No emergency contact added </h3>:Object.keys(emergencyContact).map((key)=>{
                 return(
-                    <div className="emergencyContactView__gridView">
+                    <div key={key} className="emergencyContactView__gridView">
                 <div className="emergencyContactView__who">
                     <h4>Who</h4>
                     <div className="emergencyContactView__who1">
                         <p>{emergencyContact[key].given[0].replace(/\"/g,"") + " " + emergencyContact[key].family.replace(/\"/g,"")}</p>
-                        {/* <p>Relationship: {emergencyContact[key].relationship.replace(/\"/g,"")}</p> */}
+                        <p>Relationship: {emergencyContact[key].relationship.replace(/\"/g,"")}</p>
                         <p>Sex: {emergencyContact[key].gender.replace(/\"/g,"")}</p>
                     </div>
                 </div>
@@ -44,7 +44,7 @@ function EmergencyContactView() {
                     <div className="emergencyContactView__contact1">
                         <p>Address: {emergencyContact[key].text.replace(/\"/g,"")}</p>
                         <p>Phone: {emergencyContact[key].contactNo.replace(/\"/g,"")}</p>
-                        {/* <p>Works At:{emergencyContact[key].display.replace(/\"/g,"")}</p> */}
+                        <p>Works At:{emergencyContact[key].display.replace(/\"/g,"")}</p>
                     </div>
                 </div>
             </div>

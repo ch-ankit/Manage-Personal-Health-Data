@@ -263,6 +263,13 @@
 
             }
         }
+        button[type="button"]{
+            background-color: rgba(240, 83, 83,0.5);
+
+            &:hover{
+                background-color: rgba(238, 38, 38,0.8);
+            }
+        }
     }
     &__confirm{
         width: 20% !important;
@@ -270,6 +277,6 @@
 }
 @media screen and (max-width:800px) {
     :root{
-        font-size: 10px;
+        font-size: 9px;
     }
 }

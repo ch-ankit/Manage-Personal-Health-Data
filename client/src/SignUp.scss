@@ -19,8 +19,13 @@
             height: 3em;
             margin: 0.4em 0;
             border-radius: 1em;
+            background-color: white;
+            color: black;
             border: none;
             box-shadow: 0px 0px 15px 5px rgba(22, 21, 21, 0.35);
+            &::placeholder{
+                color: black;
+            }
         }
 
         .signUp__select {
@@ -35,6 +40,7 @@
         input[type="radio"]{
             width: fit-content;
             height: fit-content;
+            color: black;
         }
         .signUp__customSelect {
             width: 100%;

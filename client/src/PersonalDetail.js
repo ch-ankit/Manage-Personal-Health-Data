@@ -52,147 +52,182 @@ function PersonalDetail() {
             }
         }
     }
+    const formValidate = () => {
+        var returnValue = [];
+        //prefix check and set
+        if (prefix.current.value === null) {
+            prefix.current.value = gender.current.value === 'Male' ? 'Mr' : 'Ms'
+        }
+        //middle name check and set
+        if (middleName.current.value === null) {
+            middleName.current.value = ''
+        }
+        //validate phone no
+        alert(mobileNo.current.value)
+        if (/^\+[1-9]{3}[0-9]{3,14}}$/.test(mobileNo.current.value)) {
+            returnValue.push(true)
+        } else {
+            alert('Invalid Phone Number')
+            returnValue.push(false)
+        }
+        var todayFullDate = new Date();
+        var year = todayFullDate.getFullYear()
+        var month = todayFullDate.getMonth() < 9 ? `0${todayFullDate.getMonth() + 1}` : todayFullDate.getMonth() + 1
+        var date = todayFullDate.getDate() < 10 ? `0${todayFullDate.getDate()}` : todayFullDate.getDate() < 10
+        todayFullDate = new Date(`${year}-${month}-${date}`)
+        var recievedDate = new Date(dob.current.value)
+        if (recievedDate > todayFullDate) {
+            alert('Please enter valid Date of birth')
+            returnValue.push(false)
+        } else {
+            returnValue.push(true)
+        }
+        console.log(!returnValue.some(el => el === false))
+        return !returnValue.some(el => el === false)
+    }
 
     const handleSubmit = async () => {
-        const system = language.current.value.split('-')
-        if(photo.name){
-            const uploadTask = storage.ref(`images/${photo.name ?? "patientPhoto"}`).put(photo);
-        uploadTask.on(
-            "state_changed",
-            (snapshot) => {
-            },
-            (error) => {
-                console.log(error);
-                alert(error.message);
-            },
-            () => {
-                storage
-                    .ref("images")
-                    .child(photo.name ?? "patientPhoto")
-                    .getDownloadURL()
-                    .then(async (url) => {
-                        console.log(url);
-                        console.log(maritalStatus)
-                        const response = await fetch('http://localhost:7000/personal/update', {
-                            method: 'POST',
-                            headers: {
-                                'Content-type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                patientId:userData.uId,
-                                city: city.current.value,
-                                district: district.current.value,
-                                state: state.current.value,
-                                country: country.current.value,
-                                mobileNo: mobileNo.current.value,
-                                houseNo: houseNo.current.value,
-                                streetName: streetName.current.value,
-                                dob: dob.current.value,
-                                gender: gender.current.value,
-                                language: system[0],
-                                languageCode: system[1],
-                                maritialStatus: maritalStatus,
-                                maritialStatusCode: maritalStatusCode.current.value,
-                                multipleBirthBoolean: multipleBirthBoolean,
-                                birthOrder: multipleBirthBoolean ? birthOrder.current.value : 1,
-                                firstName: firstName.current.value,
-                                middleName: middleName.current.value,
-                                lastName: lastName.current.value,
-                                prefix: prefix.current.value,
-                                suffix: suffix.current.value,
-                                postalCode: postalCode.current.value,
-                                photo: url
-                            })
-                        })
-                        setViewFile('')
-                        console.log(await response.json())
-                    })
-
-            }
-        );
-
-        }else{
-            const response = await fetch('http://localhost:7000/personal/update', {
-                            method: 'POST',
-                            headers: {
-                                'Content-type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                patientId:userData.uId,
-                                city: city.current.value,
-                                district: district.current.value,
-                                state: state.current.value,
-                                country: country.current.value,
-                                mobileNo: mobileNo.current.value,
-                                houseNo: houseNo.current.value,
-                                streetName: streetName.current.value,
-                                dob: dob.current.value,
-                                gender: gender.current.value,
-                                language: system[0],
-                                languageCode: system[1],
-                                maritialStatus: maritalStatus,
-                                maritialStatusCode: maritalStatusCode.current.value,
-                                multipleBirthBoolean: multipleBirthBoolean,
-                                birthOrder: multipleBirthBoolean ? birthOrder.current.value : 1,
-                                firstName: firstName.current.value,
-                                middleName: middleName.current.value,
-                                lastName: lastName.current.value,
-                                prefix: prefix.current.value,
-                                suffix: suffix.current.value,
-                                postalCode: postalCode.current.value,
-                                photo: photo
-                            })
-                        })
-                        setViewFile('')
-                        console.log(await response.json())
-        }
-        
-        const response = await fetch("http://localhost:7000/login/patient", {
-                method: "POST",
-                headers: {
-                    "Content-type": "application/json"
+        console.log(formValidate())
+        if(formValidate()){
+            const system = language.current.value.split('-')
+            if(photo.name){
+                const uploadTask = storage.ref(`images/${photo.name ?? "patientPhoto"}`).put(photo);
+            uploadTask.on(
+                "state_changed",
+                (snapshot) => {
                 },
-                body: JSON.stringify({
-                    id: userData.uId,
-                    password:password.current.value
+                (error) => {
+                    console.log(error);
+                    alert(error.message);
+                },
+                () => {
+                    storage
+                        .ref("images")
+                        .child(photo.name ?? "patientPhoto")
+                        .getDownloadURL()
+                        .then(async (url) => {
+                            console.log(url);
+                            console.log(maritalStatus)
+                            const response = await fetch('http://localhost:7000/personal/update', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    patientId:userData.uId,
+                                    city: city.current.value,
+                                    district: district.current.value,
+                                    state: state.current.value,
+                                    country: country.current.value,
+                                    mobileNo: mobileNo.current.value,
+                                    houseNo: houseNo.current.value,
+                                    streetName: streetName.current.value,
+                                    dob: dob.current.value,
+                                    gender: gender.current.value,
+                                    language: system[0],
+                                    languageCode: system[1],
+                                    maritialStatus: maritalStatus,
+                                    maritialStatusCode: maritalStatusCode.current.value,
+                                    multipleBirthBoolean: multipleBirthBoolean,
+                                    birthOrder: multipleBirthBoolean ? birthOrder.current.value : 1,
+                                    firstName: firstName.current.value,
+                                    middleName: middleName.current.value,
+                                    lastName: lastName.current.value,
+                                    prefix: prefix.current.value,
+                                    suffix: suffix.current.value,
+                                    postalCode: postalCode.current.value,
+                                    photo: url
+                                })
+                            })
+                            setViewFile('')
+                            console.log(await response.json())
+                        })
+
+                }
+            );
+
+            }else{
+                const response = await fetch('http://localhost:7000/personal/update', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    patientId:userData.uId,
+                                    city: city.current.value,
+                                    district: district.current.value,
+                                    state: state.current.value,
+                                    country: country.current.value,
+                                    mobileNo: mobileNo.current.value,
+                                    houseNo: houseNo.current.value,
+                                    streetName: streetName.current.value,
+                                    dob: dob.current.value,
+                                    gender: gender.current.value,
+                                    language: system[0],
+                                    languageCode: system[1],
+                                    maritialStatus: maritalStatus,
+                                    maritialStatusCode: maritalStatusCode.current.value,
+                                    multipleBirthBoolean: multipleBirthBoolean,
+                                    birthOrder: multipleBirthBoolean ? birthOrder.current.value : 1,
+                                    firstName: firstName.current.value,
+                                    middleName: middleName.current.value,
+                                    lastName: lastName.current.value,
+                                    prefix: prefix.current.value,
+                                    suffix: suffix.current.value,
+                                    postalCode: postalCode.current.value,
+                                    photo: photo
+                                })
+                            })
+                            setViewFile('')
+                            console.log(await response.json())
+            }
+            
+            const response = await fetch("http://localhost:7000/login/patient", {
+                    method: "POST",
+                    headers: {
+                        "Content-type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        id: userData.uId,
+                        password:password.current.value
+                    })
+                });
+                console.log(response)
+                console.log('Hello')
+                const data = await response.json();
+                console.log(data)
+                let patientData={};
+                patientData.uId=data.identifier[0].value;
+                patientData.birthDate=data.birthDate;
+                patientData.gender=data.gender;
+                patientData.firstName=data.name[0].given[0];
+                patientData.lastName=data.name[0].family;
+                patientData.prefix=data.name[0].prefix;
+                patientData.suffix=data.name[0].suffix;
+                patientData.lastName=data.name[0].family;
+
+                data.telecom.forEach((tel)=>
+                    patientData[tel.system]=tel.value
+                )
+                patientData.maritalStatus=data.maritialStatus.text;
+                patientData.photo=data.photo.url;
+                data.address.forEach((val)=>{
+                    let arr=Object.getOwnPropertyNames(val);
+                    arr.forEach((name)=>{
+                        patientData[`address${val.type}${name}`]=val[name]
+                    })
                 })
-            });
-            console.log(response)
-            console.log('Hello')
-            const data = await response.json();
-            console.log(data)
-            let patientData={};
-            patientData.uId=data.identifier[0].value;
-            patientData.birthDate=data.birthDate;
-            patientData.gender=data.gender;
-            patientData.firstName=data.name[0].given[0];
-            patientData.lastName=data.name[0].family;
-            patientData.prefix=data.name[0].prefix;
-            patientData.suffix=data.name[0].suffix;
-            patientData.lastName=data.name[0].family;
+                patientData.language=data.communication[0].language["text"];
+                patientData.multipleBirthBoolean=data.multipleBirthBoolean;
+                patientData.multipleBirthInteger=data.multipleBirthInteger;
 
-            data.telecom.forEach((tel)=>
-                patientData[tel.system]=tel.value
-            )
-            patientData.maritalStatus=data.maritialStatus.text;
-            patientData.photo=data.photo.url;
-            data.address.forEach((val)=>{
-                let arr=Object.getOwnPropertyNames(val);
-                arr.forEach((name)=>{
-                    patientData[`address${val.type}${name}`]=val[name]
-                })
-            })
-            patientData.language=data.communication[0].language["text"];
-            patientData.multipleBirthBoolean=data.multipleBirthBoolean;
-            patientData.multipleBirthInteger=data.multipleBirthInteger;
+                console.log(data);
+                console.log(patientData)
+                dispatch(loginUser(patientData));
+                document.querySelector(".personalDetail__popup.active")?.classList.remove("active")
+                document.querySelector(".personalDetail__popUp2.active")?.classList.remove("active")
 
-            console.log(data);
-            console.log(patientData)
-            dispatch(loginUser(patientData));
-            document.querySelector(".personalDetail__popup.active")?.classList.remove("active")
-            document.querySelector(".personalDetail__popUp2.active")?.classList.remove("active")
-
-
+        }
     }
     const languageMap = Object.keys(languages).map(el => <option key={el} value={`${languages[el].name}-${languages[el].code}`} > {languages[el].name}</ option>)
     
@@ -428,7 +463,7 @@ function PersonalDetail() {
                         <input ref={dob} style={{height:"2.5em",marginTop:"0.5rem"}} type="date" defaultValue={userData?.birthDate} id="dob" placeholder="Date of Birth" />
                     </label>
                     <label htmlFor="contactInfo" style={{width:"80%"}}>ContactInfo
-                        <input ref={mobileNo} style={{height:"2.5em",marginTop:"0.5rem"}} type="text" defaultValue={userData?.phone} id="contactInfo" placeholder="Contact Number" />
+                        <input ref={mobileNo} style={{height:"2.5em",marginTop:"0.5rem"}} pattern="[+]{1}[0-9]{13}" type="text" defaultValue={userData?.phone} id="contactInfo" placeholder="Contact Number" />
                     </label>
                     <div className="personalDetail__changePhoto">
                     <input type="file" accept="image/*" alt="Profile photo" onChange={handleChange} />
@@ -467,7 +502,7 @@ function PersonalDetail() {
                     <h1>Enter your password</h1>
                     <input type="password" placeholder="Password" ref={password} required/>
                     <div className="personalDetail__popUp2Buttons">
-                        <button onClick={()=>{
+                        <button type="button" onClick={()=>{
                             document.querySelector(".personalDetail__popUp2.active").classList.remove("active")
                         }}>Close</button>
                         <button type="submit" className="personalDetail__confirm">Confirm</button>

@@ -400,8 +400,8 @@ function PatientDocuments() {
                          <input type="date" ref={date2} />
                         </label>
                         <label>Category
-                        <select ref={Category} defaultValue="" >
-                            <option selected="selected" hidden>Select any one</option>
+                        <select ref={Category} defaultValue="Select any one" >
+                            <option value="Select any one" hidden>Select any one</option>
                             <option value="Health and Respirotary">Health and Respirotary</option>
                             <option value="Psychiatry procedure or service">Psychiatry procedure or service</option>
                             <option value="Counselling">Counsellinsg</option>
@@ -413,7 +413,7 @@ function PatientDocuments() {
                         </select>
                         </label>
                         <button onClick={()=>{search()}}>Search</button>
-                        <button onClick={()=>{
+                        <button className="patientDocuments__clearSearch" onClick={()=>{
                             record.current.value='';
                             bodySite.current.value=null;
                             symptoms.current.value="";

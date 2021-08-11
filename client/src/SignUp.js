@@ -304,7 +304,7 @@ function SignUp() {
                 <input ref={postalCode} type="text" id="postalCode" placeholder="Postal Code" required />
                 <input ref={dob} type="date" onChange={() => { console.log(dob.current.value) }} id="dob" placeholder="Date of Birth" required />
                 {dateError && <p style={{ color: 'red' }}>*{dateError}</p>}
-                <input ref={mobileNo} type="text" id="contactInfo" placeholder="Mobile Number" required />
+                <input ref={mobileNo} type="text" pattern="[+]{1}[0-9]{13}" id="contactInfo" placeholder="Mobile Number" required />
                 {phoneError && <p style={{ color: 'red' }}>*{phoneError}</p>}
                 <input type="file" accept="image/*" id="image" alt="Profile photo" onChange={handleChange} required />
                 <img src={viewFile} style={{ height: '81px', width: '256px' }} alt="Uploaded" />

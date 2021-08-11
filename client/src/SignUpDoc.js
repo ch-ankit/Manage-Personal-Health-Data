@@ -353,6 +353,7 @@ function SignUp() {
           ref={mobileNo}
           type="text"
           id="mobileNo"
+          pattern="[+]{1}[0-9]{13}"
           placeholder="Contact Number"
           required
         />

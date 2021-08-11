@@ -983,7 +983,7 @@
 // const bcrypt = require("bcrypt");
 
 // var trial = async () => {
-//   bcrypt.genSalt().then((salt) => {
+//   bcrypt.genSalt(10).then((salt) => {
 //     bcrypt.hash("password", salt).then((hash) => console.log(hash));
 //   });
 //   var newPassword = await bcrypt.hash("password", 10);

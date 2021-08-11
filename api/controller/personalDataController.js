@@ -324,11 +324,13 @@ exports.checkPassword = async (req, res, data) => {
 
 exports.friendList = async (req, res, next) => {
   var session = driver.session();
-  var query = `MATCH(l:Patient{value:"${req.query.patientId}"})-[:knows]->(n:Practitioner)
+  var query = `MATCH(l:Patient{value:"${req.query.patientId}"})-[r0:knows]->(n:Practitioner)
   MATCH (n)-[r:identifies{}]->(m:doctor{active:True})
   MATCH(n)-[r1:hasName{}]->(m1:name{})
   MATCH(n)-[r2:photo]->(m2:photo{})
-  MATCH(n)-[r3:qualification{}]->(:qualification{}) return n.value,m.gender,m1,m2.url,r3.display,r3.text`;
+  MATCH(n)-[r3:qualification{}]->(:qualification{}) 
+  WHERE r0.status="accepted"
+  RETURN n.value,m.gender,m1,m2.url,r3.display,r3.text`;
   session
     .run(query)
     .then((result) => {

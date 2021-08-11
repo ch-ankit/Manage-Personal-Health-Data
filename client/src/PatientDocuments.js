@@ -358,7 +358,7 @@ function PatientDocuments() {
                 })
             }
             else{
-
+                settemporaryData(searchedData)
             }
     }
     return (

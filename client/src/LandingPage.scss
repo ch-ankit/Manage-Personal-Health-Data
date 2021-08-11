@@ -46,6 +46,11 @@ $mobileScreen:650px;
             border: 0;
             border-radius: 1.2em;
             background-color: rgb(77, 226, 77);
+            cursor: pointer;
+
+            &:hover{
+                background-color: rgb(72, 189, 72);
+            }
         }
     }
     &__loginDoctor{
@@ -78,6 +83,11 @@ $mobileScreen:650px;
             border: 0;
             border-radius: 1.2em;
             background-color: rgb(77, 226, 77);
+            cursor: pointer;
+
+            &:hover{
+                background-color: rgb(72, 189, 72);
+            }
         }
 
         &.active{

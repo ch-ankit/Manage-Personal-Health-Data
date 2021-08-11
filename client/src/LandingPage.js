@@ -44,6 +44,7 @@ function LandingPage() {
             patientData.birthDate=data.birthDate;
             patientData.gender=data.gender;
             patientData.firstName=data.name[0].given[0];
+            patientData.middleName=data.name[0].given[1];
             patientData.lastName=data.name[0].family;
             patientData.prefix=data.name[0].prefix;
             patientData.suffix=data.name[0].suffix;

@@ -147,6 +147,8 @@ function SignUp() {
                             const { message } = await response.json()
                             if (message === "email is aready registered") {
                                 setErrorFrom({ message: 'Email is already registered. Please use a new mail' })
+                            }else{
+                                alert(message)
                             }
                             setViewFile('')
                             console.log(response)

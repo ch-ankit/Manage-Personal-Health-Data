@@ -176,6 +176,8 @@ function SignUp() {
               const { message } = await response.json();
               if (message === "") {
                 setErrorFrom({ message: "ID is already Registered" });
+              }else{
+                alert(message)
               }
             })
             .then(() => {

@@ -195,7 +195,7 @@ function SignUp() {
                 <input ref={middleName} type="text" id="name" placeholder="Middle Name" />
                 <input ref={lastName} type="text" id="name" placeholder="Last Name" required />
                 <div className="signUp__customSelect" style={{ display: `${customSuffix ? 'none' : 'flex'}`, width: "80%" }}>
-                    <select ref={suffix} defaultChecked="" id="suffix" required>
+                    <select ref={suffix} defaultChecked="" id="suffix" >
                         <option value="" hidden > Please Select your Suffix</option>
                         <option value="Phd."> Phd.</option>
                         <option value="MD">MD</option>
@@ -302,6 +302,7 @@ function SignUp() {
                     </div>
                 </div>
                 <input ref={postalCode} type="text" id="postalCode" placeholder="Postal Code" required />
+                <label style={{alignSelf:"flex-start"}}>D.O.B</label>
                 <input ref={dob} type="date" onChange={() => { console.log(dob.current.value) }} id="dob" placeholder="Date of Birth" required />
                 {dateError && <p style={{ color: 'red' }}>*{dateError}</p>}
                 <input ref={mobileNo} type="text" pattern="[+]{1}[0-9]{13}" id="contactInfo" placeholder="Mobile Number" required />

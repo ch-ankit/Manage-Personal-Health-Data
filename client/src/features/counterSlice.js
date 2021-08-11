@@ -30,6 +30,8 @@ export const userSlice = createSlice({
     logoutUser: (state) => {
       state.value = null;
       window.localStorage.setItem('user', null);
+      state.shareDocuments = [];
+      window.localStorage.setItem('shareDocuments', []);
     },
     logoutDoctor: (state) => {
       state.doctor = null;

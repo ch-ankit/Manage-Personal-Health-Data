@@ -63,8 +63,7 @@ function PersonalDetail() {
             middleName.current.value = ''
         }
         //validate phone no
-        alert(mobileNo.current.value)
-        if (/^\+[1-9]{3}[0-9]{3,14}}$/.test(mobileNo.current.value)) {
+        if (/^\+[1-9]{1}[0-9]{3,14}$/.test(mobileNo.current.value)) {
             returnValue.push(true)
         } else {
             alert('Invalid Phone Number')

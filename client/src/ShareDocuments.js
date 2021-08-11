@@ -42,29 +42,35 @@ function ShareDocuments() {
             default:
                 console.log('Default case reached')
         }
-        documentsList.forEach(async (documents) => {
-            console.log(document)
-            const response = await fetch("http://localhost:7000/share", {
-                method: "POST",
-                headers: {
-                    "Content-type": "application/json"
-                },
-                body: JSON.stringify(
-                    {
-                        "id": userData.uId,
-                        "doctorId": docData.doctorId,
-                        "masterId": documents.filename.replace(".pdf", ''),
-                        accessTime
-                    }
-                )
+        if(accessTime >0){
+            documentsList.forEach(async (documents) => {
+                console.log(document)
+                const response = await fetch("http://localhost:7000/share", {
+                    method: "POST",
+                    headers: {
+                        "Content-type": "application/json"
+                    },
+                    body: JSON.stringify(
+                        {
+                            "id": userData.uId,
+                            "doctorId": docData.doctorId,
+                            "masterId": documents.filename.replace(".pdf", ''),
+                            accessTime
+                        }
+                    )
+                });
+                const data = await response.json()
+                console.log(data)
+    
             });
-            const data = await response.json()
-            console.log(data)
-
-        });
-        dispatch(removeShareDocs());
-        document.querySelector(".shareDocuments__popup").classList.remove("active");
-
+            dispatch(removeShareDocs());
+            document.querySelector(".shareDocuments__popup").classList.remove("active");
+    
+        }
+        else{
+            alert("Please write a suitable time")
+        }
+        
     }
     return (
         <div className="shareDocuments">
@@ -100,7 +106,7 @@ function ShareDocuments() {
                 <h1>Share your documents</h1>
                 <div className="shareDocuments__selectTime">
                     <div className="shareDocuments__Time">
-                        <input ref={timeNumber} type="number" />
+                        <input ref={timeNumber} type="number" min="0" />
                         <select ref={timeUnit}>
                             <option value="day">day</option>
                             <option value="hr">hr</option>

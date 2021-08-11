@@ -139,7 +139,7 @@ function HomeNav(props) {
     }
     if (friendNotifier) {
         displayFriendNotifications = Object.keys(friendNotifier).map(el =>
-            <Link key={el} to={props.doctor ? "/Doctor/friendList" : "/home/friendList"}>
+            <Link key={el} to={props.doctor ? "/Doctor/" : "/home/"}>
                 <div style={{ display: 'flex', backgroundColor: 'white', border: '1px solid lightgreen' }}>
                     <img className={`homeNav__notifications__displayPic ${darkMode && "homeNav__notifyimgDark"}`} src={friendNotifier[el].photo} alt="Patient Display" />
                     {props.doctor ? <li>{friendNotifier[el].name} sent you a Connect Request</li> : <li>{friendNotifier[el].name} ${friendNotifier[el].status} your Connect Request</li>}

@@ -60,7 +60,7 @@ function EmergencyContact() {
                     <input ref={middleName} type="text" placeholder="Middle Name" />
                     <input ref={lastName} type="text" placeholder="Last Name" />
                 </div>
-                <input ref={phoneNo} type="tel" placeholder="Phone no" pattern="[0-9]{10}" />
+                <input ref={phoneNo} type="text" pattern="[+]{1}[0-9]{13}" placeholder="Phone no" pattern="[0-9]{10}" />
                <div className="emergencyContact__Address">
                    <input ref={city} type="text" placeholder="City" />
                    <input ref={district} type="text" placeholder="District" />

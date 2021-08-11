@@ -2,8 +2,8 @@ import React, { lazy } from 'react'
 import { Suspense } from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch, useHistory ,Redirect} from 'react-router-dom'
-import AddDoctor from './AddDoctor';
-import DoctorLanding from './DoctorLanding';
+const AddDoctor= lazy(()=>import('./AddDoctor'));
+const DoctorLanding = lazy(()=>import('./DoctorLanding'));
 const FriendList = lazy(() => import('./FriendList'));
 const Notification = lazy(() => import('./Notification'));
 const About = lazy(() => import('./About'));

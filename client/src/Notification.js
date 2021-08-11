@@ -47,6 +47,7 @@ function Notification(props) {
         window.location.reload()
     }
     const userDecision = async (e, decision, masterId) => {
+        if(accessTime>0){
         let accessTime;
         switch (timeUnit.current.value) {
             case "hr":
@@ -84,8 +85,8 @@ function Notification(props) {
                 document.querySelector(".notification__sharePopup.active").classList.remove("active")
             }
             setdummy(!dummy);
-        } else {
-            alert('Please select the Access time')
+        }} else {
+            alert('Please select the suitable Access time')
         }
     }
     var displayNotifications

@@ -267,7 +267,7 @@ function PersonalDetail() {
                     <div className="personalDetail__who">
                         <h4>Who</h4>
                         <div className="personalDetail__who1">
-                            <p>{userData?.firstName+ ' ' + userData?.lastName}</p>              {/* display name of the user */}
+                            <p>{userData?.firstName + " "+ userData?.middleName+" " + userData?.lastName}</p>              {/* display name of the user */}
                             <p>Sex : {userData?.gender}</p>                   {/* display sex of the user */}
                             <p>Marital Status: {userData?.maritalStatus} </p>      {/* display maarital status of the user */}
                         </div>
